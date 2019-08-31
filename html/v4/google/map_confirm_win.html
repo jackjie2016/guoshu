@@ -1,0 +1,303 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/iconfont/iconfont.css" />
+    <style>
+    #address_info{
+      height: 100px;
+      background: white;
+    }
+    #footer{
+        height: 200px;
+    }
+    </style>
+</head>
+<body>
+    <header class="aui-bar aui-bar-nav" id="aui-header">
+        <a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title">Confirmar Direccion</div>
+    </header>
+    <div id="app">
+    <section class="aui-content aui-grid aui-margin-b-15"  id="address_info">
+            <div class="aui-row">
+                <div class="aui-col-xs-1  ">
+
+                </div>
+                <div class="aui-col-xs-10  ">
+                    <h2 class="aui-text-default ">{{address_info.detail}}</h2>
+                    <div class="aui-gird-lable aui-font-size-12">{{address_info.ext}}</div>
+                </div>
+                <div class="aui-col-xs-1  ">
+
+                </div>
+            </div>
+        </section>
+
+
+ <!-- v-bind:style="{  height: footer_height + 'px' }" -->
+    <footer class="aui-bar aui-bar-tab" id="footer" v-bind:style="{  height: footer_height + 'px' }" >
+
+			<!-- <div class="pad10 juzhong wenzi12">为您的地址添加一个描述：</div> -->
+      <section class="aui-content-padded">
+        <h2 class="aui-text-default">Esta es la direccion de ml:</h2>
+      </section>
+      <section class="aui-content aui-grid aui-margin-b-15">
+      <div class="aui-row">
+          <div class="aui-col-xs-3 aui-border " v-bind:class="{'aui-active': tag == 'Gatillo'}" @click="change_tags('Gatillo')">
+            <i class="iconfont iconshouye1"></i>
+            <div class="aui-bar-tab-label">Gatillo</div>
+          </div>
+          <div class="aui-col-xs-3 aui-border" v-bind:class="{'aui-active': tag == 'Cafe'}" @click="change_tags('Cafe')">
+            <i class="iconfont iconkafeiting1"></i>
+            <div class="aui-bar-tab-label">Cafe</div>
+          </div>
+          <div class="aui-col-xs-3 aui-border" v-bind:class="{'aui-active': tag == 'Familia'}" @click="change_tags('Familia')">
+            <i class="iconfont iconjiashu"></i>
+            <div class="aui-bar-tab-label">Familia</div>
+          </div>
+          <div class="aui-col-xs-3 aui-border" v-bind:class="{'aui-active': coustom == 1}" @click="change_tags('coustom')">
+            <i class="iconfont iconjia1"></i>
+            <div class="aui-bar-tab-label" v-if="coustom==0">Otros</div>
+            <div class="aui-bar-tab-label" v-else>{{tag}}</div>
+          </div>
+      </div>
+     </section>
+
+
+			<div  style="position:fixed;left:0;right:0;bottom:10px;border-top:1px solid #f6f6f6;">
+         <div class="aui-btn aui-btn-success aui-btn-block aui-btn-sm" style=" width: 80%; margin: auto; " @click="confirm_pos()">Confirmar</div>
+			</div>
+    </footer>
+  </div>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript" src="../../../script/aui-dialog.js" ></script>
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#app',
+    data: {
+      footer_height: 0,
+      placeid:'',
+      address_info:'',
+      tag:'Gatillo',
+      coustom:0,
+    },
+    methods: {
+     init:function(){
+       vm.get_local_address(vm.placeid);
+       },
+      change_tags:function(tag){
+        if(tag=='coustom'){
+          // if(vm.coustom==0){
+          //   vm.tag='Otros';
+          //   }
+
+            input_tag();
+        }else {
+            vm.tag=tag;
+            vm.coustom=0;
+        }
+
+      },
+      get_local_address:function(place_id){
+               api.ajax({
+                  url: google_details_url,
+                  method: 'get',
+                  data: {
+                    values:{token: api.getPrefs({sync: true,key:'login_id'}),placeid:place_id}
+                  }
+               },function(ret, err){
+                   // console.log(JSON.stringify(err));
+                   // console.log(JSON.stringify(ret));
+               if(ret){
+               if(ret.status=='OK'){
+                 console.log(JSON.stringify(ret));
+                 var lat=  ret.result.geometry.location.lat,
+                     lng =ret.result.geometry.location.lng;
+                     vm.address_info=ret.result.coustom_formatted_address;
+
+                     console.log(JSON.stringify(vm.address_info.coustom_formatted_address))
+
+                }
+               }else{
+
+              }
+              });
+
+             },
+      coustom_tag:function(){
+
+      },
+      confirm_pos:function() {
+        console.log(vm.placeid);
+        api.sendEvent({
+            name: 'confirm_pos',
+            extra: {
+                placeid: vm.placeid,
+                tag: vm.tag,
+            }
+        });
+        // closeWin();
+      }
+    },watch:{
+      placeid:{
+        handler: function (val, oldVal) {
+          console.log(val);
+          vm.get_local_address(val);
+        }
+      }
+    }
+   });
+   var dialogBox;
+    apiready = function(){
+      vm.init();
+      console.log(api.pageParam.select_placeid);
+        // console.log(api.pageParam.geometry);
+        api.parseTapmode();
+        var header = $api.byId('aui-header');
+        $api.fixStatusBar(header);
+        var headerPos = $api.offset(header);
+        var address_info = $api.byId('address_info');
+        var address_infoPos = $api.offset(address_info);
+
+        var footer = $api.byId('footer');
+
+        var footerPos = $api.offset(footer);
+        var frameHeight = api.frameHeight || '';
+        var frameWidth = api.frameWidth || '';
+        var body_h = $api.offset($api.dom('body')).h;
+        var child_frame_h=(frameHeight-headerPos.h-footerPos.h);
+        var googlemap_width=frameWidth*0.8;
+        var googlemap_left=frameWidth*0.1;
+        vm.footer_height=frameHeight-headerPos.h-address_infoPos.h-200;
+        dialogBox = api.require('dialogBox');
+
+        vm.placeid=api.pageParam.select_placeid;
+
+
+        api.openFrame({
+            name: 'map_confirm_frm',
+            url: './map_confirm_frm.html',
+            bounces: false,
+            pageParam: {
+                 select_placeid: api.pageParam.select_placeid,
+                 geometry:api.pageParam.geometry,
+                 frame_height:200
+            },
+            rect: {
+                x: 0,
+                y: headerPos.h+address_infoPos.h,
+                w: 'auto',
+                h: 200
+            }
+
+        })
+        api.openFrame({
+            name: 'blank',
+            url: './blank.html',
+            bounces: false,
+            rect: {
+                x: 0,
+                y: headerPos.h+address_infoPos.h,
+                w: 'auto',
+                h: 200
+            }
+
+        })
+
+        //当地图选择界面关闭了，回来关闭当前页面
+        api.addEventListener({
+            name: 'map_win_close'
+        }, function(ret, err){
+            if( ret ){
+              console.log('可以关闭了');
+              closeWin();
+            }
+        });
+
+
+    };
+    function input_tag() {
+      dialogBox.input({
+    keyboardType: 'default',
+    texts: {
+        title: 'Etiqueta personalizada',
+        placeholder: '',
+        leftBtnTitle: 'Cancelar',
+        rightBtnTitle: 'Confirmar'
+    },
+    styles: {
+        bg: '#fff',
+        corner: 7,
+        w: 300,
+        h: 130,
+        title: {
+            h: 30,
+            alignment: 'center',
+            size: 14,
+            color: '#000',
+            marginT:10,
+        },
+        input: {
+            h: 30,
+            y:30,
+            marginT:10,
+            marginLeft: 10,
+            marginRight:10,
+            textSize: 14,
+            textColor: '#000'
+        },
+        dividingLine: {
+            width: 0.5,
+            color: '#696969'
+        },
+        left: {
+            bg: 'rgba(5,2,6,8)',
+            color: '#007FFF',
+            w: 100,                 //（可选项）数字类型；右边按钮的宽；默认：135
+            h: 40,
+            size: 12
+        },
+        right: {
+            marginR: 30,
+            bg: '#009688',
+            color: '#fff',
+            w: 100,                 //（可选项）数字类型；右边按钮的宽；默认：135
+            h: 40,
+            size: 12
+        }
+    }
+ }, function(ret) {
+
+    if (ret.eventType == 'left') {
+        dialogBox.close({
+            dialogName: 'input'
+        });
+    }
+    if (ret.eventType == 'right') {
+           console.log(ret.text);
+           if(ret.text!=''){
+             vm.tag=ret.text;
+              vm.coustom=1;
+           }
+
+            dialogBox.close({
+                dialogName: 'input'
+          });
+    }
+ });
+    }
+     function closeWin(){
+        api.closeWin({
+        });
+    }
+</script>
+</html>

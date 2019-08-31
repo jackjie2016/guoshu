@@ -1,0 +1,335 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit" />
+	<link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/zhu.css"/>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="../../script/zhu.js"></script>
+	<script type="text/javascript" src="../../plug/star/lib/jquery.raty.js"></script>
+	<script type="text/javascript" src="../../script/gototop.js"></script>
+<title>发表评价</title>
+<style type="text/css">
+ /* 顶部 开始*/
+ html,body{background: #fff;}
+ img{display: inline-block;}
+ textarea{height: auto;padding: 10px;}
+ .dingbu{   background-color:#EBEBEB; line-height:50px;}
+ .fanhui{ width:15px; height:15px; margin-left:15px; margin-top:-3px; }
+ .fabiao{ color:#000; font-size:14px; margin-left:15px;  }
+ .fabu{ color:#F00; font-size:14px; float:right; margin-right:20px; }
+ /*服务评价 开始*/
+
+ .xiaoge{ color: #000; margin-left:20px;  }
+ .shijian{ margin-left:20px; color:#666;}
+ .touxiang{ width:50px; height:50px;}
+ .pinjia{ font-size:14px; margin-left:20px; color:#000;}
+  .rating a {  color: #aaa; text-decoration: none;  font-size: 24px; }
+  .rating{ direction: rtl; width:42%; margin-left:66px; margin-top:-28px;  }
+  .rating a:hover,.rating a:hover ~ a,.rating a:focus,.rating a:focus ~ a{color: orange; cursor: pointer;}
+  .neirong{ border:1px solid #F9F9F9;width: 100%;padding: 10px;}
+
+ /*商品评价 开始*/
+  .tupian{ width:44px; height:44px; margin-left:20px;}
+  .shangpin{ margin-left:15px;}
+  .chuantu{ width:55px; height:50px; margin-top:-80px; margin-left:20px;}
+  .tianjia{margin-top:-60px; margin-left:90px; font-size:16px; }
+  .neirong1{  border:1px solid #FFF; margin-top:-5px;}
+	.star{width: 100%;}
+	.star img{width: 26px;height: 26px;}
+	.ups{height: 48px;width: 48px;margin: 2px;border:1px solid #f2f2f2;display: inline-block;position: relative;overflow: hidden;;}
+	.ups .del{width: 18px;height: 18px;position: absolute;right:-2px;top:-2px;z-index: 888;background: rgba(0,0,0,0.5);}
+</style>
+
+</head>
+
+<body>
+   <!-- 顶部开始-->
+	 <header class="aui-bar aui-bar-nav" id="aui-header" style="position:fixed;">
+ 			<a class="aui-btn aui-pull-left" tapmode onclick="fanhui()">
+ 					<span class="aui-iconfont aui-icon-left"></span>
+ 			</a>
+ 			<div class="aui-title" id="title">Añadir reseña</div>
+ 			<a onclick="pingjia()" class="aui-btn aui-pull-right" tapmode style="color:rgb(65, 162, 11)">Enviar</a>
+ 	</header>
+
+
+   <!--服务 评价开始-->
+    <div class="pad10 bg2" style="margin-top:80px;"><div class="title"> Evaluacion de servicios </div></div>
+		<div class="pad10">
+		<div class="hezi">
+			<div class="col2 hanggao24">
+				<div class="wenzi12 yanse3">Personal de envio:大大燕</div>
+				<div class="wenzi12 yanse0">Tiempo de entrega&nbsp;2018-08-08&nbsp;08:08</div>
+			</div>
+			<div class="col1 zhong">
+				<img class="touxiang" src="../../image/221.png" width="42" />
+			</div>
+
+		</div>
+    <div class="hezi hanggao28">
+			<div class="col2 wenzi12 cuti">
+				Por favor calificar
+			</div>
+			<div class="col4">
+      <div id="kuaidi_pingjia" class="star" data-score="0" ></div>
+			</div>
+
+    </div>
+		<div class="pad10">
+			<textarea class="neirong" id="kuaidi_pingjia_info" rows="3"  placeholder="Evaluaremos al personal de envio..."></textarea>
+		</div>
+	</div>
+
+   <!--商品 评价开始-->
+      <div class="pad10 bg2"><div class="title">  Evaluacion de producto  </div></div>
+			<div id="goodslist">
+
+	 </div>
+</body>
+</html>
+<script>
+var shuju;
+apiready=function(){
+	var header = $api.byId('aui-header');
+	$api.fixStatusBar(header);
+jiazai();
+
+api.openFrame({
+		name: 'ing',
+		url: 'widget://html/v1/top2.html',
+		rect: {
+				x: 0,
+				y: 0,
+				w: api.winWidth,
+				h: api.safeArea.top
+		},
+		pageParam: {
+				name: 'test'
+		}
+});
+
+}
+
+function star_chushihua(){
+	$('.star').raty({
+		path:"../../plug/star/lib/img/",
+		size:"26px",
+		starHalf: 'half.png'
+	});
+}
+
+function shanchu(m){
+	$(m).parent().remove();
+}
+
+function get_pingjia_imgs(m){
+	var a=[];
+	m.find(".tuk img.tu").each(function(index){
+		a[index]=$(this).data("file_id");
+	})
+	return a;
+}
+
+function pingjia(){
+	var lists={};
+	$(".goodsk").each(function(){
+		lists[$(this).data("goods_id")]={
+			score:$(this).find(".star input").val(),
+			info:$(this).find(".goods_pingjia").val(),
+			imgs:get_pingjia_imgs($(this))
+		};
+	});
+
+	var form_data={
+		driver_id:shuju.driver_id,
+		driver_score:$("#kuaidi_pingjia").find("input").val(),
+		driver_info:$("#kuaidi_pingjia_info").val(),
+		goods_list:lists
+	};
+
+	api.showProgress({
+			title: '正在提交...',
+			text: '......',
+			modal: false
+	});
+	console.log(JSON.stringify(form_data));
+	api.ajax({
+			url: pingjia_url,
+			method: 'post',
+			data: {
+					values: {
+							token: api.getPrefs({sync: true,key:'login_id'}),
+							order_id:api.pageParam.id,
+							formData:form_data
+					}
+
+			}
+	},function(ret, err){
+		api.hideProgress();
+			if (ret) {
+				tishi(ret.msg);
+				if(ret.code==1){
+					fanhui();
+				}
+					//alert( JSON.stringify( ret ) );
+			} else {
+					//alert( JSON.stringify( err ) );
+			}
+	});
+}
+
+function jiazai(){
+	api.ajax({
+			url: order_info_url,
+			method: 'post',
+			data: {
+					values: {
+							token: api.getPrefs({sync: true,key:'login_id'}),
+							order_id:api.pageParam.id
+					}
+			}
+	},function(ret, err){
+			if (ret) {
+
+				if(ret.code==1){
+				shuju=ret.data.order;
+				var goods=shuju.goods;
+				var str='';
+				for (var i = 0; i < json_num(goods); i++) {
+					// console.log(JSON.stringify(goods[i]));
+					str+='<div class="pad10 goodsk goods_'+i+'" data-goods_id="'+goods[i].order_goods_id+'">'+
+				'<div class="hezi">'+
+					'<div class="col1 juzhong">'+
+						'<img src="'+goods[i].image.file_path+'" width="42" />'+
+					'</div>'+
+					'<div class="col3 hanggao42">'+goods[i].goods_name+'</div>'+
+				'</div>'+
+				'<div class="hezi hanggao28 top10">'+
+					'<div class="col2 wenzi12 cuti zhong">'+
+						'Por favor calificar'+
+					'</div>'+
+					'<div class="col4">'+
+		      '<div class="star" ></div>'+
+					'</div>'+
+		    '</div>'+
+				'<div class="pad10">'+
+					'<textarea class="neirong goods_pingjia" rows="3"  placeholder="Esta satisfecho con la calidad de los productos?"></textarea>'+
+				'</div>'+
+				'<div class="pad10">'+
+					'<div class="tuk"><label id="tupian'+i+'" onclick="get_tu(this.id)" class="ups"><img src="../../image/chuantu.png" class="shiying"></label></div>'+
+				'</div>'+
+
+		 '</div>';
+				}
+ // console.log(str);
+				$("#goodslist").html(str);
+				//alert(str)
+				star_chushihua();
+
+
+				}
+
+					//alert( JSON.stringify( ret ) );
+			} else {
+					//alert( JSON.stringify( err ) );
+			}
+	});
+}
+
+
+function get_tu(objid){
+			api.actionSheet({
+			title: '请选择照片来源',
+			cancelTitle: '取消',
+			buttons: ['相册照片', '相机拍照']
+	}, function(ret, err) {
+			var index = ret.buttonIndex;
+			if(index==1){
+				get_tu_from1(objid);
+			}else if(index==2){
+				get_tu_from2(objid);
+			}
+	});
+}
+
+
+function get_tu_from1(objid){
+ api.getPicture({
+sourceType: 'album',
+encodingType: 'jpg',
+mediaValue: 'pic',
+destinationType: 'url',
+allowEdit: true,
+quality: 50,
+targetWidth: 800,
+targetHeight: 800,
+saveToPhotoAlbum: false
+}, function(ret, err) {
+if (ret) {
+		//alert(JSON.stringify(ret));
+		if(ret.data){
+
+			up_img(ret.data,objid)
+		}
+} else {
+		//alert(JSON.stringify(err));
+}
+});
+}
+
+	function get_tu_from2(objid){
+		api.getPicture({
+	 sourceType: 'camera',
+	 encodingType: 'jpg',
+	 mediaValue: 'pic',
+	 destinationType: 'url',
+	 allowEdit: true,
+	 quality: 50,
+	 targetWidth: 800,
+	 targetHeight: 800,
+	 saveToPhotoAlbum: false
+}, function(ret, err) {
+	 if (ret) {
+			 //alert(JSON.stringify(ret));
+			 if(ret.data){
+
+				up_img(ret.data,objid)
+			 }
+	 } else {
+			 //alert(JSON.stringify(err));
+	 }
+});
+	}
+
+
+	function up_img(m,objid){
+		api.ajax({
+		    url: up_url,
+		    method: 'post',
+		    data: {
+					values:{
+						token: api.getPrefs({sync: true,key:'login_id'})
+					},
+		        files: {
+		            iFile: m
+		        }
+		    }
+		},function(ret, err){
+		    if (ret) {
+		        //alert( JSON.stringify( ret ) );
+						$("#"+objid).parent().prepend('<span class="ups"><img data-file_id="'+ret.data.file_id+'" data-file_url="'+ret.data.file_url+'" src="'+m+'" class="shiying tu"><img src="../../image/guanbi.png" onclick="shanchu(this)" class="del"></span>');
+		    } else {
+		        //alert( JSON.stringify( err ) );
+		    }
+		});
+
+	}
+</script>

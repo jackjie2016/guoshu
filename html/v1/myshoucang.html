@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>文档</title>
+    <link href="../../css/bootstrap.min.css"   rel="stylesheet" >
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/zhu.css"/>
+    <style type="text/css">
+   /*顶部开始 */
+
+  </style>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="../../script/zhu.js"></script>
+  <script type="text/javascript" src="../../script/gototop.js"></script>
+
+</head>
+<body>
+
+   <div class="bg2 pad10" id="tuijian2">
+
+
+
+<div class="clear"></div>
+       </div>
+
+</body>
+</html>
+<script>
+apiready=function(){
+
+
+  jiazai();
+  api.setCustomRefreshHeaderInfo({
+  bgColor: '#f2f2f2',
+  images: ['widget://image/jiazai/1.png','widget://image/jiazai/2.png','widget://image/jiazai/3.png','widget://image/jiazai/4.png'],
+  tips: {
+      pull: '下拉刷新',
+      threshold: '松开立即刷新',
+      load: '正在刷新'
+  }
+}, function() {
+  //下拉刷新被触发，自动进入加载状态，使用 api.refreshHeaderLoadDone() 手动结束加载中状态
+  //下拉刷新被触发，使用 api.refreshHeaderLoadDone() 结束加载中状态
+jiazai();
+});
+}
+
+
+function jiazai(){
+  get_tuijian();
+}
+
+
+
+
+
+//加入购物车动画
+function add_cart(id,sku_id,objs){
+add_to_cart(id,sku_id);
+
+  var obj=$("#"+objs+"_"+id);
+  var weizhi=obj.offset();
+  $("body").append('<img src="'+obj.attr('src')+'" class="dongtai2" id="donghua_tu" style="border-radius: 50%;width:'+obj.width()+'px;height:'+obj.height()+'px;position:absolute;left:'+weizhi.left+'px;top:'+weizhi.top+'px;z-index:999999">');
+
+  setTimeout(function(){
+    //$("#donghua_tu").addClass("zhongdian");$("#donghua_tu").remove()
+    $("#donghua_tu").animate({top:(document.body.scrollTop+document.body.clientHeight+30)+"px",left:"60%",width:"24px",height:"24px"},500,"linear",function(){
+      setTimeout(function(){$("#donghua_tu").remove()},1000);
+    });
+  },50);
+}
+
+function add_to_cart(goods_id,sku_id){
+  api.ajax({
+      url: add_to_cart_url,
+      method: 'post',
+      data: {
+          values: {
+              token: api.getPrefs({sync: true,key:'login_id'}),
+              goods_id:goods_id,
+              goods_sku_id:sku_id,
+              goods_num:1
+          }
+      }
+  },function(ret, err){
+      if (ret) {
+            tishi(ret.msg);
+            if(ret.code==1){
+              num=ret.data.cart_total_num
+              api.sendEvent({
+                  name: 'update_cart_num',
+                  extra: {
+                      num: num
+                  }
+              });
+            }
+
+      } else {
+          //alert( JSON.stringify( err ) );
+          tishi(err.msg)
+      }
+  });
+
+}
+
+
+</script>

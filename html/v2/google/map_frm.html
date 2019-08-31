@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Waypoints in Directions</title>
+      <link rel="stylesheet" type="text/css" href="../../../css/new/aui.css" />
+    <style>
+
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #contain{
+            /*height: 400px;*/
+            position: relative;
+      }
+      #map {
+        /*height: 400px;*/
+        float: left;
+        width: 100%;
+
+      }
+      .center_marker{
+        position: absolute;
+        z-index: 10000;
+        /*top: 165px;*/
+        left: 50%;
+        width: 15px;
+      }
+
+    </style>
+  </head>
+  <body>
+       <div id="contain"  v-bind:style="{  height: win_height + 'px' }">
+         <img src="../../../image/marker.png" class="center_marker" v-bind:style="{  top: marker_top + 'px' }">
+         <div id="map"  v-bind:style="{  height: win_height + 'px' }"> </div>
+       </div>
+	<script type="text/javascript" src="../../../script/api.js"></script>
+
+  <script type="text/javascript" src="../../../script/common.js"></script>
+  <script type="text/javascript" src="../../../script/vue.js"></script>
+  <script type="text/javascript" src="../../../script/google.js"></script>
+
+  <script src="https://maps.google.cn/maps/api/js?key=AIzaSyBour8LxyrDKxgp8jAXUfpg2kH5x784YE8&libraries=places&callback=initMap" async defer></script>
+
+    <script>
+    var vm = new Vue({
+        el: '#contain',
+        data: {
+        win_height:0,
+        marker_top:0,
+        },
+        methods: {
+            init: function () {
+              vm.getDistricList();
+              vm.getNowPos();
+              },
+            getNowPos:function(){
+                  api.startLocation({
+                      accuracy: '10m',
+                      filter: 1,
+                      autoStop: true
+                    }, function(ret, err){
+                      if(ret && ret.status){
+                          //获取位置信息成功
+
+                         if(ret.status){
+                          vm.center_pos={"lat":ret.latitude,"lng":ret.longitude };
+                          console.log('中心点'+JSON.stringify(vm.center_pos));
+                          var pos_str=ret.latitude+','+ret.longitude;
+                          gotoPosition(ret.latitude,ret.longitude);
+                          api.sendEvent({
+                              name: 'center_pos_loading',
+                              extra:{
+                                pos:pos_str,
+                              }
+                          });
+                         }
+                     }else{
+                          console.log(JSON.stringify(err));
+                     }
+                  });
+                },
+            getDistricList:function() {
+                  api.ajax({
+                      url: districlist_url,
+                      method: 'post',
+                      timeout: 30,
+                      dataType: 'json',
+                      returnAll: false,
+                      data: {}
+                  }, function (ret, err) {
+                      if (ret) {
+                              // console.log(JSON.stringify(ret));
+                          if (ret.code == 1) {
+                          // console.log(ret.code);
+
+                          // console.log(ret.data.district.rangList);
+                          var rangList=ret.data.district.rangList;
+                          loadPolygon(rangList);
+                          }
+                      } else {
+                          console.log(JSON.stringify(err));
+                      }
+                  });
+              },
+            get_geocode_address:function(pos) {
+
+                  api.ajax({
+                      url: google_geocode_url,
+                      method: 'get',
+                      data: {
+                        values:{token: api.getPrefs({sync: true,key:'login_id'}),latlng:pos}
+                      }
+                  },function(ret, err){
+                    console.log(JSON.stringify(ret))
+                    if(ret){
+                    if(ret.status=='OK'){
+                      api.sendEvent({
+                          name: 'mapto_search_address',
+                          extra: {
+                              place_id: ret.results[0]['place_id'],
+                        }
+                      });
+                    }
+                  }
+                  });
+
+                  },
+            get_local_address:function(place_id){
+                    api.ajax({
+                       url: google_details_url,
+                       method: 'get',
+                       data: {
+                         values:{token: api.getPrefs({sync: true,key:'login_id'}),placeid:place_id}
+                       }
+                    },function(ret, err){
+                        // console.log(JSON.stringify(err));
+                        // console.log(JSON.stringify(ret));
+                    if(ret){
+                    if(ret.status=='OK'){
+                      console.log(JSON.stringify(ret));
+                      var lat=  ret.result.geometry.location.lat,
+                        lng =ret.result.geometry.location.lng;
+                        gotoPosition(lat,lng);
+                        api.sendEvent({
+                            name: 'center_pos_loading',
+                            extra:{
+                              pos:lat+','+lng,
+                            }
+                        });
+                     }
+                    }else{
+
+                   }
+                   });
+
+                  },
+
+        }
+    });
+
+
+    var map;
+    var polygonArr = [];
+    var result_mark;
+	 apiready = function() {
+     vm.init();
+
+
+     api.sendEvent({
+         name: 'ask_map_frm'
+     });
+
+
+    //地图高度咨询
+     api.addEventListener({
+          name: 'map_win'
+          }, function(ret, err){
+         if( ret ){
+
+         vm.win_height=ret.value.height;
+         vm.marker_top=ret.value.height/2-15;
+       console.log(vm.marker_top);
+         }
+     });
+
+     api.addEventListener({
+         name: 'mapto_search_address'
+     }, function(ret, err){
+       if(ret){
+         console.log(JSON.stringify(ret));
+         vm.place_id=ret.value.place_id;
+         vm.get_local_address(ret.value.place_id)
+       }
+     });
+
+  //  api.addEventListener({
+  //      name: 'search_address_pos'
+  //  }, function(ret, err){
+  //      if( ret ){
+  //        console.log(JSON.stringify(ret));
+  //       // gotoPosition(ret.value.lat,ret.value.lng);
+  //      }
+  //  });
+
+
+  };
+
+
+      function initMap() {
+          map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 15,
+          center:new google.maps.LatLng(51.508742,-0.120850),
+          mapTypeId: "terrain",
+          mapTypeControl: false,
+          scaleControl: false,
+          streetViewControl: false,
+          zoomControl: false,
+          fullscreenControl:false,
+          gestureHandling: 'greedy'
+           });
+
+           map.addListener('dragend', function() {
+
+             var pos=JSON.parse(JSON.stringify(map.getCenter()));
+              var lat=pos['lat'];
+              var lng=pos['lng'];
+              var pos_str=lat+','+lng;
+              console.log(pos_str);
+              api.sendEvent({
+                  name: 'center_pos_loading',
+                  extra:{
+                    pos:pos_str,
+                  }
+              });
+
+            });
+         }
+
+
+          //定位到指定的位置
+      function gotoPosition(lat,lng) {
+             var position = new google.maps.LatLng(lat,lng);
+             map.panTo(position, 15);
+             map.setCenter(position);
+         }
+         //加載多邊形，服務範圍
+      function loadPolygon(areaList) {
+            //  console.log( JSON.stringify(areaList));
+             for (var i = 0; i < areaList.length; i++) {
+                 var item = areaList[i];
+
+                 var postions = item.list;
+
+                 var triangleCoords = [];
+
+                 for (var g = 0; g < postions.length; g++) {
+                     var item_g = postions[g];
+
+                     var lat = parseFloat(item_g['lat']);
+                     var lng = parseFloat(item_g['lng']);
+                     triangleCoords.push({ lat: lat, lng: lng });
+                 }
+
+                 //计算多边形中心坐标
+
+                 var centerLatLng = getCenter(triangleCoords);
+
+                 // Construct the polygon.
+                 var _old_Polygon = new google.maps.Polygon({
+                     paths: triangleCoords,
+                     strokeColor: item.strokeColor,
+                     strokeOpacity: 0.8,
+                     strokeWeight: 2,
+                     fillColor: item.strokeColor,
+                     fillOpacity: 0.1,
+                     //title:'測試服務範圍1'
+                 });
+
+
+                 //中心坐标
+                 _old_Polygon.CenterLatLng = centerLatLng;
+                 polygonArr.push(_old_Polygon);
+
+                 _old_Polygon.setMap(map);
+                 //清理集合
+                 triangleCoords.length = 0;
+
+                 _old_Polygon.info = {
+                     area: item.area
+                 };
+
+                 //註冊多邊形右鍵事件
+             }
+             //定位服务范围第一个服务区
+             if (polygonArr.length > 0) {
+                 var firstOne = polygonArr[0];
+                 var l=polygonArr.length-1;
+                 var lastOne = polygonArr[l];
+                 map.panTo(lastOne.CenterLatLng);
+             }
+         }
+
+      //计算多边形中心点
+      function getCenter(triangleCoords) {
+             var x = 0.0;
+             var y = 0.0;
+             for (var i = 0; i < triangleCoords.length; i++) {
+                 x = x + parseFloat(triangleCoords[i].lat);
+                 y = y + parseFloat(triangleCoords[i].lng);
+             }
+             x = x / triangleCoords.length;
+             y = y / triangleCoords.length;
+             return new google.maps.LatLng(x, y);
+         }
+      function markMap(pos) {
+             map.panTo(pos, 15);
+             map.setCenter(pos);
+         }
+      function getNearSearch() {
+            var keyword='';
+            //  var keyword = document.getElementById("search-input").value;
+             var request;
+             if(!keyword && typeof(keyword)!="undefined" && keyword!=0){
+                 request = {
+                     location: map.getCenter(),
+                     radius: '200',
+                     keyword:keyword
+                 };
+             }else {
+                 request = {
+                     location: map.getCenter(),
+                     radius: '2000'
+                 };
+             }
+             var service = new google.maps.places.PlacesService(map);
+             service.nearbySearch(request, function(results, status,pagination) {
+                 if (status === google.maps.places.PlacesServiceStatus.OK) {
+                     createResultList(results);
+                     //moreButton.disabled = !pagination.hasNextPage;
+                     getNextPage = pagination.hasNextPage && function() {
+                         pagination.nextPage();
+                     };
+                 }
+             });
+         }
+      /**
+       * 处理搜索结果
+       * @param results
+      */
+      function createResultList(results) {
+                 resultsHtml='';
+         				//console.log('附近的结果'+JSON.stringify(results));
+                 for (var i = 0; i < results.length; i++) {
+                     if(results[i].types && results[i].types.indexOf("political") === -1){
+                         //var isContain = google.maps.geometry.poly.containsLocation(results[i].geometry.location, bermudaTriangle);
+                         //console.log("isContain:" + isContain);
+                         resultsHtml += '<li class="aui-list-item aui-list-item-middle '+'" onclick="markMapByLatALng2('+results[i].geometry.location.lat()+','+results[i].geometry.location.lng()+',\''+results[i].place_id+'\')">'+
+                         '<div class="aui-media-list-item-inner">'+
+                             '<div class="aui-list-item-media" style="width: 2.5rem;">'+
+                                 '<img src="'+results[i].icon+'" class="aui-img-round aui-list-img-sm">'+
+                             '</div>'+
+                             '<div class="aui-list-item-inner aui-list-item-arrow">'+
+                                 '<div class="aui-list-item-text">'+
+                                     '<div class="aui-list-item-title aui-font-size-14">'+results[i].name+'</div>'+
+                                     //'<div class="aui-list-item-right"> 45</div>'+
+                                 '</div>'+
+                                 '<div class="aui-list-item-text">  '+results[i].vicinity+' </div>'+
+                             '</div>'+
+                         '</div>'+
+                     '</li>';
+         						//console.log(resultsHtml);console.log(2222222222);
+                         document.getElementById("resultList").innerHTML = resultsHtml;
+                     }
+                 }
+             }
+
+      function markMapByLatALng(lat,lng) {
+                     var pos = {
+                         lat: lat,
+                         lng: lng
+                     };
+                     markMap(pos);
+                 }
+
+      function markMapByLatALng2(lat,lng) {
+
+             			if(is_peisong==0){tishi("超出配送范围");return false;}
+             			api.openWin({
+             					name: 'to_map_sub',
+             					url: 'widget://html/v1/map_sub.html',
+             					pageParam: {
+             							lat:lat,
+             							lng:lng
+             					}
+             			});
+          }
+
+
+    </script>
+
+
+  </body>
+</html>

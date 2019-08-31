@@ -1,0 +1,217 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/icons/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/public.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/aui-slide.css" />
+	<style>
+	 html{background:#313131}
+      .cate-list .cate-item{
+
+	  }
+	  .aui-info{
+	  padding:0;
+	  }
+	  .svg-icon{
+	  width:1.2rem !important;
+	  }
+
+	</style>
+</head>
+<body style="background:#313131" >
+ <div id="app" >
+
+
+   <header class="aui-bar aui-bar-nav gray-font aui-font-size-16" id="aui-header"     >
+     <a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
+         <i class="icon iconfont iconround-arrow_back-px gray-font"  ></i>
+     </a>
+     <div class="  aui-font-size-18" v-bind:class="{ 'pink-font': userInfo.is_vip==1 }" tapmode>V.I.P. Tarjeta Verde</div>
+
+   </header>
+
+     <section class="aui-content   aui-padded-15 aui-padded-b-0" style=" background: #9263c3; border-radius: 0 0 2rem 2rem; " >
+
+
+
+                <div class="  aui-row   vip-bg aui-margin-t-15" style="    width: 90%;    margin-left: 5%;">
+
+
+					<div class="aui-padded-15 " >
+					 <div class=" aui-padded-5 aui-row">
+					  <div class="aui-col-xs-4">
+						  <!-- <img src="../../../image/avater/head-pic.png" class="aui-img-round w-80"   > -->
+              <img :src="userInfo.avatarUrl" class="aui-img-round w-80"  v-if="userInfo.avatarUrl!=''" >
+              <img src="../../../image/avater/head-pic.png" class="aui-img-round w-80"  v-else >
+					  </div>
+					 <div class="aui-col-xs-8 black-font ">
+					 	  <div class="  aui-padded-l-5  ">
+                        <div class=" aui-padded-0   aui-font-size-16 aui-ellipsis-1">
+                           {{userInfo.nickName}}
+                        </div>
+						 <div class="aui-font-size-12 font-bold"  >
+                           <div style="display: flex;color: #313131 !important;height: 1.5rem;">
+						   <i class="icon iconfont iconoutline-phone_android-px" style=" font-size: 1rem !important;"></i>
+
+						   <div style="line-height: 1.5rem;height: 1.5rem;" class="  aui-padded-l-5  ">{{userInfo.mobile}}</div>
+						   </div>
+                        </div>
+                        <div class=" aui-font-size-12 aui-ellipsis-1 font-black ">
+                            Suscripción Anual
+                        </div>
+                        <div class=" aui-font-size-12 aui-ellipsis-1  " v-if="userInfo.is_vip==1">
+                            Activo (vence {{userInfo.vip_card_end_time.time1}})
+                        </div>
+                        <div class=" aui-font-size-12 aui-ellipsis-1  " v-else>
+                            Inactive
+                        </div>
+                        </div>
+					  </div>
+
+                    </div>
+
+
+
+
+                </div>
+
+
+
+
+	</section>
+
+
+     <section class="aui-content   aui-padded-t-0 aui-padded-b-0 aui-margin-b-15 aui-margin-t-15"  >
+
+
+	     <div class="aui-margin-b-15 aui-padded-l-15 aui-padded-r-15 aui-font-size-12 "  >
+        <div class="  aui-row-padded goods_list_row" >
+					<div class="info_item aui-margin-b-10" >
+					 <div class="  aui-row">
+					  <div class="aui-col-xs-6  ">
+					 	  <div class="goods-content aui-padded-0 aui-padded-t-10 aui-padded-b-10  text-center aui-ellipsis-1" style="margin-right:0.375rem;background:#e4e4e4"   >Cupones utilizados <span class="font-black">5</span></div>
+					  </div>
+
+					 <div class="aui-col-xs-6  ">
+					 	  <div class="goods-content aui-padded-0 aui-padded-t-10 aui-padded-b-10   text-center aui-ellipsis-1" style="margin-left:0.375rem;background:#e4e4e4" >Puntos devueltos <span class="font-black">{{userInfo.vip_points}}</span></div>
+					  </div>
+
+                    </div>
+              </div>
+
+					 	<div class="info_item aui-margin-b-10" >
+					 <div class="  aui-row">
+					  <div class="aui-col-xs-6  ">
+					 	  <div class="goods-content aui-padded-0 aui-padded-t-10 aui-padded-b-10 text-center aui-ellipsis-1"   style="margin-right:0.375rem;background:#e4e4e4" >Ofertas especiales <span class="font-black">15</span></div>
+					  </div>
+
+					 <div class="aui-col-xs-6  ">
+					 	  <div class="goods-content aui-padded-0 aui-padded-t-10 aui-padded-b-10  text-center aui-ellipsis-1" style="margin-left:0.375rem;background:#e4e4e4" >Dinero ahorrado <span class="font-black">$120</span></div>
+					  </div>
+
+                    </div>
+                    </div>
+
+                </div>
+
+
+				<div class="aui-info   aui-margin-t-15">
+                   <div class="aui-info-itemaui-margin-l-5"  >
+                      <div class="line-header aui-font-size-16">Beneficios V.I.P.</div>
+                   </div>
+                 </div>
+				<div class="aui-info   ">
+                   <div class="aui-info-itemaui-margin-l-5"  >
+                       <img src="../../../image/Icons/dagou.svg" class="svg-icon" style="  width: 1.2rem;  height: 1.2rem;"><div class="line-item aui-font-size-12 aui-ellipsis-1">Cupones exclusivos todos los meses</div>
+                   </div>
+                 </div>
+				 <div class="aui-info   ">
+                   <div class="aui-info-itemaui-margin-l-5"  >
+                       <img src="../../../image/Icons/dagou.svg" class="svg-icon" style="  width: 1.2rem;  height: 1.2rem;"><div class="line-item aui-font-size-12 aui-ellipsis-1">Duplicá tus puntos en todas las compras</div>
+                   </div>
+                 </div>
+				    <div class="aui-info   ">
+                   <div class="aui-info-itemaui-margin-l-5"  >
+                       <img src="../../../image/Icons/dagou.svg" class="svg-icon" style="  width: 1.2rem;  height: 1.2rem;"><div class="line-item aui-font-size-12 aui-ellipsis-1">Envíos gratis en compras superiores a $200</div>
+                   </div>
+                 </div>
+				<div class="  aui-row aui-margin-t-15">
+
+					 <div class="aui-col-xs-12   ">
+					 	      <div class="aui-btn add_cart  pink-bg" style=" height: 1.8rem; line-height: 1.8rem;background:#ab76e2 !important; " onclick="open_buy_vip()" v-if="userInfo.is_vip">Modificar suscripción</div>
+                  <div class="aui-btn add_cart  pink-bg" style=" height: 1.8rem; line-height: 1.8rem;background:#ab76e2 !important; " onclick="open_buy_vip()" v-else>suscripción</div>
+
+            </div>
+
+
+                    </div>
+        </div>
+
+	</section>
+
+     </div>
+
+
+
+
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript">
+
+var vm = new Vue({
+     el: '#app',
+      data: {
+            userInfo:[]
+      },
+      methods: {
+       init:function(){
+
+           api.ajax({
+               url: user_center_url,
+               method: 'post',
+               data: {
+                 values:{  token: api.getPrefs({sync: true,key:'login_id'})}
+               }
+           },function(ret, err){
+             vm.userInfo=ret.data.userInfo;
+           }
+         );
+
+       },
+     }
+   });
+
+
+ apiready = function () {
+   api.parseTapmode();
+   var header = $api.byId('aui-header');
+   $api.fixStatusBar(header);
+   var headerPos = $api.offset(header);
+   var body_h = $api.offset($api.dom('body')).h;
+
+   vm.init();
+   api.addEventListener({
+       name: 'flush'
+   }, function(ret, err){
+       if( ret ){
+         vm.init();
+         console.log('付款成功刷新');;
+       }
+   });
+
+ }
+
+function closeWin(){
+   api.closeWin({
+   });
+}
+
+</script>
+</html>

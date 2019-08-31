@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit" />
+	<link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/zhu.css"/>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="../../script/zhu.js"></script>
+<title>我的积分</title>
+<style type="text/css">
+/*顶部开始*/
+.yihang{ padding:15px;}
+.fanhui,.wenhao,.mingxi{ width:16px; height:16px;}
+.fanhui{ margin-top:-4px;}
+
+.wode{ margin-left:20px;}
+.beijing{ background-image: url(../../image/baijing.png); padding:20px 10px;}
+/*内容开始*/
+.erhang{ padding:15px;}
+.wenhao1{ width:16px; height:16px; margin-top:-3px;}
+.hong{ color:#F00;}
+.tixing{ border: #D4D4D4 solid 1px; padding:0 7px 0 13px; border-radius:12px; position:relative; top:-30px;}
+.yuan{ border:#D4D4D4 solid 1px; padding:10px; border-radius:50%; position: relative; left: 13px; top: -32px;
+ background-color: #fff;}
+
+
+.qiandao{ background-color:#febe1e; padding:5px; width:30%; margin:0 auto; border-radius:32px; }
+.huixian{ border:#f3f3f3 solid 5px; background-color:#f3f3f3; margin-top:15px;}
+.tubiao{ width:35px; height:35px; margin-top:2px; margin-right:10px;}
+.hang{ padding:10px 0; overflow:hidden;}
+.qu{ color:#5eb37a; border:#5eb37a solid 1px; padding:0 7px; border-radius:14px; margin-top:-11px;}
+</style>
+</head>
+
+<body>
+<!--顶部开始-->
+
+    <div class="beijing">
+     <div class="juzhong wenzi16 yanse4">Puntos actuales</div>
+     <div class="wenzi18 yanse4 juzhong jifen">44</div>
+     <!-- <div class="shijian juzhong yanse4 wenzi10"></div> -->
+    </div>
+<!--内容开始-->
+    <div class="erhang">
+     <div class="cuti">Registrarse en</div>
+     <!-- <div class="wenzi12">已连续签到<span class="hong">2</span>天<img class="wenhao1" src="../../image/yiwen.png" /></div>
+     <div class="you wenzi12 yanse0 tixing">签到提醒</div> -->
+     <span class="you yuan"></span>
+    </div>
+
+
+    <div onclick="qiandao()" class="qiandao juzhong wenzi11 yanse4">Registrarse en</div>
+    <div class="huixian"></div>
+    <div class="pad15 bg1">
+     <div class="cuti">Cómo ganar puntos</div>
+     <div class="hang">
+      <div class=""><img class="tubiao zuo" src="../../image/gouwu13.png" /></div>
+      <div class="wenzi zuo">Compras</div><br />
+      <div class="yanse0 zuo wenzi12">$1 = 1 punto</div>
+      <div onclick="to_gouwu()" class="you wenzi12 qu">Ir de compras</div>
+     </div>
+     <div class="hang">
+      <div class=""><img class="tubiao zuo" src="../../image/vip13.png" /></div>
+      <div class="wenzi zuo">Tarjeta verde abierta</div><br />
+      <div class="yanse0 zuo wenzi12">100% de puntos extra por compras</div>
+      <div onclick="to_buy_vip()" class="you wenzi12 qu">Ir a abrir</div>
+     </div>
+     <!-- <div class="hang">
+      <div class=""><img class="tubiao zuo" src="../../image/xinpin11.png" /></div>
+      <div class="wenzi zuo">首次购买新品类</div><br />
+      <div class="yanse0 zuo wenzi12">尝试一下其它类型的商品吧+20积分</div>
+      <div onclick="to_gouwu()" class="you wenzi12 qu">去购买</div>
+     </div> -->
+     <!-- <div class="hang">
+      <div class=""><img class="tubiao zuo" src="../../image/shenfen11.png" /></div>
+      <div class="wenzi zuo">完善个人资料</div><br />
+      <div class="yanse0 zuo wenzi12">去完善个人资料+50积分</div>
+      <div onclick="to_myziliao()" class="you wenzi12 qu">去完善</div>
+     </div> -->
+     <!-- <div class="hang">
+      <div class=""><img class="tubiao zuo" src="../../image/yaoqing13.png" /></div>
+      <div class="wenzi zuo">邀请好友</div><br />
+      <div class="yanse0 zuo wenzi12">好友完成一个订单后+100分</div>
+      <div class="you wenzi12 qu">去邀请</div>
+     </div> -->
+    </div>
+
+		<!--推荐 开始-->
+		<div class="title top10"><span class="xxxx">◆</span>Lo que te recomendamos<span class="xxxx">◆</span></div>
+		<div class="bg2 pad5" id="tuijian2"></div>
+</body>
+</html>
+<script>
+
+	apiready=function(){
+
+		get_tuijian();
+		get_user();
+	}
+
+	function get_user(){
+	  api.ajax({
+	      url: user_center_url,
+	      method: 'post',
+	      data: {
+	        values:{  token: api.getPrefs({sync: true,key:'login_id'})}
+	      }
+	  },function(ret, err){
+	    api.refreshHeaderLoadDone();
+	    if(ret){
+	      var user=ret.data.userInfo;
+	      $(".jifen").html(user.point);
+
+	    }else{
+	        tishi( err.msg );
+	    }
+	  })
+	}
+
+	function to_gouwu(){
+		api.sendEvent({
+				name: 'gobuy'
+		});
+		api.closeToWin({
+			name: 'root'
+	});
+	}
+
+	function to_myziliao(){}
+	function qiandao(){
+		api.ajax({
+		    url: qiandao_url,
+		    method: 'post',
+		    data: {
+		        values: {
+		            token: api.getPrefs({sync: true,key:'login_id'})
+		        }
+		    }
+		},function(ret, err){
+		    if (ret) {
+		        //alert( JSON.stringify( ret ) );
+						if(ret.code==1){
+							tishi(ret.msg+"!You get "+ret.data.point+" points.");
+							get_user();
+						}else{
+							tishi(ret.msg);
+						}
+		    } else {
+					tishi(err.msg)
+		        //alert( JSON.stringify( err ) );
+		    }
+		});
+
+	}
+
+</script>

@@ -1,0 +1,466 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit" />
+	<link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/zhu.css"/>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="../../script/zhu.js"></script>
+<title>绿卡介绍</title>
+<style type="text/css">
+html,body{background: #fff;}
+/*顶部开始*/
+.dingbu{ background-color:#2e3748; overflow:hidden; border-radius:0 0 40% 40%;}
+.ka{ padding:15px 20px;}
+.fanhui{ width:16px; height:16px; margin-top:-4px;}
+.wenzi{ margin-left:40px; font-size:16px; letter-spacing:1px;}
+.gouwuche{ width:22px; height:22px;}
+.shuzi{ color:#FFF; background-color:#F00; padding:0 4px; position:relative; left:29px; top:-6px; border-radius:50%; }
+.kapian{ background-color:#4dca62; margin:0 30px; padding:5px 15px 30px;  border-radius:15px 15px 0 0;   }
+.yihang{color:#2c9b3d;text-align: center;font-size: 16px; margin-top:15px;}
+.yihang:before,.yihang:after{content: "";width:28%;border-top: 1px #2c9b3d solid; display: inline-block;
+vertical-align: middle;}
+.yihang:before{margin-right: 10px;}
+.yihang:after{margin-left: 10px;}
+.vip{ width:16px; height:16px; margin-top:-3px;}
+.yihang{ color:#2c9b3d; letter-spacing:1px;}
+.erhang{ color:#136f22; padding:10px; letter-spacing:1px;}
+.sanhang{ color:#0f711e;}
+/*内容开始*/
+.tubiao{ width:32px; height:32px;}
+.xianshi{ color:#FFF; background-color:#F00; padding:0 6px; border-radius:12px; margin-right:80px;}
+.goumai{ padding:15px 0 5px;}
+.wuzhe{ background-color:#333f4f; border:#333f4f solid 1px; border-radius:22px; width:70%; margin:0 auto 15px;
+ color:#2db352; padding:8px; }
+.xian{ border:#f5f5f5 solid 5px;}
+.yi{ padding:15px 15px 0; }
+.kuang{ color:#FFF; background-color:#2db352; padding:0 2px; margin-right:4px;}
+.jinri{ padding:10px 0;}
+.quan{ width:44%; overflow:hidden; border:#2db352 solid 1px; border-left: 0;float:left; margin-left:4%; margin-bottom:4%; border-radius:4px;position:relative;}
+.jiage{ color:#2db352;}
+.qian{ margin-left:3px;}
+.quanchang{ color:#708f7f; padding-top:3px;}
+.lingqu{ background-color:#2db352; color:#FFF; font-size:10px; padding:2px 4px; height:70px;}
+.zuobu{ padding-left:10px;height: 70px;padding-top: 10px;}
+.datu{ width:35px; height:35px; position:absolute; margin-left:75px; margin-top:17px;}
+.benzhou{ padding:0 15px 10px;}
+.jifen{ padding:15px;}
+.wenhao{ width:14px; height:14px; margin-top:-3px;}
+/*产品开始*/
+.on{ color:#FFF; background-color:#2db352; padding:0 10px; border-radius:10px; }
+.fenlei span{ margin:10px;}
+.caidan{ width:14px; height:14px; margin-right:20px; margin-top:2px;}
+.chanpin{ overflow:hidden; padding:15px 10px;}
+.zuo1{ width:30%; float:left;}
+.you1{ width:60%; padding:5px;}
+.zuo1 img{ width:100%; padding:5px;}
+.gouwuche1{ width:25px; height:25px; margin-top:-30px; }
+.xianjia{ color:#2db352;}
+.miaoshu{ overflow: hidden; white-space: nowrap;text-overflow: ellipsis;}
+.lvkajia{ color:#FFF; background-color:#2db352; border:#2db352 solid 1px; font-size:10px; padding:0 7px;
+ border-radius:4px; margin-left:4px;}
+.xianshi1{ color:#FFF; background-color:#F00; padding:0 7px; border-radius:14px; margin-left:25px;}
+.di{ color:#FFF; background-color:#333f4f; padding:8px; margin:0 15px; border-radius:24px;}
+.hong{ color:#F00; }
+
+
+.n1{padding-bottom: 18px;}
+.n1.ons{background: url(../../image/jiao1.png) center bottom no-repeat;background-size: 16px;}
+.tishi{padding: 0px 10px 10px 10px;}
+.tishi>div{background-color:#dfdfdf;padding: 10px;font-size: 12px;line-height: 18px;position: relative;}
+.tishi>div .gb{position: absolute;right: -5px;top: -5px;width: 18px;height: 18px;}
+
+.quan::before {
+    content: '';
+    position: absolute;
+    top:0px;
+    height: 100%;
+    width:  0.25em;
+    background:
+        linear-gradient(135deg, transparent, transparent 45%, #2db352, transparent 55%, transparent 100%),
+        linear-gradient(45deg, transparent, transparent 45%, #2db352, transparent 55%, transparent 100%);
+    background-size: 0.5em 0.5em;
+    background-repeat: repeat-y, repeat-y;
+}
+#touxiang{width: 42px;margin-right: 10px;}
+.yanse{color:#136f22;}
+.dibu{position: fixed;left: 0;bottom: 8px;right: 0;z-index: 100555}
+
+
+
+</style>
+</head>
+
+<body>
+<!--顶部开始-->
+	<div class="dingbu">
+<div class="height50"></div>
+     <div class="kapian">
+			 <div id="yikaitong" class="cang">
+				 <img id="touxiang" align="left" src="../../image/221.png"/>
+				 <span class="nicheng wenzi16 yanse4" id="nicheng">叮咚_sgghsoi4</span><br>
+				 <span id="lv_ing" class="yanse wenzi12"></span>
+				 <div class="top10 hanggao22 wenzi14">
+				 	Te hacemos ahorrar $12
+				 </div>
+				 <div class="hezi top5 hanggao18">
+				 	<div class="col1 yanse3 wenzi12">
+						Cupon utilizado <br><b>1</b>
+
+				 	</div>
+ 				 	<div class="col1 yanse3 wenzi12">
+						Puntos devueltos<br><b>1</b>
+
+ 				 	</div>
+ 				 	<div class="col1 yanse3 wenzi12">
+						Tener una oferta especial<br><b>1</b>
+
+ 				 	</div>
+				 </div>
+			 </div>
+      <div id="weikaitong">
+      <div class="yihang wenzi10"><img class="vip" src="../../image/vip11.png" />开通绿卡</div>
+      <div class="erhang cuti juzhong wenzi24">每周领44元专享券</div>
+      <div class="sanhang juzhong">享三大专属权益，预计节省444元/年</div>
+		</div>
+     </div>
+    </div>
+<!--内容开始-->
+    <div class="cuti pad15 wenzi16">Privilegio de la Tarjerta Verde</div>
+    <div class="hezi juzhong">
+     <div class="col1 n1"><img class="tubiao" src="../../image/kaquan11.png" />
+			 <!-- <br />Cupon exclusivo<br />
+      <span class="wenzi10 yanse0">Nos menos de $222 - Mes</span>  -->
+		</div>
+     <div class="col1 n1"><img class="tubiao" src="../../image/tejia11.png" />
+			 <!-- <br />
+			 Ofertas exclusivas
+			 <br />
+      <span class="wenzi10 yanse0">todos los viernes se actualiza</span>  -->
+		</div>
+     <div class="col1 n1"><img class="tubiao" src="../../image/jiasu11.png" />
+			 <!-- <br />Duplicar los puntos<br />
+      <span class="wenzi10 yanse0">Los puntos puede ser compensados</span> -->
+		</div>
+     <div class="col1 n1"><img class="tubiao" src="../../image/gengduo14.png" />
+			 <!-- <br />Mas privilegios<br /> -->
+      <!-- <span class="wenzi10 yanse0">Estar atentos</span> -->
+		 </div>
+    </div>
+		<div class="tishi">
+			<div class="cang">Cupon exclusivo<br>Nos menos de $222 - Mes<img onclick="guanbi1()" src="../../image/guanbi2.png" class="gb"></div>
+			<div class="cang">Ofertas exclusivas<br>todos los viernes se actualiza<img onclick="guanbi1()" src="../../image/guanbi2.png" class="gb"></div>
+			<div class="cang">Duplicar los puntos <br/>Los puntos puede ser compensados<img onclick="guanbi1()" src="../../image/guanbi2.png" class="gb"></div>
+			<div class="cang">Mas privilegios ,Estar atentos<img onclick="guanbi1()" src="../../image/guanbi2.png" class="gb"></div>
+		</div>
+		<div class="kaiguan">
+    <div class="wenzi10 juzhong goumai"><span class="xianshi">限时首购专享</span></div>
+    <div onclick="to_buy_lvka()" class="wuzhe cuti juzhong wenzi16">Tarjeta Verde abierta</div>
+	</div>
+    <div class="xian"></div>
+    <div class="yi">
+     <div class="cuti"><span class="kuang">1</span>绿卡专享券&nbsp;每月不低于222元</div>
+     <div class="wenzi14 jinri">Los cupones exclusivos del dia se actualizan todos&nbsp;&nbsp;<span class="yanse0">los dias a las 0hs</span></div>
+    </div>
+
+    <div id="xinxi"></div>
+
+     <div class="clear"></div>
+     <div class="benzhou wenzi14">Cupon exclusivo de esta semana</div>
+		 <div id="xinxi2"></div>
+      <!--  <div class="quan">
+      <div class="zuo zuobu">
+       <img class="datu" src="../../image/lingqu22.png" />
+       <div class="jiage">¥<span class="wenzi22 qian">8</span></div>
+       <div class="wenzi10">满44元使用</div>
+       <div class="wenzi10 quanchang">全场通用</div>
+      </div>
+      <div class="you lingqu zhong">去<br />使<br />用</div>
+     </div>
+     <div class="quan">
+      <div class="zuo zuobu">
+       <div class="jiage">¥<span class="wenzi22 qian">8</span></div>
+       <div class="wenzi10">满44元使用</div>
+       <div class="wenzi10 quanchang">全场通用</div>
+      </div>
+      <div class="you lingqu zhong">立<br />即<br />领<br />取</div>
+     </div>
+     <div class="quan">
+      <div class="zuo zuobu">
+       <img class="datu" src="../../image/lingqu22.png" />
+       <div class="jiage">¥<span class="wenzi22 qian">18</span></div>
+       <div class="wenzi10">满44元使用</div>
+       <div class="wenzi10 quanchang">全场通用</div>
+      </div>
+      <div class="you lingqu zhong">去<br />使<br />用</div>
+     </div>
+      <div class="quan">
+      <div class="zuo zuobu">
+       <div class="jiage">¥<span class="wenzi22 qian">8</span></div>
+       <div class="wenzi10">满44元使用</div>
+       <div class="wenzi10 quanchang">全场通用</div>
+      </div>
+      <div class="you lingqu zhong">立<br />即<br />领<br />取</div>
+     </div>
+     <div class="quan">
+      <div class="zuo zuobu">
+       <div class="jiage">¥<span class="wenzi22 qian">8</span></div>
+       <div class="wenzi10">满44元使用</div>
+       <div class="wenzi10 quanchang">全场通用</div>
+      </div>
+      <div class="you lingqu zhong">立<br />即<br />领<br />取</div>
+		</div>-->
+    <div class="clear"></div>
+    <div class="xian"></div>
+    <div class="cuti jifen"><span class="kuang">2</span> Acelerar los puntos, puede ser compensada</div>
+
+    <div class="you yanse0 wenzi10 pad10">Instruccion de como sumar puntos<img class="wenhao" src="../../image/yiwen.png" /></div>
+    <div class="clear"></div>
+    <div onclick="to_buy_lvka()" class="wuzhe cuti kaiguan juzhong wenzi16">Tarjeta verde abierta</div>
+    <div class="xian"></div>
+<!--产品开始-->
+    <div class="cuti jifen"><span class="kuang">3</span>Especiales de la tarjeta verde</div>
+  <div id="xinxi3">
+    <!--<div class="chanpin">
+     <div class="zuo1"><img src="../../image/0002.jpg" /></div>
+     <div class="you1 zuo">
+      <div class="biaoti cuti">大西瓜大大西瓜 500g</div>
+      <div class="miaoshu wenzi10 yanse0 hanggao20">大西描述述描述</div>
+      <div class="huodong wenzi10 yanse2">满68返12红包  买2送青椒</div>
+      <div class="yuanjia wenzi10 hanggao20">¥9.99</div>
+      <div class="xianjia">¥6.66<span class="lvkajia">绿卡价</span></div>
+      <div class="che"><img class="gouwuche1 you" src="../../image/buy1.png" /></div>
+      </div>
+		</div>-->
+	 </div>
+
+<div onclick="jiazai_lvka_goods()" class="height35 juzhong yanse0 hanggao36 wenzi12">Cargar más</div>
+		 <div style="height:50px;"></div>
+     <div class="dibu kaiguan">
+      <div class="wenzi10"><span class="xianshi1">限时首购专享</span></div>
+      <div class="di suojin">年卡<span class="hong">88元</span><span class="wenzi10"><s>188元</s></span>
+      <span onclick="to_buy_lvka()" class="kai">开通绿卡</span></div>
+     </div>
+</body>
+</html>
+
+<script>
+var page=1,more=1;
+apiready=function(){
+	api.addEventListener({
+      name: 'vip_shuaxin'
+  }, function(ret, err) {
+    jiazai();
+		get_user();
+  });
+
+	api.addEventListener({
+	name:'scrolltobottom',
+	extra:{
+			threshold:0            //设置距离底部多少距离时触发，默认值为0，数字类型
+	}
+}, function(ret, err){
+	jiazai_lvka_goods()
+});
+
+
+	jiazai();
+	get_user();
+	jiazai_lvka_goods()
+}
+
+
+
+$(function(){
+	$(".n1").click(function(){
+		$(".n1").removeClass("ons");
+		$(this).addClass("ons");
+		$(".tishi>div").addClass("cang");
+		$(".tishi>div").eq($(this).index()).removeClass("cang");
+	});
+})
+function to_buy_lvka(){
+  api.openWin({
+      name: 'to_buy_lvka',
+      url: 'widget://html/v1/common_win.html',
+      pageParam: {
+          id:0,
+          title:"Tarjeta verde abierta",
+          muban: 'buy_vip'
+      }
+  });
+}
+
+function guanbi1(){
+	$(".n1").removeClass("ons");
+	$(".tishi>div").addClass("cang");
+}
+
+
+function jiazai(){
+
+api.ajax({
+		url: lvka_quan_url,
+		method: 'post',
+		data: {
+				values: {
+						token: api.getPrefs({sync: true,key:'login_id'})
+				}
+		}
+},function(ret, err){
+		if (ret) {
+
+	//alert( JSON.stringify( ret ) );
+				if(ret.code==1){
+					var data=ret.data.list.day_list1,str='';
+					if($.isEmptyObject(data)){
+						tishi("No hay mas");return false;
+					}
+
+					for (var i = 0; i < json_num(data); i++) {
+						str+=' <div class="quan">';
+				      str+='<div class="zuo zuobu">';
+							if(data[i].is_receive==1){
+				       str+='<img class="datu" src="../../image/lingqu22.png" />';
+							 }
+				       str+='<div class="jiage">¥<span class="wenzi22 qian">'+data[i].reduce_price+'</span></div>';
+				       str+='<div class="wenzi10">满'+data[i].min_price+'元使用</div>';
+				       str+='<div class="wenzi10 quanchang">全场通用</div>';
+				      str+='</div>';
+				      str+='<div class="you lingqu zhong">去<br />使<br />用</div>';
+				     str+='</div>';
+					}
+
+					$("#xinxi").html(str);
+					var data2=ret.data.list.day_list7,str='';
+					if($.isEmptyObject(data2)){
+						tishi("没有了");return false;
+					}
+
+					for (var i = 0; i < json_num(data2); i++) {
+						str2+=' <div class="quan">';
+				      str2+='<div class="zuo zuobu">';
+							if(data2[i].is_receive==1){
+				       str2+='<img class="datu" src="../../image/lingqu22.png" />';
+							 }
+				       str2+='<div class="jiage">¥<span class="wenzi22 qian">'+data2[i].reduce_price+'</span></div>';
+				       str2+='<div class="wenzi10">满'+data2[i].min_price+'元使用</div>';
+				       str2+='<div class="wenzi10 quanchang">全场通用</div>';
+				      str2+='</div>';
+				      str2+='<div class="you lingqu zhong">去<br />使<br />用</div>';
+				     str2+='</div>';
+					}
+
+					$("#xinxi2").html(str2);
+				}
+		} else {
+				//alert( JSON.stringify( err ) );
+		}
+});
+
+}
+
+
+function get_user(){
+  api.ajax({
+      url: user_center_url,
+      method: 'post',
+      data: {
+        values:{  token: api.getPrefs({sync: true,key:'login_id'})}
+      }
+  },function(ret, err){
+    api.refreshHeaderLoadDone();
+    if(ret){
+      var user=ret.data.userInfo;
+      var level='<img src="../../image/lvka_ico.png" width="16">';
+      if(user.is_vip==0){
+				$("#yikaitong").addClass("cang");
+				$("#weikaitong,.kaiguan").removeClass("cang");
+        $("#nicheng").html(user.nickName);
+      $("#lv_ing").html('您还没有开通绿卡');
+    }else{
+			$("#yikaitong").removeClass("cang");
+			$("#weikaitong,.kaiguan").addClass("cang");
+      $("#nicheng").html(user.nickName+level);
+      var linshi=Date.parse(Date())/1000;
+      if(user.vip_card_end_time<linshi){
+        $("#lv_ing").html('已过期');
+      }else{
+        $("#lv_ing").html(shijian3(user.vip_card_end_time)+'到期');
+      }
+    }
+
+
+      $("#jifen_num").html(user.point);
+      $("#quan_num").html(ret.data.couponCount);
+      $("#mobile").html(user.mobile);
+
+
+    }else{
+        tishi( err.msg );
+    }
+  })
+}
+
+
+function jiazai_lvka_goods(){
+api.ajax({
+		url: lvka_goods_url,
+		method: 'post',
+		data: {
+			values: {
+				token: api.getPrefs({sync: true,key: 'login_id'}),
+				page:page,
+				//scene:50
+			}
+		}
+
+},function(ret, err){
+if(ret){
+if(ret.code==1){
+	var str='';
+	var data=ret.data.goodsList.data;
+	if(data==''){
+		tishi("没有了");
+		return false;
+	}
+	for (var i = 0; i < json_num(data); i++) {
+
+		str+='<div class="chanpin"   onclick="to_goods_info('+data[i].goods_id+')">';
+     str+='<div class="zuo1"><img src="'+data[i].image+'" /></div>';
+     str+='<div class="you1 zuo">';
+      str+='<div class="biaoti cuti">'+data[i].goods_name+'</div>';
+      str+='<div class="miaoshu wenzi10 yanse0 hanggao20">'+data[i].selling_point+'</div>';
+      str+='<div class="huodong wenzi10 yanse2">满68返12红包  买2送青椒</div>';
+      str+='<div class="yuanjia wenzi10 hanggao20">¥'+data[i].origin_price+'</div>';
+      str+='<div class="xianjia">¥'+data[i].vip_price+'<span class="price-lvka">绿卡价</span></div>';
+      str+='<div class="che"><img class="gouwuche1 you" src="../../image/buy1.png" /></div>';
+      str+='</div>';
+     str+='</div>';
+
+
+	}
+	if(page==1){
+	$("#xinxi3").html(str+'<div class="clear"></div>');
+	//console.log(str);
+}else{
+		$("#xinxi3").append(str+'<div class="clear"></div>');
+}
+page++;
+
+}else{tishi(ret.msg)}
+}else{
+tishi(err.msg);
+}
+
+})
+}
+
+
+</script>

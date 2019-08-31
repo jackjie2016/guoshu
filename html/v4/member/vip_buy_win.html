@@ -1,0 +1,433 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+    <style>
+    .aui-btn-buy{
+      color: #FFF;
+      border: #2cb45b solid 1px;
+      background-color: #27cc53;
+      border-radius: 50px;
+    }
+    .aui-btn-buy:active{
+     opacity: 0.8;
+     background-color: #27cc63;
+      color: #FFF;
+    }
+    </style>
+</head>
+<body>
+    <header class="aui-bar aui-bar-nav" id="aui-header">
+        <a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title">会员卡购买</div>
+    </header>
+
+    <footer class="aui-bar aui-bar-tab" id="footer">
+    <ul class="aui-list aui-list-in  ">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner " style=" line-height: 3rem; height: 3rem; ">
+                    <div class="aui-list-item-title "><div class="  aui-col-xs-6">Total：</div> <div class="aui-text-danger aui-col-xs-6">${{pay_price}}</div></div>
+					<div class="aui-list-item-right ">
+            <!-- <div class="zhifu-btn juzhong top5 cuti" onclick="zhifu()">立即支付</div> -->
+          <div class="aui-btn aui-btn-buy" tapmode v-on:click="order_create()">Enviar un Pedido</div>
+           <!-- <div class="zhifu-btn juzhong top5 cuti" onclick="zhifu()">立即支付</div> -->
+               <!-- <div class="aui-btn aui-btn-danger" tapmode onclick="input_cvv()">Enviar un Pedido</div> -->
+                </div>
+                </div>
+
+            </li>
+			</ul>
+	</div>
+  </footer>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/common.js" ></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript">
+var deviceid;
+var cvv;
+var time=0;
+var vm = new Vue({
+    el: '#footer',
+    data: {
+      card_id: '',
+
+      card_token:'',
+      order_id:0,
+      installments:1,
+
+      credit_card_id:0,
+      vip_card_id:0,
+      pay_price:0,
+    },
+    methods: {
+     init:function(){
+
+        api.ajax({
+
+        },function(ret, err){
+
+
+
+         })
+       },
+
+     order_create: function () {
+            if(!vm.vip_card_id){
+                api.alert({
+                    title: '下单操作',
+                    msg: '请选择会员卡',
+                }, function(ret, err) {
+
+                });
+                return false;
+            };
+            if(vm.card_id==0){
+                api.alert({
+                    title: '下单操作',
+                    msg: '请输选择有效的卡片',
+                }, function(ret, err) {
+
+                });
+                return false;
+            };
+
+
+            api.ajax({
+                url: buy_vip_submit_url,
+                method: 'post',
+                timeout: 30,
+                dataType: 'json',
+                returnAll: false,
+                data: {
+                    values: {
+                        token: api.getPrefs({sync: true,key:'login_id'}),
+                        vip_card_id: vm.vip_card_id,
+                        credit_card_id: vm.card_id,
+
+                    }
+                }
+            }, function (ret, err) {
+                if (ret) {
+                    console.log(JSON.stringify(ret));
+                    if(ret.code == 1){
+                        // api.sendEvent({
+                        //     name: 'update_cart_list',//创建订单成功，更新购物车列表
+                        // });
+                        // api.sendEvent({
+                        //     name: 'tatal_goods_sum'//更新全局购物车数量显示function
+                        // });
+
+
+                         if(vm.card_id>0){
+                           vm.order_id=ret.data.order_id;
+                           input_cvv();
+                          //  api.sendEvent({
+                          //      name: 'send_order_info',
+                          //      extra:{
+                          //        'order_id':ret.data.order_id
+                           //
+                          //      }
+                          //  });
+                         }else{
+                          //  to_balance();
+                          //  api.openWin({
+                          //      name: 'balance',
+                          //      url: '../../v1/balance.html',
+                           //
+                          //  });
+                         }
+
+                    }else{
+                      api.alert({
+                          title: 'Warning',
+                          msg: ret.msg,
+                          buttons:'Confirmar'
+                      })
+                    }
+                } else {
+                    api.alert(JSON.stringify(err));
+                }
+            });
+        },
+
+     get_token:function(flag){
+
+           console.log('get_token');
+
+              api.ajax({
+                  url: card_tokens_url+'?public_key='+public_key,
+                  method: 'post',
+                  data: {
+                   //  values:{public_key: public_key}
+                  }
+              },function(ret, err){
+
+                if(ret){
+                console.log(JSON.stringify(ret));
+                vm.card_token=ret.id;
+                if(flag==1){
+                  console.log(flag);
+                  api.sendEvent({
+                        name: 'say_status_loading',
+                        extra:{
+                          status:'Iniciar una solicitud de pago',
+                          code:1,
+                        }
+                      });
+                  vm.go_Pay();
+                }
+
+                }else{
+
+                }
+              })
+     },
+
+      //激活模块和 付款合并
+    active_token:function(cvv) {
+
+    },
+
+
+    go_Pay:function() {
+        console.log(cvv);
+        to_loading();
+      console.log(vm.card_token);
+        if(vm.card_token!=''){
+        console.log(api.getPrefs({sync: true,key:'login_id'}));
+          api.ajax({
+            url: vip_pay_url,
+            method: 'post',
+            data: {
+              values:{
+                token:api.getPrefs({sync: true,key:'login_id'}),
+                device_id:deviceid,
+                card_token:vm.card_token,
+                card_id:vm.card_id,
+                installments:vm.installments,
+                security_code:cvv,
+                order_id:vm.order_id
+
+              }
+            }
+        },function(ret, err){
+            console.log(JSON.stringify(ret));
+          console.log(JSON.stringify(err));
+          if(ret){
+          console.log(JSON.stringify(ret));
+
+          vm.search_Pay(ret.data);
+          api.sendEvent({
+                name: 'say_status_loading',
+                extra:{
+                  status:'Pending',
+                  code:1,
+                }
+              });
+
+
+          }else{
+
+            // closeWin();
+            // api.openWin({
+            //     name: 'pay',
+            //     url: '../../v1/balance.html',
+            //     pageParam: {
+            //         id: vm.order_id
+            //         // order_total: ret.data.order_total
+            //     }
+            // });
+          }
+
+          if(err){
+            if(err['code']==1){
+              time=time+1;
+              if(time<3){
+                api.sendEvent({
+                      name: 'say_status_loading',
+                      extra:{
+                        status:'第'+time+'次重新发起支付请求',
+                        code:1,
+                      }
+                    });
+                  vm.go_Pay();
+              }else {
+                 api.sendEvent({
+                      name: 'say_status_loading',
+                      extra:{
+                        status:'高峰期请晚点充值',
+                        code:0,
+                      }
+                    });
+              }
+            }
+          }
+        })
+      }else {
+        vm.get_token(1);
+      }
+
+
+    },
+    search_Pay:function(mergo_order_id) {
+      console.log('search_Pay');
+      api.sendEvent({
+            name: 'say_status_loading',
+            extra:{
+              status:'search_Pay',
+              code:1,
+            }
+          });
+
+      api.ajax({
+          url: searchPaystatus_url,
+          method: 'post',
+          data: {
+            values:{
+              id:mergo_order_id,
+            }
+          }
+      },function(ret, err){
+
+        if(ret){
+          api.sendEvent({
+                name: 'say_status_loading',
+                extra:{
+                  status:'Susscus',
+                  code:1,
+                }
+              });
+          to_buy_vip();
+        }else{
+             api.sendEvent({
+                    name: 'say_status_loading',
+                    extra:{
+                      status:'失败',
+                      code:0,
+                    }
+                  });
+              vm.get_token();
+        }
+
+
+       })
+
+     },
+    }
+
+   });
+    var dialogBox;
+    apiready = function(){
+        api.parseTapmode();
+        var header = $api.byId('aui-header');
+        $api.fixStatusBar(header);
+        dialogBox = api.require('dialogBox');
+        var headerPos = $api.offset(header);
+        var footerPos = $api.offset(footer);
+        var body_h = $api.offset($api.dom('body')).h;
+        api.openFrame({
+            name: 'vip_buy_frm',
+            url: 'vip_buy_frm.html',
+            bounces: false,
+            rect: {
+                x: 0,
+                y: headerPos.h,
+                w: 'auto',
+                h:  api.winHeight  -headerPos.h- footerPos.h
+            }
+        })
+
+        vm.get_token(0);
+       //监听网络连接事件
+       api.addEventListener({
+           name: 'update_vip'//监听订单支付总计
+       }, function(ret, err) {
+         console.log(JSON.stringify(ret))
+
+         vm.card_id= ret.value.card_id;
+         vm.installments=ret.value.installments;
+         vm.vip_card_id=ret.value.vip_card_id;
+         vm.pay_price=ret.value.pay_price;
+       });
+    };
+
+    function input_cvv() {
+      dialogBox.input({
+    keyboardType: 'default',
+    texts: {
+        title: 'Security code',
+        placeholder: '',
+        // leftBtnTitle: '取消',``
+        rightBtnTitle: '确定'
+    },
+    styles: {
+        bg: '#fff',
+        corner: 7,
+        w: 300,
+        h: 200,
+        title: {
+            h: 60,
+            alignment: 'center',
+            size: 14,
+            color: '#000',
+            marginT:10,
+        },
+        input: {
+            h: 60,
+            y:30,
+            marginT:10,
+            marginLeft: 10,
+            marginRight:10,
+            textSize: 14,
+            textColor: '#000'
+        },
+        dividingLine: {
+            width: 0.5,
+            color: '#696969'
+        },
+        // left: {
+        //     bg: 'rgba(5,2,6,8)',
+        //     color: '#007FFF',
+        //     size: 12
+        // },
+        right: {
+            marginR: 30,
+            bg: 'rgba(5,2,6,8)',
+            color: '#007FFF',
+            w: 135,                 //（可选项）数字类型；右边按钮的宽；默认：135
+            h: 55,
+            size: 12
+        }
+    }
+}, function(ret) {
+    // api.alert({
+    //     msg: JSON.stringify(ret)
+    // });
+    // if (ret.eventType == 'left') {
+    //
+    //     dialogBox.close({
+    //         dialogName: 'input'
+    //     });
+    // }
+    if (ret.eventType == 'right') {
+           console.log(ret.text);
+           cvv=ret.text;
+           vm.go_Pay()
+           dialogBox.close({
+                     dialogName: 'input'
+          });
+    }
+});
+    }
+    function closeWin(){
+        api.closeWin({
+        });
+    }
+</script>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,aItemress=no">
+    <title>Selección de cupones</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+        <link rel="stylesheet" type="text/css" href="../../../css/aui-new.css" />
+    	<link rel="stylesheet" type="text/css" href="../../../css/zhu.css"/>
+	  <style>
+
+    #footer .aui-btn{
+          border-radius: 5rem;
+		  margin: auto;
+    }
+    </style>
+</head>
+<body   >
+   <div id="app">
+
+     <div id="kaquan_list" class="pad10">
+        <div class="hezi" style="background-color: #fff; margin-top:15px" v-for="(vo,index) in coupon_list" v-bind:key="index" tapmode v-on:click="select_coupon(index)">
+             <div class="col2" style="border: 1px solid #fff; position: relative;height: 100px;border-radius: 10px;" >
+             	<div class="cro_right_bottom "></div>
+                  <div class="cro_right_top "></div>
+                <div style="" class="juzhong">
+                  <span class=" wenzi16" style="color: #73e061">￥</span>
+     		     <span class=" wenzi24 cuti" style="color: #73e061">{{vo.reduce_price}}</span>
+                </div>
+                  <div style="text-align:center">Utilizar más de  $ {{vo.min_price}}</div>
+             </div>
+
+             <div class="col3 pad-left10" style="border: 1px solid #fff; border-left-color: #f2f2f2; position: relative;height: 100px; border-radius: 10px"  >
+             	<div class="cro_left_top " ></div>
+             	<div class="cro_left_bottom "></div>
+             	<div class="pad-top15 wenzi16" style="color: #73e061">{{vo.name}}</div>
+             	<div class="pad-top5 wenzi12">{{vo.coupon_type.text}}</div>
+             	<div class="pad-top5 wenzi12">Valido hasta {{vo.end_time.text}}
+	            <div class="zhong  "  v-bind:class="{'lingqu':vo.user_coupon_id==coupon_id }"> </div>
+             	</div>
+
+             </div>
+
+
+        </div>
+
+
+
+      </div>
+
+     </body>
+
+
+  </div>
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#app',
+    data: {
+     coupon_list:[],
+     coupon_index:-1,
+	   coupon_id:0,
+       height: 0,//显示当前索引
+    },
+    methods: {
+      select_coupon:function(index){
+
+        if(index!=vm.coupon_index){
+          vm.coupon_id=vm.coupon_list[index].user_coupon_id;
+          vm.coupon_index=index;
+        }else{
+
+          vm.coupon_id=0;
+          vm.coupon_index=-1;
+        }
+
+      }
+    },
+    watch:{
+      coupon_id:{
+        handler: function (val, oldVal) {
+          console.log(val);
+
+           api.sendEvent({
+               name: 'selected_coupon',
+               extra: {
+                 coupon_index: vm.coupon_index,
+                 coupon_id: vm.coupon_id,
+               }
+           });
+
+        },
+      }
+
+    }
+  });
+    apiready = function(){
+        api.parseTapmode();
+
+        api.sendEvent({
+            name: 'need_coupon_requrie',
+        });
+        api.addEventListener({
+            name: 'send_coupon_info'
+            }, function(ret, err) {
+            console.log('send_coupon_info');
+            console.log(JSON.stringify(ret))
+            vm.coupon_list=ret.value.coupon_list;
+            vm.coupon_id=ret.value.coupon_id;
+            });
+
+        api.addEventListener({
+        			name: 'close_couplist_select'
+        		}, function(ret, err) {
+                      console.log('close_couplist_select');
+         		api.closeFrame();
+        		});
+    }
+
+</script>
+</html>

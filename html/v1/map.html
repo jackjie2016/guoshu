@@ -1,0 +1,454 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit" />
+	<link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/zhu.css"/>
+<title>添加地址</title>
+<style type="text/css">
+/* 顶部 开始*/
+html, body {
+					 height: 100%;
+					 margin: 0;
+					 padding: 0;
+			 }
+			 .search-input{
+					 width: 100%;
+					 height: 2.2rem;
+
+			 }
+			 #map{
+					 width: 100%;
+					 height: 40%;
+
+			 }
+
+			 .aui-media-list .aui-list-item-inner {
+    display: block;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.huise .aui-media-list-item-inner .aui-list-item-title,.huise .aui-media-list-item-inner .aui-list-item-text{color: #ccc !important;}
+</style>
+</head>
+
+<body>
+	<header class="aui-bar aui-bar-nav" id="aui-header">
+			<a class="aui-btn aui-pull-left" tapmode onclick="fanhui()">
+					<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title" id="title">Seleccionar direccion</div>
+	</header>
+	<div class="aui-searchbar" id="search">
+	        <div class="aui-searchbar-input aui-border-radius">
+	            <i class="aui-iconfont aui-icon-search"></i>
+	            <input type="search" placeholder="Ingresar lo que este buscando" id="search-input">
+	            <div class="aui-searchbar-clear-btn">
+	                <i class="aui-iconfont aui-icon-close"></i>
+	            </div>
+	        </div>
+	        <div class="aui-searchbar-btn" tapmode>Eliminar</div>
+	    </div>
+
+			<div id="map"></div>
+			<div class="search-result">
+			    <div class="aui-content aui-margin-b-15">
+			        <ul class="aui-list aui-media-list" id="resultList">
+
+			        </ul>
+			    </div>
+			</div>
+</body>
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script src="https://maps.google.cn/maps/api/js?key=AIzaSyAp7R9ZFep3cdO21_JpUY-5wVGdM3DUcVw&libraries=places" async defer></script>
+<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../../script/layer/layer.js"></script>
+<script type="text/javascript" src="../../script/zhu.js"></script>
+
+<script type="text/javascript">
+    var map;
+		var result_mark,resultsHtml,bermudaTriangle,is_peisong=1;
+
+
+	apiready = function() {
+		api.openFrame({
+				name: 'ing',
+				url: 'widget://html/v1/top2.html',
+				rect: {
+						x: 0,
+						y: 0,
+						w: api.winWidth,
+						h: api.safeArea.top
+				},
+				pageParam: {
+						name: 'test'
+				}
+		});
+		var header = $api.byId('aui-header');
+		$api.fixStatusBar(header);
+		//geolocation();
+		console.log("初始化成功");
+		//处理地图
+		geolocation();
+
+	}
+//jquery开始
+$(function(){
+	$("#search-input").bind('search', function () {
+	//搜索事件
+getNearSearch();
+			});
+})
+
+
+
+//处理搜索条
+		var searchBar = document.querySelector(".aui-searchbar");
+    var searchBarInput = document.querySelector(".aui-searchbar input");
+    var searchBarBtn = document.querySelector(".aui-searchbar .aui-searchbar-btn");
+    var searchBarClearBtn = document.querySelector(".aui-searchbar .aui-searchbar-clear-btn");
+    if(searchBar){
+        searchBarInput.onclick = function(){
+            searchBarBtn.style.marginRight = 0;
+        }
+        searchBarInput.oninput = function(){
+            if(this.value.length){
+                searchBarClearBtn.style.display = 'block';
+                searchBarBtn.classList.add("aui-text-info");
+                searchBarBtn.textContent = "搜索";
+            }else{
+                searchBarClearBtn.style.display = 'none';
+                searchBarBtn.classList.remove("aui-text-info");
+                searchBarBtn.textContent = "取消";
+            }
+        }
+    }
+    searchBarClearBtn.onclick = function(){
+        this.style.display = 'none';
+        searchBarInput.value = '';
+        searchBarBtn.classList.remove("aui-text-info");
+        searchBarBtn.textContent = "取消";
+    }
+    searchBarBtn.onclick = function(){
+        var keywords = searchBarInput.value;
+        if(keywords.length){
+            searchBarInput.blur();
+            //document.getElementById("search-keywords").textContent = keywords;
+        }else{
+            this.style.marginRight = "-"+this.offsetWidth+"px";
+            searchBarInput.value = '';
+            searchBarInput.blur();
+        }
+    }
+
+//开始谷歌地图
+
+function geolocation() {
+	api.getLocation(function(ret, err){
+
+		if(ret && ret.status){
+				 //获取位置信息成功
+				 //alert(JSON.stringify(ret));
+				 lat= ret.latitude
+				 lng= ret.longitude
+				 map = new google.maps.Map(document.getElementById('map'), {
+             zoom: 12,
+             center: {lat: lat, lng: lng},
+             mapTypeId: "terrain",
+             mapTypeControl: false,
+             scaleControl: false,
+             streetViewControl: false,
+             zoomControl: false,
+             fullscreenControl:false,
+             gestureHandling: 'greedy'
+         });
+
+console.log("定位成功")
+get_quyu();
+
+ //var marker = new google.maps.Marker({position: {lat: lat, lng: lng}, map: map});
+
+
+
+
+		}else{
+				 //alert(JSON.stringify(err));
+				 tishi("没有成功获取到您的位置");
+		}
+});
+
+
+
+    }
+
+
+
+		function initMap(){}
+
+
+    //初始化自动补全搜索框
+    function initSearchBox() {
+        // Create the search box and link it to the UI element.
+        var input = document.getElementById('search-input');
+        var searchBox = new google.maps.places.SearchBox(input);
+        //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+        // Bias the SearchBox results towards current map's viewport.
+        map.addListener('bounds_changed', function() {
+            searchBox.setBounds(map.getBounds());
+        });
+
+        var markers = [];
+        // Listen for the event fired when the user selects a prediction and retrieve
+        // more details for that place.
+        searchBox.addListener('places_changed', function() {
+            var places = searchBox.getPlaces();
+
+            if (places.length == 0) {
+                return;
+            }
+
+            // Clear out the old markers.
+            markers.forEach(function(marker) {
+                marker.setMap(null);
+            });
+            markers = [];
+
+            // For each place, get the icon, name and location.
+            var bounds = new google.maps.LatLngBounds();
+            places.forEach(function(place) {
+                if (!place.geometry) {
+                    console.log("Returned place contains no geometry");
+                    return;
+                }
+                /*var icon = {
+                    url: place.icon,
+                    size: new google.maps.Size(71, 71),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(17, 34),
+                    scaledSize: new google.maps.Size(25, 25)
+                };
+
+                // Create a marker for each place.
+                markers.push(new google.maps.Marker({
+                    map: map,
+                    icon: icon,
+                    title: place.name,
+                    position: place.geometry.location
+                }));*/
+
+                if (place.geometry.viewport) {
+                    // Only geocodes have viewport.
+                    bounds.union(place.geometry.viewport);
+                } else {
+                    bounds.extend(place.geometry.location);
+                }
+            });
+            map.fitBounds(bounds);
+            markMap(map.getCenter());
+        });
+    }
+
+
+
+
+    function getNearSearch() {
+        var keyword = document.getElementById("search-input").value;
+        var request;
+        if(!keyword && typeof(keyword)!="undefined" && keyword!=0){
+            request = {
+                location: map.getCenter(),
+                radius: '200',
+                keyword:keyword
+            };
+        }else {
+            request = {
+                location: map.getCenter(),
+                radius: '2000'
+            };
+        }
+        var service = new google.maps.places.PlacesService(map);
+        service.nearbySearch(request, function(results, status,pagination) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                createResultList(results);
+                //moreButton.disabled = !pagination.hasNextPage;
+                getNextPage = pagination.hasNextPage && function() {
+                    pagination.nextPage();
+                };
+            }
+        });
+    }
+
+    /**
+     * 处理搜索结果
+     * @param results
+     */
+    function createResultList(results) {
+        resultsHtml='';
+				//console.log('附近的结果'+JSON.stringify(results));
+        for (var i = 0; i < results.length; i++) {
+            if(results[i].types && results[i].types.indexOf("political") === -1){
+                //var isContain = google.maps.geometry.poly.containsLocation(results[i].geometry.location, bermudaTriangle);
+                //console.log("isContain:" + isContain);
+                resultsHtml += '<li class="aui-list-item aui-list-item-middle '+((is_peisong==0)?"huise":"")+'" onclick="markMapByLatALng2('+results[i].geometry.location.lat()+','+results[i].geometry.location.lng()+',\''+results[i].place_id+'\')">'+
+                '<div class="aui-media-list-item-inner">'+
+                    '<div class="aui-list-item-media" style="width: 2.5rem;">'+
+                        '<img src="'+results[i].icon+'" class="aui-img-round aui-list-img-sm">'+
+                    '</div>'+
+                    '<div class="aui-list-item-inner aui-list-item-arrow">'+
+                        '<div class="aui-list-item-text">'+
+                            '<div class="aui-list-item-title aui-font-size-14">'+results[i].name+'</div>'+
+                            //'<div class="aui-list-item-right"> 45</div>'+
+                        '</div>'+
+                        '<div class="aui-list-item-text">  '+results[i].vicinity+' </div>'+
+                    '</div>'+
+                '</div>'+
+            '</li>';
+						//console.log(resultsHtml);console.log(2222222222);
+                document.getElementById("resultList").innerHTML = resultsHtml;
+            }
+        }
+    }
+
+    function markMapByLatALng(lat,lng) {
+        var pos = {
+            lat: lat,
+            lng: lng
+        };
+        markMap(pos);
+    }
+		function markMapByLatALng2(lat,lng) {
+
+			if(is_peisong==0){tishi("超出配送范围");return false;}
+			api.openWin({
+					name: 'to_map_sub',
+					url: 'widget://html/v1/map_sub.html',
+					pageParam: {
+							lat:lat,
+							lng:lng
+					}
+			});
+    }
+
+    function markMap(pos) {
+			if(result_mark){result_mark.setMap(null);}
+        result_mark = new google.maps.Marker({ position: pos,draggable:false });
+        result_mark.setMap(map);
+        map.panTo(pos, 15);
+        map.setCenter(pos);
+				layer.msg('正在索引地址')
+				setTimeout(function(){getNearSearch();},1000);
+
+    }
+
+
+function get_quyu(){
+	api.ajax({
+	    url: "http://ps.code688.com/app/map/districlist",
+	    method: 'post',
+			data: {
+          values: {
+              token: api.getPrefs({sync: true,key:'login_id'})
+          }
+      }
+	},function(ret, err){
+	    if (ret) {
+				console.log("获取区域成功")
+	        //console.log( JSON.stringify( ret ) );
+					var data=ret.data.district
+					//alert( JSON.stringify( data.rangList ))
+					var shuju=data.rangList; //服务端获取的多边形资料
+					var shuju2=[]; //转化存储资料
+					var yanse=[];
+
+					for (var i = 0; i < json_num(shuju); i++) {
+						if(shuju[i].hasOwnProperty("list")){
+							yanse[i]=shuju[i].strokeColor;
+							var linshi=shuju[i].list;
+							var linshi_zu=[];
+							for(h in linshi){
+								linshi_zu[h]=new google.maps.LatLng(linshi[h].lat, linshi[h].lng)
+								console.log( JSON.stringify( linshi_zu ) );
+							}
+							shuju2[i]=linshi_zu;
+							/*for (var ii = 0; ii < shuju[i].list.length; ii++) {
+								console.log(JSON.stringify( shuju[i].list[ii]))
+								shuju2[i][ii]={lat: shuju[i].list[ii].lat, lng: shuju[i].list[ii].lng}
+							}*/
+
+						}
+					}
+					//console.log( JSON.stringify( shuju2 ) );
+
+					var ditu=[];
+					for (var i = 0; i < shuju2.length; i++) {
+						ditu[i]=new google.maps.Polygon({
+		            paths: shuju2[i],
+		            strokeColor: yanse[i],
+		            strokeOpacity: 0.6,
+		            strokeWeight: 1,
+		            fillColor: yanse[i],
+		            fillOpacity: 0.1
+		        });
+						ditu[i].setMap(map);
+					}
+console.log("okokokok");
+
+
+					var zhong=map.getCenter();
+					markMap(zhong);
+					map.addListener('dragend', function() {
+            window.setTimeout(function() {
+							console.log('dragend')
+                markMap(map.getCenter());
+            }, 300);
+
+						//500秒之后初始化中心位置
+						var isContain=false;
+						is_peisong=0;
+						for(c in ditu){
+							isContain = google.maps.geometry.poly.containsLocation(map.getCenter(), ditu[c]);
+							if(isContain==true){
+								is_peisong=1;
+								break;
+							}
+						}
+
+            //console.log("isContain:" + isContain);
+						//console.log(is_peisong);
+        });
+
+
+
+
+	    } else {
+	        //alert( JSON.stringify( err ) );
+	    }
+	});
+
+}
+
+
+function json_to_array(json){
+    var newArr = [];
+    var map = {
+        "a": 1,
+        "b": 2,
+        "c": 3
+    }
+    for(var i in map){
+        newArr[map[i]] = json[i]
+    }
+    return newArr
+}
+
+
+</script>

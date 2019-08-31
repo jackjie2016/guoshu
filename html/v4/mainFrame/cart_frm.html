@@ -1,0 +1,638 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/icons/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/public.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/T.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/aui-slide.css" />
+	<style>
+
+      .cate-list .cate-item{
+
+	  }
+
+	  .aui-radio{
+		  width: 0.75rem;
+	 	  height: 0.75rem;
+
+	  }
+
+	</style>
+</head>
+<body>
+ <div id="app">
+
+   <section class="aui-content   aui-padded-t-0 aui-padded-b-0 aui-margin-b-15 aui-margin-t-15"  >
+	   <div class="aui-margin-b-15 aui-padded-l-15 aui-padded-r-15  "  v-if="list.length>0" >
+                <div class="  aui-row goods_list_row">
+
+                    <div class="goods_col_item" v-for="(vo,index) in list">
+					 <div class="goods-content aui-padded-5 aui-row">
+					 <div class="aui-col-xs-1">
+
+					<div class="aui-info aui-margin-t-15 aui-padded-l-5 aui-padded-r-5">
+                     <div class="aui-info-item">
+                    <label><input class="aui-radio" type="checkbox"   v-model="vo.status" tapmode v-on:click="single_check(index)"> </label>
+                    </div>
+                    </div>
+
+                    </div>
+					 <div class="aui-col-xs-2" v-on:click="to_goods_info(vo.goods_id)">
+					       <img :src="vo.goods_image">
+					  </div>
+					 <div class="aui-col-xs-5   ">
+					 	  <div class="aui-card-list  aui-padded-l-5 aui-margin-0">
+                        <div class=" cart-title aui-ellipsis-1 aui-font-size-14 font-black">
+                            {{vo.goods_name}}
+                        </div>
+                        <div class="cart-weight  aui-font-size-12 font-bold">
+                           x {{vo.per_unit}}{{vo.unit_name}}
+                        </div>
+                        <div class=" cart-price aui-font-size-14 font-extraBold">
+                            ${{vo.pay_price.value}}
+                        </div>
+
+                        </div>
+					  </div>
+					  <div class="aui-col-xs-4">
+
+					     	  	  <div class="aui-row cart_page_input aui-margin-t-15 "   type="count" >
+        <div class="aui-col-xs-3 aui-font-size-20 lv-border plus-btn">
+            <i class="aui-iconfont aui-icon-minus" tapmode v-on:click="cut_to_cart(index)"></i>
+        </div>
+        <div class="aui-col-xs-6 lv-border  aui-ellipsis-1 text-content"  >
+              {{vo.has_num}}
+        </div>
+        <div class="aui-col-xs-3 aui-font-size-20 lv-border minus-btn">
+            <i class="aui-iconfont aui-icon-plus" tapmode v-on:click="add_to_cart(index)"></i>
+        </div>
+    </div>
+
+					  </div>
+                    </div>
+                    </div>
+
+					      <!-- <div class="goods_col_item" >
+					 <div class="goods-content aui-padded-5 aui-row">
+					 <div class="aui-col-xs-1">
+
+					<div class="aui-info aui-margin-t-15 aui-padded-l-5 aui-padded-r-5">
+                     <div class="aui-info-item">
+                    <label><input class="aui-radio" type="checkbox"   > </label>
+                    </div>
+                    </div>
+
+                    </div>
+					 <div class="aui-col-xs-2">
+					       <img src="../../../image/p/p4.png">
+					  </div>
+					 <div class="aui-col-xs-5   ">
+					 	  <div class="aui-card-list  aui-padded-l-5 aui-margin-0">
+                        <div class=" cart-title aui-ellipsis-1 aui-font-size-14 font-black">
+                            Frutos Rojos
+                        </div>
+                        <div class="cart-weight  aui-font-size-12 font-bold">
+                           x 1 kg
+                        </div>
+                        <div class=" cart-price aui-font-size-14 font-extraBold">
+                            $40,00
+                        </div>
+
+                        </div>
+					  </div>
+					  <div class="aui-col-xs-4">
+
+					     	  	  <div class="aui-row cart_page_input aui-margin-t-15 "   type="count" >
+        <div class="aui-col-xs-3 aui-font-size-20 lv-border plus-btn">
+            <i class="aui-iconfont aui-icon-minus"></i>
+        </div>
+        <div class="aui-col-xs-6 lv-border  aui-ellipsis-1 text-content"  >
+            1 kg
+        </div>
+        <div class="aui-col-xs-3 aui-font-size-20 lv-border minus-btn">
+            <i class="aui-iconfont aui-icon-plus"></i>
+        </div>
+    </div>
+
+					  </div>
+                    </div>
+                    </div> -->
+<!--
+					      <div class="goods_col_item" >
+					 <div class="goods-content aui-padded-5 aui-row">
+					 <div class="aui-col-xs-1">
+
+					<div class="aui-info aui-margin-t-15 aui-padded-l-5 aui-padded-r-5">
+                     <div class="aui-info-item">
+                    <label><input class="aui-radio" type="checkbox"   > </label>
+                    </div>
+                    </div>
+
+                    </div>
+					 <div class="aui-col-xs-2">
+					       <img src="../../../image/p/p4.png">
+					  </div>
+					 <div class="aui-col-xs-5   ">
+					 	  <div class="aui-card-list  aui-padded-l-5  aui-margin-0">
+                        <div class=" cart-title aui-ellipsis-1 aui-font-size-14 font-black">
+                            Frutos Rojos
+                        </div>
+                        <div class="cart-weight  aui-font-size-12 font-bold">
+                           x 1 kg
+                        </div>
+                        <div class=" cart-price aui-font-size-14 font-extraBold">
+                            $40,00
+                        </div>
+
+                        </div>
+					  </div>
+					  <div class="aui-col-xs-4">
+
+					     	  	  <div class="aui-row cart_page_input aui-margin-t-15 "   type="count" >
+        <div class="aui-col-xs-3 aui-font-size-20 lv-border plus-btn">
+            <i class="aui-iconfont aui-icon-minus"></i>
+        </div>
+        <div class="aui-col-xs-6 lv-border  aui-ellipsis-1 text-content"  >
+            12222 kg
+        </div>
+        <div class="aui-col-xs-3 aui-font-size-20 lv-border minus-btn">
+            <i class="aui-iconfont aui-icon-plus"></i>
+        </div>
+    </div>
+
+					  </div>
+                    </div>
+                    </div> -->
+
+
+                </div>
+        </div>
+        <div class=" aui-margin-t-15 aui-margin-b-15 aui-padded-l-15 aui-padded-r-15  "    v-else >
+               <div class="  aui-row-padded goods_list_row">
+
+
+          <div class="  aui-row">
+          <div class="aui-col-xs-2 aui-invisible">
+          1
+           </div>
+          <div class="aui-col-xs-8   ">
+                   <img src="../../../image/Icons/carrito_empty.svg">
+           </div>
+            <div class="aui-col-xs-2  aui-invisible ">
+            1
+           </div>
+
+                   </div>
+          <div class="  aui-row">
+          <div class="aui-col-xs-2 aui-invisible">
+          1
+           </div>
+          <div class="aui-col-xs-8  text-center ">
+            ¡Tu carrito está vacío!
+           </div>
+            <div class="aui-col-xs-2  aui-invisible ">
+            1
+           </div>
+
+                   </div>
+          <div class="  aui-row">
+          <div class="aui-col-xs-1 aui-invisible">
+          1
+           </div>
+          <div class="aui-col-xs-10   ">
+                 <div class="aui-btn add_cart  " style=" height: 1.8rem; line-height: 1.8rem; ">Empezar a comprar</div>
+           </div>
+            <div class="aui-col-xs-1  aui-invisible ">
+            1
+           </div>
+
+                   </div>
+
+
+
+
+               </div>
+        </div>
+	</section>
+
+
+     <div style="height:3.5rem;display:block;">
+        <div>
+   <footer class="aui-bar aui-bar-tab  " id="footer" style="border-bottom:1px solid #eee;border-top:1px solid #eee;border-radius: 1.5rem 1.5rem 0 0;" v-if="list.length>0">
+     <section class="aui-content aui-margin-b-10 aui-padded-15 ">
+
+            <div class="aui-row  " >
+                <div class="aui-col-xs-2">
+				<div class="aui-grid-label font-bold" tapmode v-on:click="all_checked()">
+                     <input class="aui-radio"   style=" margin-top: 0.25rem; " type="checkbox" v-model="all_checked_val">
+                    </div>
+					 <div class="aui-grid-label font-bold aui-font-size-14">ALL</div>
+                </div>
+                <div class="aui-col-xs-5">
+
+                    <div class="aui-grid-label font-bold aui-font-size-14">Subtotal</div>
+                    <div class="aui-grid-label font-black aui-font-size-18">${{ total_price }}</div>
+                </div>
+
+                <div class="aui-col-xs-5">
+               <div class="aui-btn  lv-bg aui-btn-sm font-bold black-font aui-font-size-16 " style=" line-height:2.2rem; height:2.2rem;padding:0 1rem; border-radius:2rem;"  v-if="total_price>0" tapmode onclick="cart_time_confirm()">Comprar</div>
+               <div class="aui-btn  aui-btn-default  aui-btn-sm font-bold black-font aui-font-size-16 " style=" line-height:2.2rem; height:2.2rem;padding:0 1rem; border-radius:2rem;"  v-else>Comprar</div>
+
+                </div>
+
+
+
+            </div>
+
+    </section>
+     </footer>
+
+</div>
+
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript" src="../../../script/aui-list-swipe.js"></script>
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#app',
+    data: {
+        total_price: 0,
+        all_checked_val: true,
+        list: []
+    },
+    methods: {
+        init:function () {
+           console.log(api.getPrefs({sync: true,key:'login_id'}));
+            api.ajax({
+                url: cart_list_url,
+                method: 'post',
+                timeout: 30,
+                dataType: 'json',
+                returnAll: false,
+                data: {
+                    values: {
+                        token: api.getPrefs({sync: true,key:'login_id'}),
+                        deviceid: api.deviceId,
+                    }
+                }
+            }, function (ret, err) {
+                if (ret) {
+                    if(ret.code == 1){
+                        vm.list = ret.data.goods_list;
+                        vm.total_price = ret.data.order_total_price;
+                        vm.for_all_checked_val();
+                    }else{
+                        vm.list = [];
+                    }
+                    console.log(JSON.stringify(vm.list));
+                    //更新全局购物车总价
+                    api.sendEvent({
+                        name: 'update_cart_total',
+                        extra: {
+                            total_price:ret.data.order_total_price
+                        }
+                    });
+                } else {
+                    api.toast({
+                        msg: err.msg,
+                        duration: 2000,
+                        location: 'bottom'
+                    });
+                    console.log(JSON.stringify(err));
+                }
+            });
+        },
+
+
+        add_to_cart:function(index){
+        var goods_id = vm.list[index].goods_id;
+         if(is_login()){
+           api.ajax({
+               url: add_to_cart_url,
+               method: 'post',
+               data: {
+                   values: {
+                     token: api.getPrefs({sync: true,key:'login_id'}),
+                     goods_id:goods_id,
+                     goods_num:1
+                   }
+               }
+             },function(ret, err){
+               if (ret) {
+                  //  tishi(ret.msg);
+               console.log(JSON.stringify(ret));
+                   if(ret.code==1){
+
+                    vm.list[index].has_num=ret.data.clc_now_goods_num;
+                    vm.total_price=ret.data.total_price;
+                   //更新全局购物车数量显示function
+                   api.sendEvent({
+                       name: 'update_cart_num',
+                       extra: {
+                           cart_total_num:ret.data.cart_total_num
+                       }
+                   });
+
+                   //更新全局购物车总价
+                   api.sendEvent({
+                       name: 'update_cart_total',
+                       extra: {
+                           total_price:ret.data.total_price
+                       }
+                   });
+
+                }else{
+                 tishi( ret.msg );
+                  Log(ret);
+                }
+
+               } else {
+                   alert( JSON.stringify( err ) );
+                //  console.log(err.msg)
+               }
+             });
+          }else{
+            go_login();
+         }
+        },
+
+        //购物车减1
+        cut_to_cart:function (index) {
+          console.log(api.getPrefs({sync: true,key:'login_id'}));
+            var goods_id = vm.list[index].goods_id;
+
+            api.ajax({
+                url: cutdown_to_cart_url,
+                method: 'post',
+                timeout: 30,
+                dataType: 'json',
+                returnAll: false,
+                data: {
+                    values: {
+                        goods_id:goods_id,
+                        token: api.getPrefs({sync: true,key:'login_id'}),
+                        deviceid: api.deviceId,
+                    }
+                }
+            }, function (ret, err) {
+                      console.log(JSON.stringify(ret));
+                if (ret) {
+                    if(ret.code == 1){
+                      vm.list[index].has_num=ret.data.clc_now_goods_num;
+                      // vm.list[index].total_num -= 1;
+                      vm.total_price=ret.data.total_price;
+                      if(ret.data.clc_now_goods_num == 0){
+                           vm.list.splice(index, 1);//删除节点
+                       }
+                        //更新全局购物车数量显示function
+                        api.sendEvent({
+                            name: 'update_cart_num',
+                            extra: {
+                                cart_total_num:ret.data.cart_total_num
+                            }
+                        });
+
+                        //更新全局购物车总价
+                        // api.sendEvent({
+                        //     name: 'update_cart_total',
+                        //     extra: {
+                        //         total_price:ret.data.total_price
+                        //     }
+                        // });
+                    }
+                } else {
+                    console.log(JSON.stringify(err));
+                }
+            });
+
+        },
+        //全选
+        all_checked:function () {
+          console.log('全选')
+            setTimeout(function () {
+                var temp_status = null;
+                if(vm.all_checked_val){
+                    for(var i=0;i<vm.list.length;i++){
+                        vm.list[i].status = 1;
+                        // vm.total_price = Number(vm.total_price) + Number(vm.list[i].total_price);
+                    }
+                    temp_status = 1;
+                }else{
+                    for(var i=0;i<vm.list.length;i++){
+                        vm.list[i].status = 0;
+                    }
+                    vm.total_price = 0;
+                    temp_status = 0;
+                }
+
+                //更新数据库
+                api.ajax({
+                    url: update_allcart_status_url,
+                    method: 'post',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                    data: {
+                        values: {
+                            token: api.getPrefs({sync: true,key:'login_id'}),
+                            deviceid: api.deviceId,
+                            status: temp_status
+                        }
+                    }
+                }, function (ret, err) {
+                    if (ret) {
+                          vm.total_price = ret.data.total_price;
+                          //更新全局购物车总价
+                          // api.sendEvent({
+                          //     name: 'update_cart_total',
+                          //     extra: {
+                          //         total_price:ret.data.total_price
+                          //     }
+                          // });
+                    } else {
+                        api.alert(JSON.stringify(err));
+                    }
+                });
+            },200);
+        },
+        //单选
+        single_check:function (index) {
+            var temp_status = null;
+            setTimeout(function () {
+                if(vm.list[index].status){
+                    // vm.total_price = Number(vm.total_price) + Number(vm.list[index].total_price);
+                    temp_status = 1;
+                }else{
+                    // vm.total_price = Number(vm.total_price) - Number(vm.list[index].total_price);
+                    temp_status = 0;
+                }
+                vm.for_all_checked_val();
+
+
+                //更新数据库
+                api.ajax({
+                    url: update_cart_status_url,
+                    method: 'post',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                    data: {
+                        values: {
+                            token: api.getPrefs({sync: true,key:'login_id'}),
+                            deviceid: api.deviceId,
+                            goods_id: vm.list[index].goods_id,
+                            status: temp_status
+                        }
+                    }
+                }, function (ret, err) {
+                    if (ret) {
+                        console.log(JSON.stringify(ret));
+                        vm.total_price = ret.data.total_price;
+                        //更新全局购物车总价
+                        api.sendEvent({
+                            name: 'update_cart_total',
+                            extra: {
+                                total_price:ret.data.total_price
+                            }
+                        });
+                    } else {
+                        api.alert(JSON.stringify(err));
+                    }
+                });
+            },200);
+
+        },
+        for_all_checked_val:function () {
+
+            for(var i=0;i<vm.list.length;i++){
+              console.log(vm.list[i].status);
+                if(!vm.list[i].status){
+                  console.log('no')
+                    vm.all_checked_val = false;
+                    api.sendEvent({
+                        name: 'checked_status',
+                        extra: {
+                            status: false
+                        }
+                    });
+                    return false;
+                }else{
+                    vm.all_checked_val = true;
+                }
+            }
+
+            api.sendEvent({
+                name: 'checked_status',
+                extra: {
+                    status: vm.all_checked_val
+                }
+            });
+
+        },
+        //打开商品详情
+
+        to_goods_info:function (goods_id) {
+            open_goods_detail(goods_id);
+        },
+
+        delete_to_cart:function (index) {
+            api.confirm({
+                title: '确认要删除？',
+                msg: vm.list[index].goods_name,
+                buttons: ['确定', '取消']
+            }, function (ret, err) {
+                if (ret) {
+                   if(ret.buttonIndex == 1){
+
+                       api.ajax({
+                           url: delete_to_cart_url,
+                           method: 'post',
+                           timeout: 30,
+                           dataType: 'json',
+                           returnAll: false,
+                           data: {
+                               values: {
+                                   goods_id: vm.list[index].goods_id,
+                                   token: api.getPrefs({sync: true,key:'login_id'}),
+                                   deviceid: api.deviceId,
+                               }
+                           }
+                       }, function (ret, err) {
+                           if (ret) {
+                               if(ret.code == 1){
+                                 vm.total_price = Number(vm.total_price) - Number(vm.list[index].total_price);
+                                   api.sendEvent({
+                                       name: 'tatal_goods_sum'//更新全局购物车数量显示function
+                                   });
+                                   //更新全局购物车总价
+                                   api.sendEvent({
+                                       name: 'update_cart_total',
+                                       extra: {
+                                           total_price:ret.data.total_price
+                                       }
+                                   });
+                                   vm.list.splice(index, 1)
+                               }else{
+                                   api.toast({
+                                       msg: ret.msg,
+                                       duration: 2000,
+                                       location: 'bottom'
+                                   });
+                               }
+                               console.log(JSON.stringify(ret));
+                           } else {
+                               console.log(JSON.stringify(err));
+                           }
+                       });
+                   }
+                } else {
+                    alert(JSON.stringify(err));
+                }
+            });
+        }
+
+    }
+});
+apiready = function () {
+   check_login();
+
+    vm.init();
+    //监听网络连接事件
+    api.addEventListener({
+        name: 'update_cart_list'
+    }, function(ret, err) {
+        vm.init();
+    });
+
+    //监听网络连接事件
+    // api.addEventListener({
+    //     name: 'check_all_op'
+    // }, function(ret, err) {
+    //   console.log(JSON.stringify(ret));
+    //   vm.all_checked_val=ret.value.status;
+    //     vm.all_checked();
+    // });
+    //
+    // api.addEventListener({
+    //     name: 'tatal_goods_total_price'
+    // }, function(ret, err) {
+    //     vm.total_price=ret.value.total_price;
+    // });
+};
+
+function cart_time_confirm(){
+  api.openWin({
+      name: 'timer_select',
+      url: 'widget://html/v4/cart/timer_win.html',
+  });
+}
+</script>
+</html>

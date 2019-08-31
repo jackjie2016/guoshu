@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit" />
+	<link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/zhu.css"/>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="../../script/zhu.js"></script>
+<style type="text/css">
+/* 顶部 开始*/
+li{list-style-type:none;}
+
+</style>
+</head>
+
+<body>
+<!-- 顶部开始-->
+<div id="yhqlist">
+
+
+</div>
+
+</body>
+</html>
+<script>
+
+apiready=function(){
+
+  jiazai();
+
+
+
+}
+
+
+function lq(id){
+  api.ajax({
+      url: lqkaquan_url,
+      method: 'post',
+      data: {
+          values: {
+            token: api.getPrefs({sync: true,key:'login_id'}),
+            coupon_id:id
+          }
+      }
+  },function(ret, err){
+     tishi(ret.msg);
+});
+
+}
+
+function jiazai(){
+api.ajax({
+    url: coupon_url,
+    method: 'post',
+
+},function(ret, err){
+ var yhqs=ret.data.list;
+ var str;
+ for(var i = 0; i < json_num(yhqs); i++){
+
+	 str+= '	<div class="hezi" style="background-color: #fff; margin:15px"><div class="col1 lingqu"  name="'+yhqs[i].coupon_id+'"><li>立</li><li>即</li><li>领</li><li>取</li></div>';
+       str+=  '  <div class="col2" style="border: 1px solid #fff; position: relative;height: 100px;border-radius: 10px;" >';
+       str+=  '   	<div class="cro_right_bottom "></div>';
+         str+=    '    <div class="cro_right_top "></div>';
+           str+=  '  <div style="line-height: 80px" class="juzhong">';
+           str+=  '    <span class=" wenzi16" style="color: #73e061">￥</span>';
+  		  str+=  '   <span class=" cuti"  style="font-size:25px; color: #73e061">'+yhqs[i].reduce_price+'</span>';
+         str+=    '  </div>';
+           str+=  '    <span  style="font-size:14px; position: absolute;top: 65px;left: 30px">满'+yhqs[i].min_price+'元使用</span>';
+         str+='  </div>';
+
+         str+=  '<div class="col3 pad-left10" style="border: 1px solid #fff; border-left-color: #f8f8f8; position: relative;height: 100px; border-radius: 10px" >';
+         str+=  ' 	<div class="cro_left_top " ></div>';
+         str+=   '	<div class="cro_left_bottom "></div>';
+         str+=   '	<div class="pad-top15 wenzi16" style="color: #73e061">'+yhqs[i].name+'</div>';
+         str+=   '	<div class="pad-top5 wenzi12">'+yhqs[i].coupon_type.text+'</div>';
+         str+=   '	<div class="pad-top5 wenzi12">有效期至2019-02-02 </div>';
+
+         str+=   '</div>';
+
+         str+=   '</div>';
+
+
+     str+=   '</div>';
+
+   str+=   '</div>';
+
+
+
+     str+=   '</div>';
+ }
+
+$("#yhqlist").html(str);
+$(".lingqu").click(function(){
+  lq($(this).attr("name"));
+});
+});
+
+
+
+}
+
+
+
+</script>

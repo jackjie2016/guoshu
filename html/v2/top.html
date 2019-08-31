@@ -1,0 +1,31 @@
+<!doctype html>
+<html >
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+</head>
+
+<body>
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+<script>
+apiready=function(){
+  api.addEventListener({
+      name: 'zhuangtailan'
+  }, function(ret, err) {
+    var zhi=ret.value.zhi;
+    var touming=0;
+    if(zhi<100){
+      touming=zhi/100;
+    }else{
+      touming=1;
+    }
+    $("body").css({"background-color":"rgba(0,0,0,"+touming+")"});
+  });
+}
+</script>

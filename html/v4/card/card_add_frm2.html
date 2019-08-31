@@ -1,0 +1,286 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../../css/custom_checkout_mercadopago.css"/>
+   	<link rel="stylesheet" type="text/css" href="../../../css/mp_form.css"/>
+    <script type="text/javascript" src="../../../script/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="../../script/api.js"></script>
+</head>
+<body>
+
+ <div id="mp-box-form">
+
+ <!-- <div id="mercadopago-form" > -->
+ <form method="post" id="mercadopago-formulario" name="mercadopago-formulario" action="">
+
+   <div class="mp-box-inputs mp-line" id="mercadopago-form-coupon" style="display: none;">
+     <label for="couponCodeLabel">Discount Coupon</label>
+     <div class="mp-box-inputs mp-col-65">
+       <input type="text" id="couponCode" name="mercadopago_custom[coupon_code]" autocomplete="off" maxlength="24">
+     </div>
+
+     <div class="mp-box-inputs mp-col-10">
+       <div id="mp-separete-date"></div>
+     </div>
+
+     <div class="mp-box-inputs mp-col-25">
+       <input type="button" class="button" id="applyCoupon" value="Apply">
+     </div>
+
+     <div class="mp-box-inputs mp-col-100">
+       <span class="mp-discount" id="mpCouponApplyed"></span>
+       <span class="mp-error" id="mpCouponError"></span>
+     </div>
+   </div>
+
+   <div id="mercadopago-form-customer-and-card" style="display: none;">
+
+     <div class="mp-box-inputs mp-line">
+       <label for="paymentMethodIdSelector">Payment Method <em>*</em></label>
+
+       <select id="paymentMethodSelector" name="mercadopago_custom[paymentMethodSelector]" data-checkout="cardId">
+         <optgroup label="Your Card" id="payment-methods-for-customer-and-cards">  </optgroup>
+
+         <optgroup label="Other Cards" id="payment-methods-list-other-cards">
+           <option value="-1">Other Card</option>
+         </optgroup>
+
+       </select>
+     </div>
+
+     <div class="mp-box-inputs mp-line" id="mp-securityCode-customer-and-card">
+       <div class="mp-box-inputs mp-col-45">
+         <label for="customer-and-card-securityCode">Security code <em>*</em></label>
+         <input type="text" id="customer-and-card-securityCode" data-checkout="securityCode" autocomplete="off" maxlength="4">
+
+         <span class="mp-error" id="mp-error-224" data-main="#customer-and-card-securityCode"> Parameter securityCode can not be null/empty </span>
+         <span class="mp-error" id="mp-error-E302" data-main="#customer-and-card-securityCode"> Invalid Security Code </span>
+         <span class="mp-error" id="mp-error-E203" data-main="#customer-and-card-securityCode"> Invalid Security Code </span>
+       </div>
+     </div>
+
+   </div> <!--  end mercadopago-form-osc -->
+
+   <div id="mercadopago-form">
+     <div class="mp-box-inputs mp-col-100">
+       <label for="cardNumber">Credit card number <em>*</em></label>
+       <input type="text" id="cardNumber" data-checkout="cardNumber" autocomplete="off">
+       <span class="mp-error" id="mp-error-205" data-main="#cardNumber"> Parameter cardNumber can not be null/empty </span>
+       <span class="mp-error" id="mp-error-E301" data-main="#cardNumber"> Invalid Card Number </span>
+     </div>
+
+     <div class="mp-box-inputs mp-line">
+       <div class="mp-box-inputs mp-col-45">
+         <label for="cardExpirationMonth">Expiration month <em>*</em></label>
+         <select id="cardExpirationMonth" data-checkout="cardExpirationMonth" name="mercadopago_custom[cardExpirationMonth]">
+           <option value="-1"> Month </option>
+                         <option value="1"> 1</option>
+                         <option value="2"> 2</option>
+                         <option value="3"> 3</option>
+                         <option value="4"> 4</option>
+                         <option value="5"> 5</option>
+                         <option value="6"> 6</option>
+                         <option value="7"> 7</option>
+                         <option value="8"> 8</option>
+                         <option value="9"> 9</option>
+                         <option value="10"> 10</option>
+                         <option value="11"> 11</option>
+                         <option value="12"> 12</option>
+                     </select>
+       </div>
+
+       <div class="mp-box-inputs mp-col-10">
+         <div id="mp-separete-date">
+           /
+         </div>
+       </div>
+
+       <div class="mp-box-inputs mp-col-45">
+         <label for="cardExpirationYear">Expiration year <em>*</em></label>
+         <select id="cardExpirationYear" data-checkout="cardExpirationYear" name="mercadopago_custom[cardExpirationYear]">
+           <option value="-1"> Year </option>
+                         <option value="2019"> 2019 </option>
+                         <option value="2020"> 2020 </option>
+                         <option value="2021"> 2021 </option>
+                         <option value="2022"> 2022 </option>
+                         <option value="2023"> 2023 </option>
+                         <option value="2024"> 2024 </option>
+                         <option value="2025"> 2025 </option>
+                         <option value="2026"> 2026 </option>
+                         <option value="2027"> 2027 </option>
+                         <option value="2028"> 2028 </option>
+                         <option value="2029"> 2029 </option>
+                     </select>
+       </div>
+
+       <span class="mp-error" id="mp-error-208" data-main="#cardExpirationMonth"> Invalid Expiration Date </span>
+       <span class="mp-error" id="mp-error-209" data-main="#cardExpirationYear"> </span>
+       <span class="mp-error" id="mp-error-325" data-main="#cardExpirationMonth"> Invalid Expiration Date </span>
+       <span class="mp-error" id="mp-error-326" data-main="#cardExpirationYear"> </span>
+
+     </div>
+
+     <div class="mp-box-inputs mp-col-100">
+       <label for="cardholderName">Card holder name <em>*</em></label>
+       <input type="text" id="cardholderName" name="mercadopago_custom[cardholderName]" data-checkout="cardholderName" autocomplete="off">
+
+       <span class="mp-error" id="mp-error-221" data-main="#cardholderName"> Parameter cardholderName can not be null/empty </span>
+       <span class="mp-error" id="mp-error-316" data-main="#cardholderName"> Invalid Card Holder Name </span>
+     </div>
+
+     <div class="mp-box-inputs mp-line">
+       <div class="mp-box-inputs mp-col-45">
+         <label for="securityCode">Security code <em>*</em></label>
+         <input type="text" id="securityCode" data-checkout="securityCode" autocomplete="off" maxlength="4">
+
+         <span class="mp-error" id="mp-error-224" data-main="#securityCode"> Parameter securityCode can not be null/empty </span>
+         <span class="mp-error" id="mp-error-E302" data-main="#securityCode"> Invalid Security Code </span>
+       </div>
+     </div>
+
+     <div class="mp-box-inputs mp-col-100 mp-doc">
+       <div class="mp-box-inputs mp-col-35 mp-docType">
+         <label for="docType">Document Type <em>*</em></label>
+         <select id="docType" data-checkout="docType" name="mercadopago_custom[docType]"><option value="DNI">DNI</option><option value="CI">Cédula</option><option value="LC">L.C.</option><option value="LE">L.E.</option><option value="Otro">Otro</option></select>
+
+         <span class="mp-error" id="mp-error-212" data-main="#docType"> Parameter docType can not be null/empty </span>
+         <span class="mp-error" id="mp-error-322" data-main="#docType"> Invalid Document Type </span>
+       </div>
+
+       <div class="mp-box-inputs mp-col-65 mp-docNumber">
+         <label for="docNumber">Document number <em>*</em></label>
+         <input type="text" id="docNumber" data-checkout="docNumber" name="mercadopago_custom[docNumber]" autocomplete="off">
+
+         <span class="mp-error" id="mp-error-214" data-main="#docNumber"> Parameter docNumber can not be null/empty </span>
+         <span class="mp-error" id="mp-error-324" data-main="#docNumber"> Invalid Document Number </span>
+       </div>
+     </div>
+
+
+
+   </div>  <!-- end #mercadopago-form -->
+
+   <div class="mp-box-inputs mp-line">
+     <div class="mp-box-inputs mp-col-50">
+       <input type="submit" id="btnSubmit" name="btnSubmit" value="Pay">
+     </div>
+     <!-- NOT DELETE LOADING-->
+     <div class="mp-box-inputs mp-col-25">
+       <div id="mp-box-loading">
+       </div>
+     </div>
+   </div>
+   <div class="mp-box-inputs mp-col-100" id="mercadopago-utilities">
+     <input type="text" id="site_id" name="mercadopago_custom[site_id]">
+     <input type="text" id="amount" value="5.01" name="mercadopago_custom[amount]">
+     <input type="hidden" id="campaign_id" name="mercadopago_custom[campaign_id]">
+     <input type="hidden" id="campaign" name="mercadopago_custom[campaign]">
+     <input type="hidden" id="discount" name="mercadopago_custom[discount]">
+     <input type="text" id="paymentMethodId" name="mercadopago_custom[paymentMethodId]">
+     <input type="text" id="token" name="mercadopago_custom[token]">
+     <input type="text" id="cardTruncated" name="mercadopago_custom[cardTruncated]">
+     <input type="text" id="CustomerAndCard" name="mercadopago_custom[CustomerAndCard]">
+   </div>
+ </form>
+</div>
+ </body>
+
+
+<script src="../../../script/MPv1.js" type="text/javascript"></script>
+<script>
+apiready=function(){
+
+
+
+	}
+ 
+// var jQuery=jQuery.noConflict();
+// var jQuery=$.noConflict();
+ function async(u, c) {
+   var d = document;
+   var t = 'script';
+   var o = d.createElement(t);
+   var s = d.getElementsByTagName(t)[0];
+
+   o.src = u;
+   if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+   s.parentNode.insertBefore(o, s);
+ }
+
+ async('https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js', function() {
+
+   var mercadopago_site_id = 'MLA';
+   var mercadopago_public_key = 'TEST-d32dd1e7-9fed-47c5-9347-6c113189665d';
+   var mercadopago_payer_email = '6108412427@qq.com';
+   MPv1.create_token_on.event = false;
+
+   //form
+   MPv1.selectors.form = '#mercadopago-formulario';
+
+   MPv1.text.choose = 'Choose';
+   MPv1.text.other_bank = 'Other Bank';
+   MPv1.text.discount_info1 = 'You will save';
+   MPv1.text.discount_info2 = 'with discount from';
+   MPv1.text.discount_info3 = 'Total of your purchase:';
+   MPv1.text.discount_info4 = 'Total of your purchase with discount:';
+   MPv1.text.discount_info5 = '*Upon payment approval';
+   MPv1.text.discount_info6 = 'Terms and Conditions of Use';
+   MPv1.text.apply = 'Apply';
+   MPv1.text.remove = 'Remove';
+   MPv1.text.coupon_empty = 'Please, inform your coupon code';
+
+   MPv1.paths.check = "./catalog/view/image/payment/check.png";
+   MPv1.paths.error = "./catalog/view/image/payment/error.png";
+   MPv1.paths.loading = "./catalog/view/image/payment/loading.gif";
+
+
+   var url_site = window.location.href.split('index.php')[0];
+   var url_message = url_site.slice(-1) == '/' ? url_site : url_site + '/';
+   url_message += 'index.php?route=extension/payment/mp_transparente/coupon';
+
+   MPv1.sdkResponseHandler = function(status, response) {
+
+     var secCode = $('#customer-and-card-securityCode').val();
+     var secCode2 = $('#securityCode').val();
+     var inst = $('#installments').val();
+     var $form = MPv1.getForm();
+
+     document.querySelector(MPv1.selectors.box_loading).style.background = "";
+
+
+
+     if (secCode == "" && secCode2 == "") {
+       response = {cause : [{code:"E302"}]};
+       MPv1.showErrors(response);
+
+     } else if (status != 200 && status != 201) {
+       MPv1.showErrors(response);
+
+     } else {
+       var token = document.querySelector(MPv1.selectors.token);
+       token.value = response.id;
+
+       if(MPv1.add_truncated_card){
+         var card = MPv1.truncateCard(response);
+         document.querySelector(MPv1.selectors.cardTruncated).value=card;
+       }
+
+       if (!MPv1.create_token_on.event) {
+         doSubmit=true;
+         btn = document.querySelector(MPv1.selectors.form);
+         btn.submit();
+       }
+     }
+   }
+
+   MPv1.Initialize(mercadopago_site_id, mercadopago_public_key, '', url_message, mercadopago_payer_email);
+
+ });
+
+</script>
+</html>

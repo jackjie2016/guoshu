@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>图片裁剪</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+</head>
+<body>
+    <header class="aui-bar aui-bar-nav aui-text-left" id="aui-header">
+		<div class="aui-title">图片裁剪</div>
+	</header>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var header = $api.byId('aui-header');
+        //适配iOS7+，Android4.4+状态栏沉浸式效果，详见config文档statusBarAppearance字段
+        $api.fixStatusBar(header);
+        var headerH = $api.offset(header).h;
+        var frameH = api.winHeight - headerH;
+        api.openFrame({
+	        name: 'zknight_head_img_frm',
+	        url: 'zknight_head_img_frm.html',
+	        allowEdit : true,
+	        rect: {
+		        x:0,
+		        y:headerH,
+		        w:'auto',
+		        h:frameH
+	        },
+	        vScrollBarEnabled: false,
+			allowEdit : true
+        });
+	};
+</script>
+</html>

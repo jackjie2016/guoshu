@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Waypoints in Directions</title>
+      <link rel="stylesheet" type="text/css" href="../../../css/new/aui.css" />
+    <style>
+
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #contain{
+            /*height: 400px;*/
+            position: relative;
+      }
+      #map {
+        /*height: 400px;*/
+        float: left;
+        width: 100%;
+
+      }
+      .center_marker{
+        position: absolute;
+        z-index: 10000;
+        /*top: 165px;*/
+        left: 50%;
+        width: 15px;
+      }
+
+    </style>
+  </head>
+  <body>
+       <div id="contain"  v-bind:style="{  height: win_height + 'px' }">
+         <img src="../../../image/marker.png" class="center_marker" v-bind:style="{  top: marker_top + 'px' }">
+         <div id="map"  v-bind:style="{  height: win_height + 'px' }"> </div>
+       </div>
+	<script type="text/javascript" src="../../../script/api.js"></script>
+
+  <script type="text/javascript" src="../../../script/common.js"></script>
+  <script type="text/javascript" src="../../../script/vue.js"></script>
+  <script type="text/javascript" src="../../../script/google.js"></script>
+
+  <script src="https://maps.google.cn/maps/api/js?key=AIzaSyBour8LxyrDKxgp8jAXUfpg2kH5x784YE8&libraries=places&callback=initMap" async defer></script>
+
+    <script>
+    var vm = new Vue({
+        el: '#contain',
+        data: {
+        win_height:0,
+        marker_top:0,
+        },
+        methods: {
+            init: function () {
+
+              },
+
+
+        }
+    });
+
+
+    var map;
+    var polygonArr = [];
+    var result_mark;
+    var localPos;
+	 apiready = function() {
+     vm.init();
+     api.sendEvent({
+         name: 'ask_map_frm'
+     });
+    //地图高度咨询
+     api.addEventListener({
+          name: 'map_win'
+          }, function(ret, err){
+         if( ret ){
+         vm.win_height=ret.value.height;
+         vm.marker_top=ret.value.height/2-15;
+         if(api.pageParam.geometry!=''){
+           localPos=api.pageParam.geometry.location;
+
+          gotoPosition(localPos['lat'],localPos['lng']);
+           console.log(JSON.stringify(api.pageParam.geometry.location));
+         }
+
+         }
+     });
+  };
+
+
+      function initMap() {
+
+          map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 16,
+          center:new google.maps.LatLng(51.508742,-0.120850),
+          mapTypeId: "terrain",
+          mapTypeControl: false,
+          scaleControl: false,
+          streetViewControl: false,
+          zoomControl: false,
+          fullscreenControl:false,
+          gestureHandling: 'greedy'
+           });
+         }
+
+
+          //定位到指定的位置
+       function gotoPosition(lat,lng) {
+             var position = new google.maps.LatLng(lat,lng);
+             map.panTo(position, 15);
+             map.setCenter(position);
+         }
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+  </body>
+</html>

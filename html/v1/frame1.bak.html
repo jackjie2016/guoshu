@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html class="bg3">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>端API</title>
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/zhu.css"/>
+    <style>
+        #search{background-color: #22cca9;}
+        #jiedaok{background: url(../../image/weizhi2.png) 8px center no-repeat #1bbc9b;background-size: 18px;padding:7px 10px 7px 36px;border-top:1px solid #7ddcc8;}
+        .nav-menu{position: absolute;right: 0px;top:0px;z-index: 88;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;padding-left: 10px;}
+        #fenlei{white-space: nowrap;overflow-x: scroll;z-index: 99999;}
+        #fenlei span{display: inline-block;line-height: 28px; font-size: 14px;color: #444;border-bottom: 2px solid #fff;padding: 0 10px;}
+        #fenlei  span.on{display: inline-block;line-height: 28px; font-size: 14px;color: #1bbc9b;border-bottom: 2px solid #1bbc9b;padding: 0 10px;}
+        .erji_zi{width: 78px;height: 60px;margin-right: 10px;display: inline-block;font-size: 14px;text-align: center;line-height: 32px;}
+        .erji_zi img{width: 72%;display: inline-block;}
+        .zhongdian{left:60% !important;top:100% !important;width: 24px !important;height: 24px !important;position: absolute;border-radius: 50%;}
+
+        .isStuck{
+            left:0px;right: 0px;overflow-x: scroll;
+
+        }
+
+    </style>
+
+    <script type="text/javascript" src="../../script/api.js"></script>
+    <script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../../script/zhu.js"></script>
+    <script type="text/javascript" src="../../script/gototop.js"></script>
+    <script type="text/javascript" src="../../script/stickUp.js"></script>
+</head>
+<body class="bg3">
+  <div class="wenzi12 yanse4 bg-zhu over-cang" id="jiedaok">
+  <span id="jiedao">定位中</span>
+  </div>
+
+
+    <div class="pad5 wenzi14 bg1" id="fenlei" style="white-space: nowrap;overflow-x: scroll;">
+<span class="on"  data-name="分类" data-id="1">分类</span>
+    </div>
+
+<div class="pad10 wenzi14 bg1" id="erji" style="border-bottom:1px solid #f6f6f6;white-space: nowrap;overflow-x: scroll;">
+    <span class="erji_zi cang"><img src="../../image/shucai.png"><br>分类</span>
+</div>
+
+<style>
+
+
+</style>
+
+
+  <div class="title top5"><span class="xxxx">◆</span>新品推荐<span class="xxxx">◆</span></div>
+  <div class="pad5" id="shoplist"></div>
+  <div class="clear"></div>
+
+    <div class="title top5"><span class="xxxx">◆</span>热卖推荐<span class="xxxx">◆</span></div>
+    <div class="pad5" id="shoplist2"></div>
+
+  <div class="clear juzhong pad20"><img src="../../image/yxcs.png" height="18" style="display:inline-block;"></div>
+
+
+</body>
+</html>
+<script type="text/javascript">
+var cat_id=0,lat,lng;
+apiready=function(){
+
+  api.addEventListener({
+      name: 'jiedao_dingwei'
+  }, function(ret, err) {
+    var zhi=ret.value;
+    $("#jiedao").html(zhi.dizhi)
+  });
+
+cat_id=api.pageParam.id;
+
+  $(function(){
+
+
+$('#fenlei').stickUp();
+
+
+    $("#fenlei").on('click','span',function(){
+      $("#fenlei span").removeClass("on");
+      $(this).addClass("on");
+      //$("#fenlei").scrollLeft(($("#fenlei span.on").position().left));
+      //console.log($("#fenlei span.on").position().left)
+      $(".erji_zi").addClass("cang");
+      $(".erji_zi.c_"+$(this).data('id')).removeClass("cang");
+      get_shop_list();
+      api.sendEvent({
+          name: 'to_fenlei2',
+          extra: {
+              id: $(this).data("id"),
+              name: $(this).data("name")
+          }
+      });
+    });
+
+    get_fenlei();
+
+    api.addEventListener({
+        name: 'to_fenlei'
+    }, function(ret, err) {
+      var zhi=ret.value;
+      $('[data-id="'+zhi.id+'"]').click()
+    });
+
+  })
+
+
+  api.setCustomRefreshHeaderInfo({
+  bgColor: '#f2f2f2',
+  images: ['widget://image/jiazai/1.png','widget://image/jiazai/2.png','widget://image/jiazai/3.png','widget://image/jiazai/4.png'],
+  tips: {
+      pull: '下拉刷新',
+      threshold: '松开立即刷新',
+      load: '正在刷新'
+  }
+}, function() {
+  //下拉刷新被触发，自动进入加载状态，使用 api.refreshHeaderLoadDone() 手动结束加载中状态
+  //下拉刷新被触发，使用 api.refreshHeaderLoadDone() 结束加载中状态
+jiazai();
+});
+
+
+
+}
+
+
+
+
+
+function jiazai(){
+  api.refreshHeaderLoadDone();
+  get_fenlei()
+}
+/**
+*获取分类数据
+*/
+function get_fenlei(){
+  api.ajax({
+      url: cate_list_url,
+      method: 'post',
+      data: {
+      }
+  },function(ret, err){
+      if (ret) {
+        //alert(JSON.stringify(ret));
+          if(ret.code==1){
+            var data=ret.data.list,str='',str2='';
+            for (var i = 0; i < json_num(data); i++) {
+              str+='<span class="'+((i==0)?'on':'')+'"  data-name="'+data[i].name+'" data-id="'+data[i].category_id+'">'+data[i].name+'</span>';
+              for (var ii = 0; ii < json_num(data[i].child); ii++) {
+                str2+='<span onclick="to_fenlei_2('+data[i].child[ii].category_id+',\''+data[i].name+'\','+data[i].category_id+')" class="erji_zi '+((i==0)?'':'cang')+'  c_'+data[i].category_id+'"><img src="'+(data[i].child[ii].image?data[i].child[ii].image.file_path:'../../image/shucai.png')+'"><br>'+data[i].child[ii].name+'</span>';
+              }
+            }
+            //alert(str)
+
+            $("#fenlei").html(str);
+            $("#erji").html(str2);
+            get_shop_list();
+          }
+      } else {
+
+          tishi( err.msg );
+      }
+  });
+
+}
+
+/**
+*获取商品列表
+*/
+function get_shop_list(){
+
+  api.ajax({
+      url: cate_goodslist_url,
+      method: 'post',
+      data: {
+        values:{category_id:$("#fenlei span.on").data("id")}
+      }
+  },function(ret, err){
+      if (ret) {
+          if(ret.code==1){
+            var data=ret.data.list.data,str='';
+
+            for (var i = 0; i < json_num(data); i++) {
+
+              str+='<div class="t_list">';
+                str+='<div class="t_k">';
+                if(data[i].stock_num==0){
+                  str+='<div class="meiyoulek"   onclick="to_goods_info('+data[i].goods_id+')"><span class="meiyoule">抢光了</span></div>';
+                }
+                  str+='<img src="'+data[i].image+'"  onclick="to_goods_info('+data[i].goods_id+')" id="ttj_'+data[i].goods_id+'" class="widthall">';
+                  str+='<div class="wenzi12 over-cang"   onclick="to_goods_info('+data[i].goods_id+')">'+data[i].goods_name+'</div>';
+                  str+='<div class="t_tags">';
+                  if(data[i].prom){
+                  if(data[i].prom.style.value==1){
+                    str+='<span>秒杀</span>';
+                  }else if(data[i].prom.style.value==2){
+                      str+='<span>限时抢购</span>';
+                  }
+                  }
+                  str+='</div>';
+                  str+='<div class="hanggao24 wenzi12 money">￥<span><span class="wenzi16">'+data[i].now_price.value.substr(0,data[i].now_price.value.length-3)+'</span>'+data[i].now_price.value.substr(-3, 3)+'</span><s class="yanse0">￥52.00</s>';
+
+                  str+='</div>';
+                  str+='<div class="hanggao18 height18 wenzi12 lvka-yanse">';
+                  if(data[i].vip_price){
+                  str+='￥<span>'+data[i].vip_price+'</span><span class="price-lvka">绿卡价</span>';
+                  }
+                  str+='</div>';
+                  str+='<img src="../../image/buy.png" class="cart_btn" height="25"  onclick="add_cart('+data[i].goods_id+','+data[i].goods_sku_id+',\'ttj\')">';
+                str+='</div>';
+              str+='</div>';
+            }
+
+            $("#shoplist,#shoplist2").html(str+'<div class="clear"></div>');
+            //$(".meiyoulek").click(function(){  tishi("抢光了");});
+          }
+      } else {
+          tishi( err.msg );
+      }
+  });
+
+}
+
+
+
+
+
+function to_fenlei_2(id,ttt,id1){
+  api.openWin({
+      name: 'to_fenlei_2',
+      url: 'widget://html/v1/fenlei_common_win.html',
+      pageParam: {
+          id:id+"|"+id1,
+          title:ttt,
+          muban:"goods_cate"
+      }
+  });
+}
+
+function add_cart(id,sku_id){
+  is_login();
+  add_to_cart(id,sku_id)
+  var weizhi=$("#shop_tu_"+id).offset();
+  var obj=$("#shop_tu_"+id);
+  $("body").append('<img src="'+obj.attr('src')+'" class="dongtai2" id="donghua_tu" style="border-radius: 50%;width:'+obj.width()+'px;height:'+obj.height()+'px;position:absolute;left:'+weizhi.left+'px;top:'+weizhi.top+'px;z-index:999999">');
+
+  setTimeout(function(){
+    //$("#donghua_tu").addClass("zhongdian");$("#donghua_tu").remove()
+    $("#donghua_tu").animate({top:(document.body.scrollTop+document.body.clientHeight+30)+"px",left:"60%",width:"24px",height:"24px"},500,"linear",function(){
+      setTimeout(function(){$("#donghua_tu").remove()},1000);
+    });
+  },200);
+}
+
+function add_to_cart(goods_id,sku_id){
+  api.ajax({
+      url: add_to_cart_url,
+      method: 'post',
+      data: {
+          values: {
+              token: api.getPrefs({sync: true,key:'login_id'}),
+              goods_id:goods_id,
+              goods_sku_id:sku_id,
+              goods_num:1
+          }
+      }
+  },function(ret, err){
+      if (ret) {
+            tishi(ret.msg);
+            if(ret.code==1){
+              num=ret.data.cart_total_num
+              api.sendEvent({
+                  name: 'update_cart_num',
+                  extra: {
+                      num: num
+                  }
+              });
+            }
+
+      } else {
+          //alert( JSON.stringify( err ) );
+          tishi(err.msg)
+      }
+  });
+
+}
+</script>

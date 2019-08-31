@@ -1,0 +1,560 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,aItemress=no">
+    <title>订单详情</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+</head>
+<body>
+    <section class="aui-content-padded" id="app">
+        <div class="aui-card-list" style=" border-radius: 5px; ">
+            <div class="aui-card-list-header">
+                Gracias por confiar en nosotros y desearle una vida feliz.
+            </div>
+                <div class="aui-media-list-item-inner ">
+                    <div class="aui-col-xs-2" >
+                  </div>
+         <div class="aui-col-xs-10">
+             <div class="aui-list-item-text text-white">
+               <div class="aui-info aui-font-size-12" v-if="order_status.value==10">
+                                           <div class="aui-info-item"> </div>
+                                          <!-- 已经支付的:拣货中,待配送,配送中-->
+                                          <div class="aui-info-item" v-if="pay_status.value==20">
+
+              						              	   <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default aui-margin-r-10" @click="cancel_order()" v-if="peihuo_status.value==10">取消订单</div>
+                                             <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-success aui-margin-r-10" @click="readd_to_cart()">再次购买</div>
+                                             <!--这个后期考虑  -->
+                                             <!-- <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-success aui-margin-r-10" @click="comment_order()" v-if="detail.peihuo_status.value==10">修改配送时间</div> -->
+                                          </div>
+                                          <!--未支付的 -->
+                                          <div class="aui-info-item" v-else>
+                                            <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default aui-margin-r-10" @click="delete_order()" >删除订单</div>
+                                            <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default aui-margin-r-10" @click="cancel_order()">取消订单</div>
+                                            <!--立即支付信用卡的比较复杂,后面考虑 -->
+                                            <!-- <div class="aui-btn   aui-font-size-12 aui-btn-success aui-margin-r-10" @click="paynow(index)">立即支付</div> -->
+                                          </div>
+                                  </div>
+                                  <!-- 已完成的订单:删除订单,再次购买,评价:未评价和已评价 -->
+                                  <div class="aui-info aui-font-size-12" v-if="order_status.value==30">
+                                    <div class="aui-info-item"> </div>
+                                    <div class="aui-info-item">
+                                     <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default aui-margin-r-10" @click="delete_order(index)">删除订单</div>
+                                     <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-success aui-margin-r-10" @click="readd_to_cart(index)">再次购买</div>
+                                     <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-success aui-margin-r-10" @click="comment_order(index)" v-if="detail.is_comment==0">评价一下</div>
+                                     <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-success aui-margin-r-10" @click="comment_detail(index)" v-else>查看评价</div>
+                                    </div>
+                                  </div>
+                                  <!-- 取消的订单 -->
+                                  <div class="aui-info aui-font-size-12" v-if="order_status.value==20">
+                                  <div class="aui-info-item"> </div>
+                                    <div class="aui-info-item">
+                                    <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default aui-margin-r-10" @click="delete_order()" >删除订单</div>
+                                    <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-success aui-margin-r-10" @click="readd_to_cart()">再次购买</div>
+                                    </div>
+                                  </div>
+                                  <!-- 取消申请中  -->
+                                  <div class="aui-info aui-font-size-12" v-if="order_status.value==21">
+                                    <div class="aui-info-item"> </div>
+                                    <!-- <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default aui-margin-r-10" @click="delete_order(index)" v-if="detail.peihuo_status.value==10">删除订单</div> -->
+                                    <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-success aui-margin-r-10" @click="readd_to_cart()">再次购买</div>
+
+                                  </div>
+               <!-- order_status 10: 进行中：可以申请退款，取消订单 确认收货 -->
+                <!-- <div class="aui-info aui-margin-t-10 aui-padded-l-10 aui-padded-r-10" v-if="order_status['value']==10">
+                     <div class="aui-info-item"></div>
+                  <div class="aui-info-item"><div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default" @click="cancel_order()">Cancelar</div></div>
+                  <div class="aui-info-item"><div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default" @click="refauld_order()" v-if="pay_status['value']==20">申请退款</div></div>
+                  <div class="aui-info-item"><div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default" @click="refauld_order()" v-if="delivery_status['value']==20">Confirmar</div></div>
+               </div> -->
+              <!--订单完成30 可以删除订单，申请退款，评价  -->
+              <!-- <div class="aui-info aui-margin-t-10 aui-padded-l-10 aui-padded-r-10" v-if="order_status['value']==30">
+              <div class="aui-info-item"></div>
+              <div class="aui-info-item"><div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default" @click="delete_order()">Eliminar orden</div></div>
+              <div class="aui-info-item"><div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default" @click="cancel_order()">Cancelar</div></div>
+                <div class="aui-info-item"><div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default" @click="refauld_order()">申请退款</div></div>
+               <div class="aui-info-item">
+                               <div class="aui-info-item"></div>
+                 <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-success " @click="comment_order()" v-if="detail.is_comment==0">Evaluar</div>
+                  <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-success " @click="comment_detail()" v-if="detail.is_comment==1">Ver opiniones</div>
+             </div>
+
+              </div> -->
+              <!--20取消 21待取消  -->
+
+              <!-- <div class="aui-info aui-margin-t-10 aui-padded-l-10 aui-padded-r-10" v-if="order_status['value']==21">
+               <div class="aui-info-item"><div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default" @click="delete_order()">删除订单</div></div>
+              <div class="aui-info-item"><div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default" >取消申请中</div></div>
+
+             </div> -->
+             <!--  取消了的订单-->
+             <!-- <div class="aui-info aui-margin-t-10 aui-padded-l-10 aui-padded-r-10" v-if="order_status['value']==20">
+              <div class="aui-info-item"></div>
+             <div class="aui-info-item"><div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default" @click="delete_order()">Eliminar orden</div></div>
+             </div> -->
+              </div>
+            </div>
+       </div>
+
+
+
+        </div>
+
+        <div class="aui-card-list" style=" border-radius: 5px; " v-if="driver_id!=0">
+		 <div class="aui-info aui-margin-t-10 aui-padded-l-10 aui-padded-r-10">
+            <div class="aui-info-item">
+                <img src="../../../image/222.png" style="width:1.5rem" class="aui-img-round" /><span class="aui-margin-l-5">{{driver.name}}</span>
+                </div>
+            <div class="aui-info-item"><img src="../../../image/icon/call.png" style="width:1.5rem" class="aui-img-round" @click="call_driver()"/></div>
+        </div>
+        </div>
+    <div class="aui-content aui-margin-b-15">
+    <ul class="aui-list aui-list-in" style=" border-radius: 5px; ">
+        <li class="aui-list-item aui-list-item-middle">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-title">Hora de la cita</div>
+                <div class="aui-list-item-right">{{book_time['text']}}</div>
+				</div>
+        </li>
+        <li class="aui-list-item" v-if="delivery_type.value==10">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-title">Dirección</div>
+                <div class="aui-list-item-right">
+				   <div class="aui-list-item-text"  >
+                   {{address.add_detail}},{{address.detail}},{{address.merger_locality}}
+                        </div>
+						 <div class="aui-list-item-text"  >
+                   {{address.name}}  {{address.phone}}
+              </div>
+			     	</div>
+            </div>
+        </li>
+       <li class="aui-list-item aui-list-item-middle"  v-if="delivery_type.value==20">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-title">Picker</div>
+                <div class="aui-list-item-right">{{extract.linkman}}</div>
+				 </div>
+        </li>
+        <!--  联系电话-->
+		<li class="aui-list-item aui-list-item-middle" v-if="delivery_type.value==20">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-title">Numero de contacto</div>
+                <div class="aui-list-item-right">{{extract.phone}}</div>
+				 </div>
+        </li>
+    </ul>
+        </div>
+
+        <div class="aui-card-list aui-padded-b-10 aui-padded-t-10" style=" border-radius: 5px; ">
+
+		   <div class="aui-list-item   aui-margin-t-10" v-for="(vo,index) in goods_list">
+                <div class="aui-media-list-item-inner ">
+                    <div class="aui-col-xs-4" >
+                        <img :src="vo.image.file_path" class="aui-img-round aui-padded-r-10"  style="    width: 80%;    float: right;">
+                    </div>
+                    <div class="aui-col-xs-8">
+
+                          <div class="aui-list-item-text">
+						    <div class="aui-col-xs-8 aui-font-size-14">{{vo.goods_name}}</div>
+						   <div class="aui-col-xs-4">${{vo.total_pay_price}}</div>
+							   </div>
+                        <div class="aui-list-item-text text-white aui-font-size-12">
+                           <div>单价:${{vo.goods_price}} 数量：{{vo.per_unit}}{{vo.units}}</div>
+                        </div>
+						 <div class="aui-list-item-text text-white">
+                          <div class="aui-info aui-margin-t-10 aui-padded-l-10 aui-padded-r-10">
+
+            <div class="aui-info-item"> </div>
+            <!-- <div class="aui-info-item"><div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default">申请退款</div></div> -->
+            <div class="aui-info-item"><div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default" @click="add_to_cart(index)">Añadir al carrito</div></div>
+        </div>
+                        </div>
+                    </div>
+
+                </div>
+				   <div class="aui-media-list-item-inner" >
+					<div class=" aui-padded-l-15 aui-font-size-12 aui-text-success" id="tips-1">
+                    <i class="aui-iconfont aui-icon-info"></i>配货退款的信息
+                </div>
+                </div>
+            </div>
+			 <!-- <div class="aui-list-item  aui-margin-t-10 ">
+                <div class="aui-media-list-item-inner ">
+                    <div class="aui-col-xs-4" >
+                        <img src="../../../image/552.jpg" class="aui-img-round aui-padded-r-10"  style="    width: 80%;    float: right;">
+                    </div>
+                    <div class="aui-col-xs-8">
+
+                          <div class="aui-list-item-text">
+						    <div class="aui-col-xs-8 aui-font-size-14">联系电话联系电话</div>
+						   <div class="aui-col-xs-4">$12.99</div>
+							   </div>
+                        <div class="aui-list-item-text text-white aui-font-size-12">
+                           <div>单价:$13.09 数量：1</div>
+                        </div>
+						 <div class="aui-list-item-text text-white">
+                          <div class="aui-info aui-margin-t-10 aui-padded-l-10 aui-padded-r-10">
+
+            <div class="aui-info-item"> </div>
+            <div class="aui-info-item"><div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default">申请退款</div></div>
+            <div class="aui-info-item"><div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default">加入购物车</div></div>
+        </div>
+                        </div>
+                    </div>
+
+                </div>
+				   <div class="aui-media-list-item-inner" >
+					<div class="aui-padded-l-15  aui-font-size-12 aui-text-success" id="tips-1">
+                    <i class="aui-iconfont aui-icon-info"></i>消息提示条消息提示条消息提示
+                </div>
+                </div>
+            </div>
+           <div class="aui-info aui-info aui-margin-t-5 aui-padded-l-5 aui-padded-r-10">
+            <div class="aui-info-item">
+                 <span class="aui-margin-l-5">商品金额</span>
+                </div>
+            <div class="aui-info-item">${{detail.total_price}}</div>
+        </div> -->
+        <div class="aui-info aui-info aui-margin-t-5 aui-padded-l-5 aui-padded-r-10">
+               <div class="aui-info-item">
+                    <span class="aui-margin-l-5">Cantidad de productos</span>
+                   </div>
+               <div class="aui-info-item">${{detail.total_price}}</div>
+           </div>
+     <div class="aui-info aui-info aui-margin-t-5 aui-padded-l-5 aui-padded-r-10">
+            <div class="aui-info-item">
+                 <span class="aui-margin-l-5">Tarifa de envío</span>
+                </div>
+            <div class="aui-info-item">${{detail.express_price}}</div>
+        </div>
+        <div class="aui-info aui-info aui-margin-t-5 aui-padded-l-5 aui-padded-r-10" v-if="detail.coupon_price!='0.00'">
+            <div class="aui-info-item">
+                 <span class="aui-margin-l-5">Cupón</span>
+                </div>
+            <div class="aui-info-item">-${{detail.coupon_price}}</div>
+        </div>
+
+		  <div class="aui-info aui-info aui-margin-t-5 aui-padded-l-5 aui-padded-r-10">
+            <div class="aui-info-item">
+                 <span class="aui-margin-l-5">Oferta de eventos</span>
+                </div>
+            <div class="aui-info-item">-${{detail.prom_discount_price}}</div>
+        </div>
+
+		  <div class="aui-info aui-info aui-margin-t-5 aui-padded-l-5 aui-padded-r-10" v-if="detail.integral_money!='0.00'">
+            <div class="aui-info-item">
+                 <span class="aui-margin-l-5">Deducción de puntos</span>
+                </div>
+            <div class="aui-info-item">-${{detail.integral_money}}</div>
+        </div>
+			  <div class="aui-info aui-info aui-margin-t-5 aui-padded-l-5 aui-padded-r-10" v-if="detail.vip_discount_price!='0.00'">
+            <div class="aui-info-item">
+                 <span class="aui-margin-l-5">Descuento para miembros</span>
+                </div>
+            <div class="aui-info-item">-${{detail.vip_discount_price}}</div>
+        </div>
+		  <div class="aui-info aui-info aui-margin-t-5 aui-padded-l-5 aui-padded-r-10">
+            <div class="aui-info-item">
+                 <span class="aui-margin-l-5">Cantidad de pago</span>
+                </div>
+            <div class="aui-info-item aui-text-danger">${{detail.pay_price}}</div>
+        </div>
+        </div>
+
+		 <div class="aui-card-list" style=" border-radius: 5px; ">
+
+		  <div class="aui-info aui-info aui-margin-t-5 aui-padded-l-5 aui-padded-r-10">
+            <div class="aui-info-item">
+                 <span class="aui-margin-l-5">Número de pedido</span>
+                </div>
+            <div class="aui-info-item">{{detail.order_no}}</div>
+        </div>
+
+			  <div class="aui-info aui-info aui-margin-t-5 aui-padded-l-5 aui-padded-r-10">
+            <div class="aui-info-item">
+                 <span class="aui-margin-l-5">Tiempo de pedido</span>
+                </div>
+            <div class="aui-info-item">{{detail.create_time}}</div>
+        </div>
+		  <div class="aui-info aui-info aui-margin-t-5 aui-padded-l-5 aui-padded-r-10">
+            <div class="aui-info-item">
+                 <span class="aui-margin-l-5">Forma de pago</span>
+                </div>
+            <div class="aui-info-item">{{pay_type}}</div>
+        </div>
+
+        </div>
+    </section>
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/vue.js" ></script>
+<script type="text/javascript" src="../../../script/common.js" ></script>
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#app',
+    data: {
+      detail:'',
+      order_status:'',
+      delivery_status:'',
+      pay_status:'',
+      peihuo_status:'',
+      order_id:0,
+      pay_type:'',
+      address:'',
+      linkinfo:'',
+      book_time:'',
+      driver:'',
+      goods_list:[],
+      driver_id:0,
+      delivery_type:[],
+      extract:[],
+    },
+    methods: {
+      init:function() {
+        if(is_login()){
+          api.ajax({
+              url: order_info_url,
+              method: 'post',
+              data: {
+                  values: {
+                    token: api.getPrefs({sync: true,key:'login_id'}),
+                    order_id:vm.order_id,
+                  }
+              }
+            },function(ret, err){
+              if (ret) {
+                  if(ret.code==1){
+                    // console.log(api.getPrefs({sync: true,key:'login_id'}));
+                    // console.log(JSON.stringify(ret));
+                    vm.detail=ret.data.order;
+                    vm.order_status=ret.data.order.order_status;
+                    vm.delivery_status=ret.data.order.delivery_status;
+                    vm.pay_status=ret.data.order.pay_status;
+                    vm.pay_type=ret.data.order.pay_type.text;
+                    vm.peihuo_status=ret.data.order.peihuo_status;
+                    vm.address=ret.data.order.address;
+                    vm.book_time=ret.data.order.book_time;
+                    vm.driver_id=ret.data.order.driver_id;
+                    vm.driver=ret.data.order.driver;
+                    vm.goods_list=ret.data.order.goods;
+                    vm.delivery_type=ret.data.order.delivery_type;
+                    vm.extract=ret.data.order.extract;
+                    api.sendEvent({
+                        name: 'update_order_status',
+                        extra: {
+                            order_status: ret.data.order.order_status,
+                        }
+                    });
+
+                    // vm.status=ret.data.order.state_text;
+               }else{
+
+               }
+            } else {
+                  // alert( JSON.stringify( err ) );
+                console.log(err.msg)
+              }
+            });
+         }else{
+           go_login();
+        }
+      },
+      // 取消订单
+      cancel_order:function(){
+        var order_id = vm.order_id;
+        api.ajax({
+            url: order_cancel_url,
+            method: 'post',
+            timeout: 30,
+            dataType: 'json',
+            returnAll: false,
+            data: {
+                values: {
+                    token:api.getPrefs({sync: true,key:'login_id'}),
+                    order_id: order_id
+                }
+            }
+        }, function (ret, err) {
+            if (ret) {
+                api.toast({
+                    msg: ret.msg,
+                    duration: 2000,
+                    location: 'bottom'
+                });
+                if (ret.code == 1) {
+                    setTimeout(function () {
+                        vm.init();
+                    },500);
+                }
+                // console.log(JSON.stringify(ret));
+            } else {
+                console.log(JSON.stringify(err));
+            }
+        });
+      },
+      // 确认收货
+      receipt:function(){
+          var order_id = vm.order_id;
+          api.ajax({
+              url: receipt_url,
+              method: 'post',
+              timeout: 30,
+              dataType: 'json',
+              returnAll: false,
+              data: {
+                  values: {
+                      token:api.getPrefs({sync: true,key:'login_id'}),
+                      order_id: order_id
+                  }
+              }
+          }, function (ret, err) {
+              if (ret) {
+                  api.toast({
+                      msg: ret.msg,
+                      duration: 2000,
+                      location: 'bottom'
+                  });
+                  if (ret.code == 1) {
+                      setTimeout(function () {
+                          vm.init();
+                      },500);
+                  }
+                  console.log(JSON.stringify(ret));
+              } else {
+                  console.log(JSON.stringify(err));
+              }
+          });
+
+      },
+
+      // 申请退款
+      refund_order:function(index){
+        if(index){
+             tishi( '产品退款' );
+        }else{
+            tishi( '订单退款' );
+        }
+
+      },
+      // 再次加入购物车,只负责加入购物车,不管购物车的数量
+
+      readd_to_cart:function(){
+        var order_id = vm.order_id;
+        api.ajax({
+            url: readd_to_cart_url,
+            method: 'post',
+            data: {
+                values: {
+                    token: api.getPrefs({sync: true,key:'login_id'}),
+                    order_id:order_id
+                }
+            }
+        },function(ret, err){
+            if (ret) {
+                  open_cart();
+             } else {
+
+            }
+        });
+      },
+
+      // 删除订单
+      delete_order:function(){
+
+            var order_id = vm.order_id;
+            api.ajax({
+                url: delete_url,
+                method: 'post',
+                timeout: 30,
+                dataType: 'json',
+                returnAll: false,
+                data: {
+                    values: {
+                        token:api.getPrefs({sync: true,key:'login_id'}),
+                        order_id: order_id
+                    }
+                }
+            }, function (ret, err) {
+                if (ret) {
+                    api.toast({
+                        msg: ret.msg,
+                        duration: 2000,
+                        location: 'bottom'
+                    });
+                    if (ret.code == 1) {
+                        setTimeout(function () {
+                          console.log();
+                           closeWin();
+                        },500);
+                    }
+                    // console.log(JSON.stringify(ret));
+                } else {
+                    console.log(JSON.stringify(err));
+                }
+            });
+      },
+      // 评价
+      comment_order:function(){
+         open_comment_order(vm.order_id);
+      },
+      comment_detail:function(){
+        open_comment_detail(vm.order_id);
+      },
+
+      // 加入购物车
+      add_to_cart:function(index){
+        if(is_login()){
+          api.ajax({
+              url: add_to_cart_url,
+              method: 'post',
+              data: {
+                  values: {
+                    token: api.getPrefs({sync: true,key:'login_id'}),
+                    goods_id:vm.goods_list[index]['goods_id'],
+                    goods_num:1
+                  }
+              }
+            },function(ret, err){
+              if (ret) {
+                  if(ret.code==1){
+                  tishi( ret.msg );
+                  api.sendEvent({
+                      name: 'update_cart_num',
+                  });
+                  api.sendEvent({
+                      name: 'update_cart_list',//更新购物车列表
+                  });
+               }else{
+                tishi( ret.msg );
+
+               }
+
+              } else {
+                  alert( JSON.stringify( err ) );
+               //  console.log(err.msg)
+              }
+            });
+         }else{
+           go_login();
+        }
+      },
+     call_driver:function(){
+       call(vm.driver.mobile);
+     }
+
+    },
+  });
+    apiready = function(){
+        api.parseTapmode();
+        vm.order_id=api.pageParam.order_id;
+        vm.init();
+
+    }
+    function closeWin(){
+        api.closeWin({
+        });
+    }
+
+</script>
+</html>

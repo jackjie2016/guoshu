@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+        <link rel="stylesheet" type="text/css" href="../../../css/iconfont/iconfont.css" />
+    <style type="text/css">
+    .aui-content-padded {
+        padding: 0.75rem;
+        background-color: #ffffff;
+        margin-top: 0.75rem;
+    }
+    </style>
+</head>
+<body>
+<div id="app">
+    <section class="aui-content-padded" v-if="history_keywords.length>0">
+      <div class="aui-list-item-inner">
+        <div class="aui-row "  >
+          <div class="aui-col-xs-10" style="color:#4c5276">Historia</div>
+          <div class="aui-col-xs-2" style="text-align:right;">
+            <!-- :class="{'aui-text-success':history_keywords.length>0}" -->
+            <i class="aui-iconfont aui-icon-trash aui-text-success" tapmode onclick="history_trash()" ></i>
+           </div>
+        </div>
+          <div class="aui-hr aui-padded-b-10  aui-padded-t-10"></div>
+           <div class="aui-list-item-text" style="color:#333;" >
+             <div class="aui-btn aui-margin-r-10 aui-margin-t-10" tapmode @click="open_keywords(vo)"  v-for="(vo,index) in history_keywords" >{{vo}}</div>
+
+             </div>
+
+
+        </div>
+    </section>
+    <section class="aui-content-padded" v-if="hot_keywords.length>0">
+      <div class="aui-list-item-inner">
+        <div class="aui-row ">
+          <div class="aui-col-xs-10" style="color:#4c5276">Popular</div>
+
+        </div>
+          <div class="aui-hr aui-padded-b-10  aui-padded-t-10"></div>
+           <div class="aui-list-item-text" style="color:#333;">
+            <div class="aui-btn aui-margin-r-10 aui-margin-t-10" tapmode @click="open_keywords(vo)"  v-for="(vo,index) in hot_keywords" >{{vo}}</div>
+
+             </div>
+
+
+        </div>
+    </section>
+  </div>
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/common.js" ></script>
+<script type="text/javascript" src="../../../script/vue.js" ></script>
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#app',
+    data: {
+
+        hot_keywords:[],
+        history_keywords: [],
+
+    },
+    methods: {
+         init:function(){
+              api.ajax({
+                  url: hot_keywords_url,
+                  method: 'post',
+                  timeout: 30,
+                  dataType: 'json',
+                  returnAll: false,
+                  data: {
+                      values: { }
+                  }
+              }, function (ret, err) {
+
+                  if (ret) {
+                    if(ret.code==1){
+                      vm.hot_keywords=ret.data;
+                     }
+                    }
+              });
+
+
+        },
+        open_keywords:function(key){
+
+          api.sendEvent({
+              name: 'select_keywords',
+              extra: {
+                  keywords: key
+              }
+          });
+          api.setFrameAttr({
+                name: 'search_key',
+                hidden:true,
+            });
+        }
+    }
+});
+      apiready = function(){
+        vm.init();
+
+
+        get_history_list();
+
+        api.parseTapmode();
+
+        api.addEventListener({
+            name: 'history_update'
+        }, function(ret, err){
+          get_history_list();
+        });
+
+
+       }
+
+
+   //获取历史关键字
+  function get_history_list(){
+    var history= api.getPrefs({sync: true,key:'history'});
+    if(history){
+    history=JSON.parse(history);
+     vm.history_keywords=history;
+   }
+  }
+  //删除关键词
+  function history_trash(){
+     vm.history_keywords=[];
+     api.removePrefs({
+           key: 'history'
+       });
+       }
+</script>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,aItemress=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+
+	<style>
+	.info-list{
+	  background:white;
+     border-radius: 0.25rem;
+	}
+	.info-list .aui-label-info{
+		 top: 0.5rem;
+	}
+	.info-text{
+	    font-size: 0.65rem;
+        color: #757575;
+	}
+
+	</style>
+</head>
+<body>
+    <section class="aui-content-padded">
+        <div class="aui-row info-list aui-margin-b-10">
+        <div class="aui-col-xs-2">
+		<div class="aui-label aui-label-info">活动</div>
+		</div>
+		<div class="aui-col-xs-10">
+		  <div class="aui-card-list aui-padded-r-10">
+            <div class="aui-card-list-header aui-padded-0">
+                卡片布局头部区域
+            </div>
+            <div class="aui-card-list-content-padded aui-padded-0 info-text">
+                内容区域，卡片列表布局样式可以实现APP中常见的各类样式
+            </div>
+            <div class="aui-card-list-footer aui-padded-0">
+                底部区域
+            </div>
+            </div>
+
+        </div>
+        </div>
+
+
+		 <div class="aui-row info-list aui-margin-b-10">
+        <div class="aui-col-xs-2">
+		<div class="aui-label aui-label-info">活动</div>
+		</div>
+		<div class="aui-col-xs-10">
+		  <div class="aui-card-list aui-padded-r-10">
+            <div class="aui-card-list-header aui-padded-0">
+                卡片布局头部区域
+            </div>
+			 <div class="aui-card-list-content aui-margin-b-5">
+                <img src="../../../image/l2.png" />
+            </div>
+            <div class="aui-card-list-content-padded aui-padded-0 info-text">
+                内容区域，卡片列表布局样式可以实现APP中常见的各类样式
+            </div>
+			<div class="aui-card-list-footer aui-padded-0">
+                2016年7月12日
+            </div>
+            <div class="aui-card-list-footer aui-padded-0  aui-list-item-arrow">
+                查看详情
+            </div>
+            </div>
+
+        </div>
+        </div>
+
+		 <div class="aui-row info-list aui-margin-b-10">
+        <div class="aui-col-xs-2">
+		<div class="aui-label aui-label-info">签到</div>
+		</div>
+		<div class="aui-col-xs-10">
+		  <div class="aui-card-list aui-padded-r-10">
+            <div class="aui-card-list-header aui-padded-0">
+                卡片布局头部区域
+            </div>
+
+            <div class="aui-card-list-content-padded aui-padded-0 info-text">
+                内容区域，卡片列表布局样式可以实现APP中常见的各类样式
+            </div>
+			<div class="aui-card-list-footer aui-padded-0">
+                2016年7月12日
+            </div>
+
+            </div>
+
+        </div>
+        </div>
+
+		 <div class="aui-row info-list aui-margin-b-10" tapmode onclick="open_coupon_info_center()">
+        <div class="aui-col-xs-2">
+		<div class="aui-label aui-label-info">优惠券</div>
+		</div>
+		<div class="aui-col-xs-10">
+		  <div class="aui-card-list aui-padded-r-10">
+            <div class="aui-card-list-header aui-padded-0">
+                卡片布局头部区域
+            </div>
+
+            <div class="aui-card-list-content-padded aui-padded-0 info-text">
+                内容区域，卡片列表布局样式可以实现APP中常见的各类样式
+            </div>
+			<div class="aui-card-list-footer aui-padded-0">
+                2016年7月12日
+            </div>
+
+            </div>
+
+        </div>
+        </div>
+
+		 <div class="aui-row info-list aui-margin-b-10" tapmode onclick="open_refund_info_center()">
+        <div class="aui-col-xs-2">
+		<div class="aui-label aui-label-info">退款</div>
+		</div>
+		<div class="aui-col-xs-10">
+		  <div class="aui-card-list aui-padded-r-10">
+            <div class="aui-card-list-header aui-padded-0">
+                卡片布局头部区域
+            </div>
+
+            <div class="aui-card-list-content-padded aui-padded-0 info-text">
+                内容区域，卡片列表布局样式可以实现APP中常见的各类样式
+            </div>
+			<div class="aui-card-list-footer aui-padded-0">
+                2016年7月12日
+            </div>
+
+            </div>
+
+        </div>
+        </div>
+
+
+		 <div class="aui-row info-list aui-margin-b-10" tapmode onclick="open_order_info_center()">
+        <div class="aui-col-xs-2">
+		<div class="aui-label aui-label-info">订单</div>
+		</div>
+		<div class="aui-col-xs-10">
+		  <div class="aui-card-list aui-padded-r-10">
+            <div class="aui-card-list-header aui-padded-0">
+                卡片布局头部区域
+            </div>
+
+            <div class="aui-card-list-content-padded aui-padded-0">
+                <div class="aui-media-list-item-inner">
+                            <div class="aui-list-item-media" style="width: 3rem;">
+                                <img src="../../../image/liulangnan.png" class="aui-img-round">
+                            </div>
+                            <div class="aui-list-item-inner   aui-padded-l-10 info-text aui-ellipsis-2">
+                                内容区域，卡片列表布局样式可以实现APP中常见的各类样式
+                            </div>
+                        </div>
+            </div>
+			<div class="aui-card-list-footer aui-padded-0">
+                2016年7月12日
+            </div>
+
+            </div>
+
+        </div>
+        </div>
+
+    </section>
+ </body>
+ <script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript">
+    apiready = function(){
+        api.parseTapmode();
+    }
+
+</script>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html class="bg1">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>端API</title>
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/zhu.css"/>
+    <style>
+    #sosok{padding-right: 40px;position: fixed;left: 0;right: 0;top: 22px;z-index: 8888;}
+    .sousou{z-index: 8888;background:URL(../../image/sousuo.png) 10px center #eee no-repeat;background-size: 24px;height: 36px;line-height: 36px;font-size: 12px;padding-left: 40px;border-radius: 18px;width: 100%;}
+    .sousou_btn{position: absolute;right: 0;top:0;bottom: 0;width: 40px;font-size: 12px;color: #333;}
+    #key_words{position: fixed;left: 0;top: 76px;right: 0;bottom: 0;background: #fff;z-index: 8888;padding: 10px;}
+    .tiaojian{position: fixed;left: 0;top: 76px;right: 0;background: #fff;z-index: 8888;padding: 10px;border-bottom: 1px solid #f2f2f2;}
+
+    #lishik,#remenk{padding: 10px;}
+    #lishik span,#remenk span{font-size: 12px;padding: 2px 8px;color: #888;border:1px solid #888;border-radius: 18px;margin: 2px;}
+    #tuijian_list{margin-top: 125px;background-color: #f2f2f2;padding: 5px;}
+    .paixu.on{color: rgb(65, 162, 11)}
+    .shangxia{display: inline-block;height: 12px;width: 12px;background: url(../../image/shangxia1.png) center center no-repeat;background-size: 12px;}
+    .shangxia.ons{display: inline-block;height: 12px;width: 12px;background: url(../../image/shangxia2.png) center center no-repeat;background-size: 12px;}
+    </style>
+
+    <script type="text/javascript" src="../../script/api.js"></script>
+    <script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../../script/zhu.js"></script>
+    <script type="text/javascript" src="../../script/gototop.js"></script>
+</head>
+<body class="bg1">
+<div class="bg5 dingbu" style="position:fixed;left:0px;top:0px;right:0px;z-index:9999;"></div>
+<div class="pad10 bg1" id="sosok">
+  <input type="search" name="" onBlur="jujiao2()" onFocus="jujiao1()"  autofocus="autofocus"  id="ss"  class="sousou" value="" >
+  <div onclick="fanhui()" class="sousou_btn zhong">取消</div>
+</div>
+
+<div class="tiaojian hezi juzhong wenzi14">
+  <div class="col1 paixu on" data-sort="all">
+    综合
+  </div>
+  <div class="col1 paixu" data-sort="sales">
+    销量
+  </div>
+  <div class="col1 paixu" data-sort="price">
+    价格<span class="shangxia ons"></span>
+  </div>
+</div>
+
+<div id="key_words">
+  <div id="lishi_sousuo">
+    <div>历史搜索<span onclick="lishi_shanchu()" class="you">删除</span>
+      <div id="lishik">
+      </div>
+    </div>
+  </div>
+  <div id="remen_sousuo">热门搜索
+    <div id="remenk">
+      <span onclick="sou('蔬菜')">蔬菜</span>
+      <span onclick="sou('水果')">水果</span>
+      <span onclick="sou('辣椒')">辣椒</span>
+      <span onclick="sou('苹果')">苹果</span>
+      <span onclick="sou('黄瓜')">黄瓜</span>
+      <span onclick="sou('珊瑚路')">珊瑚路</span>
+    </div>
+  </div>
+</div>
+
+
+<div id="tuijian_list">
+
+</div>
+
+</body>
+</html>
+<script type="text/javascript">
+apiready=function(){
+  $(".dingbu").css({"height":api.safeArea.top+"px"});
+  $("#sosok").css({"top":api.safeArea.top+"px"});
+  $("#key_words").css({"top":api.safeArea.top+56+"px"});
+  $(".tiaojian").css({"top":api.safeArea.top+56+"px"});
+
+
+  var lishis= api.getPrefs({sync: true,key:'lishi'});
+  if(lishis){
+  lishis=JSON.parse(lishis);
+  var lishi_str='';
+  for (var a in lishis) {
+    lishi_str+='<span onclick="sou(\''+lishis[a]+'\')">'+lishis[a]+'</span>';
+  }
+  $("#lishik").html(lishi_str);
+}
+
+
+  $('#ss').bind('search', function () {
+  //搜索事件
+  $('#ss').blur();
+    sousuo_list();
+            });
+
+  $(".paixu").click(function(){
+    if($(this).find("span").length>0){
+      $(this).find("span").toggleClass("ons");
+    }
+    $(".paixu").removeClass("on");
+    $(this).addClass("on");
+    sousuo_list();
+  });
+
+
+  guanjianci();
+
+}
+//获取热门关键词
+function guanjianci(){
+  api.ajax({
+      url: guanjianci_url,
+      method: 'post'
+  },function(ret, err){
+if(ret){
+  if(ret.code==1){
+    var data=ret.data,str='';
+    for (a in data) {
+      str+='<span onclick="sou(\''+data[a]+'\')">'+data[a]+'</span>';
+    }
+    $("#remenk").html(str);
+  }
+}
+  })
+}
+
+function sousuo_list(){
+  jiazaizhong();
+  var lishi= api.getPrefs({sync: true,key:'lishi'});
+  if(lishi){
+  lishi=JSON.parse(lishi);
+}else {
+  lishi=new Array();
+}
+  lishi.unshift($("#ss").val());
+  api.setPrefs({
+      key: 'lishi',
+      value: uniq(lishi).slice(0,10)
+  })
+  api.ajax({
+      url: cate_goodslist_url,
+      method: 'post',
+      data: {
+        values:{
+          search:$("#ss").val(),
+          sortType:$(".paixu.on").data("sort"),
+          sortPrice:$(".shangxia").hasClass("ons")?"desc":"asc"
+        }
+      }
+  },function(ret, err){
+    jiazaiend()
+      if (ret) {
+        if(ret.code==1){
+          var data=ret.data.list.data,str='';
+
+          for (var i = 0; i < json_num(data); i++) {
+
+            str+='<div class="t_list">';
+              str+='<div class="t_k">';
+              if(data[i].stock_num==0){
+                str+='<div class="meiyoulek"  onclick="to_goods_info('+data[i].goods_id+')"><span class="meiyoule">抢光了</span></div>';
+              }
+                str+='<img src="'+data[i].image+'"  onclick="to_goods_info('+data[i].goods_id+')" id="ttj_'+data[i].goods_id+'" class="widthall">';
+                str+='<div class="wenzi12 over-cang"   onclick="to_goods_info('+data[i].goods_id+')">'+data[i].goods_name+'</div>';
+                str+='<div class="t_tags">';
+                if(data[i].prom){
+                if(data[i].prom.style.value==1){
+                  str+='<span>秒杀</span>';
+                }else if(data[i].prom.style.value==2){
+                    str+='<span>限时抢购</span>';
+                }
+                }
+                str+='</div>';
+                str+='<div class="hanggao24 wenzi12 money">￥<span><span class="wenzi16">'+data[i].now_price.value.substr(0,data[i].now_price.value.length-3)+'</span>'+data[i].now_price.value.substr(-3, 3)+'</span><s class="yanse0">￥'+data[i].origin_price+'</s>';
+
+                str+='</div>';
+                str+='<div class="hanggao18 height18 wenzi12 lvka-yanse">';
+                if(data[i].vip_price>0){
+                str+='￥<span>'+data[i].vip_price+'</span><span class="price-lvka">绿卡价</span>';
+                }
+                str+='</div>';
+                str+='<div class="cart_btn"><img src="../../image/jian.png" class="jian2" onclick="jian(this)"/> <span data-goods_id="'+data[i].goods_id+'" data-goods_sku_id="'+data[i].goods_sku_id+'" data-danwei="'+data[i].unit_name+'" class="liang">1g</span> <img onclick="jia(this)" src="../../image/jia.png" class="jia2"/></div>';
+                str+='<div class="cart_btn2"><img src="../../image/buy.png" onclick="kaishi_buy(this)"  height="25" ></div>';
+              str+='</div>';
+            str+='</div>';
+
+
+
+          //$(".meiyoulek").click(function(){  tishi("抢光了");});
+        }
+        $("#tuijian_list").html(str+'<div class="clear"></div>');
+        }
+          //alert( JSON.stringify( ret ) );
+      } else {
+          //alert( JSON.stringify( err ) );
+      }
+  });
+
+}
+
+function sou(m){
+  $("#ss").val(m);
+  sousuo_list();
+}
+
+function lishi_shanchu(){
+  $("#lishik").html("");
+  api.removePrefs({
+    key: 'lishi'
+});
+}
+
+function jujiao1(){
+  $("#key_words").fadeIn();
+}
+function jujiao2(){
+  $("#key_words").fadeOut();
+}
+</script>

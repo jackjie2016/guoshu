@@ -1,0 +1,277 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>会有中心</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/public.css" />
+        <link rel="stylesheet" type="text/css" href="../../../css/icons/iconfont.css" />
+    <style>
+	 .aui-grid-label{
+	    margin-top: 0  !important;
+}
+.tool .icon{font-size: 1.5rem !important;}
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <!-- 顶部 -->
+    <section class="aui-content" id="user-info" >
+        <div class="aui-list aui-media-list aui-list-noborder aui-padded-t-15   aui-margin-b-15"  style="border-radius: 0 0 0.7rem 0.7rem;" >
+            <div class="aui-padded-l-15  aui-padded-r-15 aui-list-item-middle">
+                <div class="aui-media-list-item-inner ">
+                    <div class="aui-col-xs-3"  onclick="open_profile()" >
+                        <img :src="userInfo.avatarUrl" class="aui-img-round w-80"  v-if="userInfo.avatarUrl!=''" >
+                        <img src="../../../image/avater/head-pic.png" class="aui-img-round w-80"  v-else >
+                    </div>
+                    <div class="aui-col-xs-5  aui-padded-r-5"   onclick="open_profile()">
+                        <div class=" aui-font-size-18 font-bold"><div style="color: #313131 !important;" class="aui-ellipsis-1">{{userInfo.nickName}}
+					              </div></div>
+                        <div class="aui-font-size-14 font-bold"  >
+                           <div style="display: flex;color: #313131 !important;height: 1.5rem;"><i class="icon iconfont iconoutline-phone_android-px" style="    font-size: 1rem !important;"></i>
+						                   <!-- <div style="line-height: 1.5rem;height: 1.5rem;">115****768 </div> -->
+                               <div style="line-height: 1.5rem;height: 1.5rem;" class="aui-ellipsis-1">{{userInfo.mobile}} </div>
+						                </div>
+                        </div>
+                    </div>
+					 <div class="aui-col-xs-4  ">
+
+					   <div class=" text-center    lv-bg " style=" border-radius: 0.5rem; ">
+					  <div class="cart-weight  aui-font-size-12 font-bold text-center" style=" line-height: 1rem; height: 1rem; ">
+                          Mi Saldo
+                        </div>
+			            <div class=" cart-title aui-ellipsis-1 aui-font-size-20 font-black text-center">
+                           ${{userInfo.balance}}
+                        </div>
+
+
+               </div>
+               </div>
+                </div>
+            </div>
+
+			<div   class="  aui-margin-t-15 aui-padded-l-15  aui-padded-r-15 vip-bg">
+
+			<div class="aui-info aui-ellipsis-1" style=" padding-bottom: 0; ">
+			<div class="aui-info-item aui-ellipsis-1">
+			<span class="aui-margin-l-5 black-font  font-black">V.I.P. TARJETA VERDE</span>
+			</div>
+			<div class="aui-info-item aui-ellipsis-1">
+			<div  onclick="open_vip_center()" class="black-font" style="    line-height: 1rem;"  >
+			 Ver más<span class="icon iconfont aui-font-size-20"  style=" transform: rotate(-90deg); "></span>
+			 </div>
+			</div>
+			 </div>
+
+			 <div class="aui-info" style=" padding: 0; padding-bottom: 0.5rem; ">
+			<div class="aui-info-item">
+			<span class="aui-margin-l-5 black-font" v-if="userInfo.is_vip">Activo</span>
+      <span class="aui-margin-l-5 black-font" v-else>Inactive</span>
+
+			</div>
+			<div class="aui-info-item ">
+
+			</div>
+			 </div>
+
+			</div>
+
+
+            </div>
+
+    </section>
+    <section class="aui-content  aui-padded-l-15  aui-padded-r-15 aui-margin-b-15">
+        <div class="aui-row">
+            <div class="aui-col-xs-6  ">
+
+
+			 <div style=" border-radius: 0.5rem; " class=" text-center    center-c " onclick="open_user_coupon_list()">
+			 <div style=" line-height: 1rem; height: 1rem; " class="cart-weight  aui-font-size-12 font-bold text-center aui-ellipsis-1">
+                          Cupón de descuento
+			   </div>
+			   <div class=" cart-title aui-ellipsis-1 aui-font-size-20 font-black text-center">
+                {{userInfo.coupon_count}}
+            </div>
+				</div>
+            </div>
+
+            <div class="aui-col-xs-6"  >
+
+			 <div style=" border-radius: 0.5rem; " class=" text-center    center-p ">
+			 <div style=" line-height: 1rem; height: 1rem; " class="cart-weight  aui-font-size-12 font-bold text-center aui-ellipsis-1">
+                          Puntos acumulados
+
+			   </div>
+			   <div class=" cart-title aui-ellipsis-1 aui-font-size-20 font-black text-center">
+                           {{userInfo.point}}
+                </div>
+				</div>
+
+            </div>
+        </div>
+    </section>
+
+	 <section class="aui-content aui-margin-b-15">
+
+    <div class="aui-info   aui-padded-l-10 aui-padded-r-10 black-font " style=" background: white; " onclick="open_order_list(0)">
+          <div class="aui-info-item">
+               <span class="aui-margin-l-5 aui-font-size-18 "  >Último pedido</span>
+              </div>
+     <div class="aui-info-item"><span class="aui-margin-r-0 aui-font-size-12"  >Ver todos los pedidos</span><span style=" transform: rotate(-90deg); " class="icon iconfont aui-font-size-20"></span> </div>
+      </div>
+        <div class="aui-grid aui-padded-l-10 aui-padded-r-10">
+            <div class="aui-row">
+                <div class="aui-col-xs-3">
+
+
+					<!--<i class="icon iconfont iconoutline-store-px-G " style=" font-size: 1.5rem !important; " ></i>-->
+
+					<img src="../../../image/Icons/outline-store-24px-G.svg" class="svg-icon">
+                    <div class="aui-grid-label aui-ellipsis-1" >Preparando</div>
+                </div>
+                <div class="aui-col-xs-3">
+				             <div class="aui-badge"  >10</div>
+
+					<img src="../../../image/Icons/outline-pay_acepted.svg" class="svg-icon">
+                    <div class="aui-grid-label aui-ellipsis-1">Pagado</div>
+                </div>
+                <div class="aui-col-xs-3">
+				            <div class="aui-badge"  >10</div>
+                   	<!--  <i class="iconfont icondaipingjia2" style=" font-size: 1.5rem !important; " onclick="open_order_list(3)"></i>-->
+					<img src="../../../image/Icons/outline-pay_acepted.svg" class="svg-icon">
+                    <div class="aui-grid-label aui-ellipsis-1">En Reparto</div>
+                </div>
+                <div class="aui-col-xs-3">
+                    <img src="../../../image/Icons/outline-local_shipping-24pxGrey.svg" class="svg-icon">
+                    <div class="aui-grid-label aui-ellipsis-1">Entregado</div>
+                </div>
+            </div>
+        </div>
+   </section>
+
+	 <section class="aui-content aui-margin-b-15">
+    <div class="aui-info  aui-padded-l-10 aui-padded-r-10" style=" background: white;padding-bottom: 0; ">
+          <div class="aui-info-item">
+               <span class="aui-margin-l-5 aui-font-size-18  black-font"  >Otras Funciones</span>
+              </div>
+          <!-- <div class="aui-info-item">2015-07-13 22:31</div> -->
+      </div>
+	   <div class="aui-grid aui-padded-l-10 aui-padded-r-10 tool">
+            <div class="aui-row icontool  gray-font">
+			    <div class="aui-col-xs-3"  onclick="to_set()">
+
+					  	  <!-- <img src="../../../image/icons/outline-settings-24px.svg" class="svg-icon">-->
+                  <span class="icon iconfont iconoutline-settings-px svg-icon" ></span>
+                    <div class="aui-grid-label">Ajustes</div>
+                </div>
+
+				 <div class="aui-col-xs-3" onclick="open_address()">
+
+				 <!--  <img src="../../../image/icons/outline-location_on-24px.svg" class="svg-icon">-->
+                  <span class="icon iconfont iconoutline-location_on-px svg-icon" ></span>
+                    <div class="aui-grid-label">Direccion</div>
+                </div>
+
+				 <div class="aui-col-xs-3"  onclick="to_creditcardlist()">
+
+					 	  <!--    <img src="../../../image/icons/round-credit_card-24px.svg" class="svg-icon">-->
+                  <span class="icon iconfont iconround-credit_card-px svg-icon" ></span>
+                    <div class="aui-grid-label">Tarjeta</div>
+                </div>
+
+
+                <div class="aui-col-xs-3" onclick="open_vip_center()">
+
+					  <!--    <img src="../../../image/icons/outline-crown_android.svg" class="svg-icon">-->
+                  <span class="icon iconfont iconoutline-crown_android svg-icon" ></span>
+                    <div class="aui-grid-label">V.I.P</div>
+                </div>
+
+				  <div class="aui-col-xs-3" onclick="open_recharge()">
+                 <!--    <img src="../../../image/icons/outline-account_balance_wallet-24px.svg" class="svg-icon">-->
+                  <span class="icon iconfont iconoutline-account_balance_wallet-px svg-icon" ></span>
+                    <div class="aui-grid-label">Recarga</div>
+                </div>
+
+
+
+
+                <div class="aui-col-xs-3" onclick="to_balance()">
+
+						     <!--    <img src="../../../image/icons/round-bar_chart-24px.svg" class="svg-icon">-->
+                  <span class="icon iconfont iconround-bar_chart-px svg-icon" ></span>
+                    <div class="aui-grid-label">Balance</div>
+                </div>
+
+                 <div class="aui-col-xs-3" onclick="open_receive_coupon_list()">
+				     <!--   <img src="../../../image/icons/outline-receipt-24px.svg" class="svg-icon">-->
+                  <span class="icon iconfont iconoutline-receipt-px svg-icon" ></span>
+                    <div class="aui-grid-label">Cupones</div>
+                </div>
+                <div class="aui-col-xs-3" onclick="open_my_heart()">
+				        <!-- <img src="../../../image/icons/round-favorite_border-24px.svg" class="svg-icon">-->
+
+					<span class="icon iconfont iconround-favorite_border-px svg-icon" ></span>
+                    <div class="aui-grid-label">Favoritos</div>
+                </div>
+
+                 <div class="aui-col-xs-3" onclick="open_my_heart()">
+                    <!--<img src="../../../image/icons/outline-help_outline-24px.svg" class="svg-icon">-->
+					<span class="icon iconfont iconoutline-help_outline-px svg-icon" ></span>
+                    <div class="aui-grid-label">Ayuda</div>
+                </div>
+
+
+
+            </div>
+        </div>
+	 </section>
+
+
+ </div>
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+
+<script type="text/javascript">
+  var cart_top=-1,cart_left=-1;
+  var vm = new Vue({
+       el: '#app',
+        data: {
+              userInfo:[]
+        },
+        methods: {
+         init:function(){
+
+             api.ajax({
+                 url: user_center_url,
+                 method: 'post',
+                 data: {
+                   values:{  token: api.getPrefs({sync: true,key:'login_id'})}
+                 }
+             },function(ret, err){
+               vm.userInfo=ret.data.userInfo;
+             }
+           );
+
+         },
+       }
+     });
+  apiready = function () {
+    vm.init();
+
+    api.addEventListener({
+        name: 'flush'
+    }, function(ret, err){
+        if( ret ){
+             console.log('付款成功刷新');;
+        }
+    });
+
+
+    }
+</script>
+</html>

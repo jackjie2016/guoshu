@@ -1,0 +1,272 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/icons/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/public.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/T.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/aui-slide.css" />
+	<style>
+
+      .cate-list .cate-item{
+
+	  }
+
+
+	</style>
+</head>
+<body>
+ <div id="app"  v-cloak>
+
+
+
+
+     <section class="aui-content   aui-padded-t-0 aui-padded-b-0 aui-margin-b-15 aui-margin-t-15"  >
+
+
+	   <div class="aui-margin-b-15 aui-padded-l-15 aui-padded-r-15  "  >
+        <div class="  aui-row-padded goods_list_row">
+					<div class="info_item aui-margin-b-10" v-for="(vo,index) in list">
+					  <div class="goods-content aui-padded-5 aui-row">
+					     <div class="aui-col-xs-1">
+                     <span class="select-icon icon iconfont lv-font  aui-margin-t-15  "  v-if="vo.address_id==default_id" ></span>
+						         <span class="select-icon  icon iconfont iconoutline-radio_button_px  aui-margin-t-15 " @click="set_default_address(index)" v-else></span>
+					    </div>
+					     <div class="aui-col-xs-8  ">
+					 	    <div class="  aui-padded-l-10  ">
+                        <div class=" aui-padded-0   aui-font-size-16 aui-ellipsis-1">
+                           {{vo.tag}}
+                        </div>
+                        <div class=" aui-font-size-12 aui-ellipsis-2">
+                            <!-- Av. Congreso 4755 1A CP 1431, CABA, Argentina -->
+                           {{vo.detail}} {{vo.merger_locality}}
+                        </div>
+                 </div>
+					      </div>
+					     <div class="aui-col-xs-3">
+						 <div class="font-Semi text-center">
+                  <div class=" aui-font-size-12 lv-font" @click="open_adderss_edit(index)">
+                           Modificar
+                        </div>
+                  <div class=" aui-font-size-12 aui-margin-t-15" style="text-decoration: underline;color:#d43030;" @click="delete_address(index)">
+                           Eliminar
+                        </div>
+                </div>
+					  </div>
+            </div>
+          </div>
+
+
+		  		<!-- <div class="info_item aui-margin-b-10" >
+					 <div class="goods-content aui-padded-5 aui-row">
+					   <div class="aui-col-xs-1">
+						  <span class="select-icon icon iconfont lv-font  aui-margin-t-15  " ></span>
+					   </div>
+					  <div class="aui-col-xs-8  ">
+					 	  <div class="  aui-padded-l-10  ">
+                        <div class=" aui-padded-0   aui-font-size-16 aui-ellipsis-1">
+                           Oficina
+                        </div>
+                        <div class=" aui-font-size-12 aui-ellipsis-2">
+                            Av. Congreso 4755 1A CP 1431, CABA, Argentina
+                        </div>
+
+
+                        </div>
+					  </div>
+					  <div class="aui-col-xs-3">
+						 <div class="font-Semi text-center">
+                        <div class=" aui-font-size-12 lv-font">
+                           Modificar
+                        </div>
+                        <div class=" aui-font-size-12 aui-margin-t-15" style="text-decoration: underline;color:#d43030;">
+                           Eliminar
+                        </div>
+
+
+                        </div>
+					  </div>
+           </div>
+        </div> -->
+
+
+        </div>
+
+					 <div class="  aui-row">
+
+					 <div class="aui-col-xs-12   ">
+					 	      <div class="aui-btn add_cart  " onclick="add_address()" style=" height: 1.8rem; line-height: 1.8rem; ">+ Añadir nueva dirección</div>
+					  </div>
+
+
+                    </div>
+        </div>
+
+	</section>
+
+     </div>
+
+
+
+
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script>
+    var type=0;//结算页面打开 1 ，0 普通打开地址列表
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            list: [],
+            default_id:0,
+
+        },
+        methods: {
+            init:function () {
+               console.log(list_address_url);
+               api.ajax({
+                  url: list_address_url,
+                  method: 'post',
+                  timeout: 30,
+                  dataType: 'json',
+                  returnAll: false,
+                  data: {
+                      values: {
+                          token: api.getPrefs({sync: true,key:'login_id'})
+                      }
+                  }
+               }, function (ret, err) {
+                        console.log(JSON.stringify(ret.data));
+                  if (ret) {
+                      vm.list = ret.data.list;
+                      vm.default_id=ret.data.default_id;
+                  } else {
+                      console.log(JSON.stringify(err));
+                  }
+              });
+             },
+            set_default_address: function (index) {
+                api.ajax({
+                    url: set_default_address_url,
+                    method: 'post',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                    data: {
+                        values: {
+                            token:api.getPrefs({sync: true,key:'login_id'}),
+                            address_id: vm.list[index].address_id,
+                        }
+                    }
+                }, function (ret, err) {
+                    if (ret) {
+                        api.toast({
+                            msg: '设置成功',
+                            duration: 2000,
+                            location: 'bottom'
+                        });
+                        vm.default_id=vm.list[index].address_id;
+                        api.sendEvent({
+                            name: 'update_order_confirm',
+                        });
+                        api.sendEvent({
+                            name: 'home_address_select',
+
+                        });
+                        console.log(type);
+                        if(type==1){
+                          api.closeWin();
+                        }
+
+                    } else {
+                        api.alert(JSON.stringify(err));
+                    }
+                });
+            },
+            delete_address: function (index) {
+                api.confirm({
+                    title: '地址管理',
+                    msg: '是否删除？',
+                    buttons: ['确定', '取消']
+                }, function (ret, err) {
+                    if (ret) {
+                        if(ret.buttonIndex == 1){
+                            var address_id = vm.list[index].address_id;
+                            vm.list.splice(index, 1);
+                            api.ajax({
+                                url: delete_address_url,
+                                method: 'post',
+                                timeout: 30,
+                                dataType: 'json',
+                                returnAll: false,
+                                data: {
+                                    values: {
+                                        token: api.getPrefs({sync: true,key:'login_id'}),
+                                        address_id: address_id,
+                                    }
+                                }
+                            }, function (ret, err) {
+                                if (ret) {
+                                    api.toast({
+                                        msg: '删除成功',
+                                        duration: 2000,
+                                        location: 'bottom'
+                                    });
+                                } else {
+                                    api.alert(JSON.stringify(err));
+                                }
+                            });
+                        }
+                    } else {
+                        console.log(JSON.stringify(err));
+                    }
+                });
+            },
+            open_adderss_edit:function (index) {
+            edit_address(vm.list[index].address_id)
+
+            },
+            // watch:{
+            //
+            //   default_id:{
+            //     handler: function (val, oldVal) {
+            //
+            //     }
+            //   },
+            //
+            // }
+
+
+        }
+    });
+    apiready = function () {
+        type=api.pageParam.type;
+        api.setRefreshHeaderInfo({
+            visible: true,
+            loadingImg: 'widget://image/refresh.png',
+            bgColor: '#f4f4f4',
+            textColor: '#333333',
+            textDown: '下拉刷新...',
+            textUp: '松开刷新...',
+            showTime: true
+        }, function(ret, err) {
+            vm.init();
+            setTimeout("api.refreshHeaderLoadDone()",'1000');
+        });
+        vm.init();//渲染数据
+        api.addEventListener({
+            name: 'address_list_init'//更新地址列表
+        }, function (ret, err) {
+            vm.init();
+        });
+    };
+
+</script>
+
+</html>

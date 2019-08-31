@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/iconfont/iconfont.css" />
+</head>
+<body style="background-color:rgba(255,255,255,0);">
+    <header class="aui-bar aui-bar-nav" id="aui-header" style="background :#f5f5f5">
+        <a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title aui-invisible"  >Estado del pedido</div>
+
+        <a class="aui-btn aui-pull-right aui-text-default aui-font-size-16" tapmode  onclick="meiqia()">
+            <span class="icon iconfont iconlinedesign-20" style=" font-size: 1.2rem; "></span>
+        </a>
+        <div class="aui-tips " id="order_status" style=" background: transparent;">
+
+        <h1 class="    aui-text-default" >
+                    {{detail.state_text}}
+                </h1>
+
+    </div>
+    </header>
+    <!-- 地图显示司机位置 -->
+  <section class="aui-content" id="map">
+
+  </section>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/common.js" ></script>
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#aui-header',
+    data: {
+      detail:'',
+      order_status:'',
+      order_id:232,
+
+     },
+    methods: {
+      init:function() {
+        if(is_login()){
+          api.ajax({
+              url: order_info_url,
+              method: 'post',
+              data: {
+                  values: {
+                    token: api.getPrefs({sync: true,key:'login_id'}),
+                    order_id:vm.order_id,
+                  }
+              }
+            },function(ret, err){
+              if (ret) {
+                  if(ret.code==1){
+                    vm.detail=ret.data.order;
+                    vm.order_status=ret.data.order.order_status;
+                    console.log(vm.order_status)
+
+               }else{
+                  closeWin();
+               }
+            } else {
+                  // alert( JSON.stringify( err ) );
+                closeWin();
+              }
+            });
+         }else{
+           go_login();
+        }
+      },
+    }
+   });
+    apiready = function(){
+        api.parseTapmode();
+        var header = $api.byId('aui-header');
+        $api.fixStatusBar(header);
+        var headerPos = $api.offset(header);
+        var map = $api.byId('map');
+        var mapPos= $api.offset(map);
+
+		   var orderStatus = $api.byId('order_status');
+        var orderStatusPos= $api.offset(orderStatus);
+        var body_h = $api.offset($api.dom('body')).h;
+        vm.order_id=api.pageParam.order_id;
+        // vm.init();
+        api.addEventListener({
+            name: 'update_order_status'
+        }, function(ret, err){
+            vm.init();
+        });
+
+        //告诉结算界面已经进入了订单详情
+        api.sendEvent({
+            name: 'has_open_order_detail'
+        });
+
+        api.openFrame({
+            name: 'detail_frm',
+            url: 'detail_frm.html',
+            bounces: true,
+            rect: {
+                x: 0,
+                y: headerPos.h,
+                w: 'auto',
+                h: 'auto'
+            },
+            pageParam:{
+                map_h: mapPos.h,
+                order_id:vm.order_id
+            }
+        })
+
+
+    };
+    function closeWin(){
+        api.closeWin({
+        });
+    }
+</script>
+</html>

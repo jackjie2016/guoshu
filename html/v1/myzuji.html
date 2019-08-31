@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>文档</title>
+    <link href="../../css/bootstrap.min.css"   rel="stylesheet" >
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/zhu.css"/>
+    <style type="text/css">
+   /*顶部开始 */
+.t_list.on{width: 100%;}
+.t_list.on .t_k img{float: left;width: 120px; height: 120px;margin-right: 10px;}
+.t_list.on .t_k:after{content: "";display: block;clear: both;}
+  </style>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="../../script/zhu.js"></script>
+  <script type="text/javascript" src="../../script/gototop.js"></script>
+
+</head>
+<body>
+
+   <div class="bg2" id="xinxi">
+
+<div class="clear"></div>
+       </div>
+
+       <div onclick="jiazai()" class="height35 juzhong yanse0 hanggao36 wenzi12">加载更多</div>
+
+</body>
+</html>
+<script>
+var page=1,more=1;
+	apiready=function(){
+		jiazai();
+		api.addEventListener({
+    name:'scrolltobottom',
+    extra:{
+        threshold:0            //设置距离底部多少距离时触发，默认值为0，数字类型
+    }
+}, function(ret, err){
+    jiazai();
+});
+	}
+
+
+	function jiazai(){
+	api.ajax({
+	    url: zuji_url,
+	    method: 'post',
+			data: {
+				values: {
+					token: api.getPrefs({sync: true,key: 'login_id'}),
+					page:page,
+					//scene:50
+				}
+			}
+
+	},function(ret, err){
+if(ret){
+	if(ret.code==1){
+		var str='';
+		var data=ret.data.goods_list;
+		if(data==''){
+			tishi("没有了");
+			return false;
+		}
+		for (var i = 0; i < json_num(data); i++) {
+      str+='<div class="t_list on">';
+        str+='<div class="t_k">';
+        if(data[i].stock_num==0){
+          str+='<div class="meiyoulek"  onclick="to_goods_info('+data[i].goods_id+')"><span class="meiyoule">抢光了</span></div>';
+        }
+          str+='<img src="'+data[i].goods_image+'"  onclick="to_goods_info('+data[i].goods_id+')" id="ttj_'+data[i].goods_id+'" class="widthall">';
+          str+='<div class="wenzi12 over-cang"   onclick="to_goods_info('+data[i].goods_id+')">'+data[i].goods_name+'</div>';
+          str+='<div class="t_tags">';
+          if(data[i].prom){
+          if(data[i].prom.type.value==1){
+            str+='<span>秒杀</span>';
+          }else if(data[i].prom.type.value==2){
+              str+='<span>限时抢购</span>';
+          }
+          }
+          str+='</div>';
+          str+='<div class="hanggao24 wenzi12 money">￥<span><span class="wenzi16">'+data[i].now_price.value.substr(0,data[i].now_price.value.length-3)+'</span>'+data[i].now_price.value.substr(-3, 3)+'</span><s class="yanse0">￥'+data[i].origin_price+'</s>';
+
+          str+='</div>';
+          str+='<div class="hanggao18 height18 wenzi12 lvka-yanse">';
+          if(data[i].vip_price>0){
+          str+='￥<span>'+data[i].vip_price+'</span><span class="price-lvka">绿卡价</span>';
+          }
+          str+='</div>';
+          str+='<img src="../../image/buy.png" class="cart_btn" height="25"  onclick="to_goods_info('+data[i].goods_id+')">';
+        str+='</div>';
+      str+='</div>';
+		}
+		if(page==1){
+		$("#xinxi").html(str+'<div class="clear"></div>');
+    //console.log(str);
+	}else{
+			$("#xinxi").append(str+'<div class="clear"></div>');
+	}
+	page++;
+
+	}else{tishi(ret.msg)}
+}else{
+	tishi(err.msg);
+}
+
+})
+}
+</script>

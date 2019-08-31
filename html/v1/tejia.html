@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit" />
+  <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+  <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../../css/zhu.css"/>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="../../script/zhu.js"></script>
+  <script type="text/javascript" src="../../script/gototop.js"></script>
+<title>新品秒杀页面</title>
+<style type="text/css">
+/* 顶部 开始*/
+ .dingbu{   background-color: #F7F7F7; padding:15px; }
+ .fanhui,.fenxiang{ width:17px; height:17px; }
+ .miaosha{ font-size:14px; color:#000; text-align:center; }
+/* 抢购 开始*/
+ .qianggou{ overflow:hidden;}
+ .jintian{ width:50%; height: ; border:#D8D8D8 1px solid; float:left; text-align:center; padding:7px; font-size:12px; }
+ .jintian p{ margin:0 auto;}
+ .jintian.on{ background-color:#EF70A6; }
+ .jintian{ background-color:#D8D8D8;}
+ .jintian.on .wz1,.jintian.on .wz2{ color:#FFF;}
+ .wz1{ color:#666;}
+ .wz2{ color:#999;}
+ .js{  border:#333 solid 1px;  background-color: #333; color: #FFF; padding:2px 20px; border-radius:15px; line-height:32px;  }
+ .jieshu{ text-align:center;}
+/*商品 开始*/
+ .shangpin1,.youbu{ padding:10px;  }
+ .shangpin1 img{ width:100%; height:auto; }
+ .xianliang{ color:#C00; font-size:12px; line-height:22px;  }
+ .sanhang{ margin: 3px auto;}
+ .jiage{ color:#F00; font-size:14px;  }
+ .yuanjia{ font-size:12px; margin-left:3px;}
+ .jinbi{ width:13px; height:13px;}
+ .shouhuo{color:#C00; font-size:12px; float:right; }
+ .quqianggou{ border:#1bbc9b 1px solid; color:#FFF; background-color:#1bbc9b; float:right; font-size:12px;
+  margin-top:-41px; padding: 1px 7px;  border-radius:4px;}
+ .progress{ width:60%;  }
+ .progress-bar{color: #d2d2d2;}
+</style>
+</head>
+
+<body>
+
+    <div class="qianggou" id="toutou">
+      <div class="jintian on"><p class="wz1">今日22:00</p><p class="wz2">正在抢购</p></div>
+      <div class="jintian"><p class="wz1">明日08:00</p><p class="wz2">未开始</p></div>
+    </div>
+     <div class="jieshu">
+       <span class="js">距结束 08：08：08</span>
+     </div>
+ <!--商品 开始-->
+
+<div id="shoplist"></div>
+
+</body>
+</html>
+
+<script>
+var page=1;
+var timediff=0;
+apiready=function(){
+  get_fenlei();
+
+$("#toutou").on('click','.jintian',function(){
+  $(".jintian").removeClass("on");
+  $(this).addClass("on");
+  timediff=$(this).data("chazhi");
+  get_shop_list();
+})
+
+}
+/**
+*获取活动列表
+*/
+function get_fenlei(){
+  api.ajax({
+      url: miaosha_url,
+      method: 'post',
+      data: {
+      }
+  },function(ret, err){
+      if (ret) {
+        //alert(JSON.stringify(ret));
+          if(ret.code==1){
+            var data=ret.data.prom_list,str='',str2='';
+            for (var i = 0; i < json_num(data); i++) {
+              str+='<div data-id="'+data[i].prom_id+'" data-chazhi="'+data[i].status.countdown+'" class="jintian '+((data[i].status.value==1)?"on":"")+'"><p class="wz1">'+data[i].flash_start_time.full+'</p><p class="wz2">'+data[i].status.text+'</p></div>';
+
+            }
+            //alert(str)
+
+            $("#toutou").html(str);
+            timediff=$(".jintian.on").data("chazhi");
+            get_shop_list();
+          }
+      } else {
+
+          tishi( err.msg );
+      }
+  });
+
+}
+
+/**
+*获取商品列表
+*/
+function get_shop_list(){
+
+  api.ajax({
+      url: miaosha_list_url,
+      method: 'post',
+      data: {
+        values:{prom_id:$(".jintian.on").data("id"),page:page}
+      }
+  },function(ret, err){
+      if (ret) {
+          if(ret.code==1){
+            var data=ret.data.goods_list,str='';
+
+            for (var i = 0; i < json_num(data); i++) {
+
+              str+='<div class="shangpin" onclick="to_goods_info('+data[i].goods_id+')">';
+              str+='<div class="hezi">';
+               str+='<div class="shangpin1 col1"><img class="tu" src="'+data[i].image+'" /></div>';
+               str+='<div class=" youbu col2" >';
+                str+='<span class="jieshao">'+data[i].goods_name+'</span><br />';
+                str+='<span class="xianliang">'+data[i].selling_point.substring(0,32)+'</span><br />';
+                str+='<div class="sanhang">';
+                str+='<span class="jiage"><span class="yuan">¥</span>'+data[i].prom_price+'</span><span class="yuanjia"><s>¥'+data[i].goods_price+'</s></span>';
+                str+='<span class="shouhuo"><img class="jinbi" src="../../image/888.png" /> 收货送5元优惠券</span></div>';
+                str+='<div class="progress">';
+            str+='<div class="progress-bar  progress-bar-info" role="progressbar" aria-valuenow="'+parseInt(data[i].goods_sales/data[i].stock_num)+'" aria-valuemin="0" aria-valuemax="100" style="width: '+parseInt(data[i].goods_sales/data[i].stock_num)+'%;">已抢'+parseInt(data[i].goods_sales/data[i].stock_num)+'%</div></div>';
+                str+='<span class="quqianggou">去抢购</span>';
+              str+='</div></div></div>';
+            }
+            //alert(str)
+
+            $("#shoplist").html(str);
+          }
+      } else {
+          tishi( err.msg );
+      }
+  });
+
+}
+
+
+function to_goods_info(id){
+  api.openWin({
+      name: 'to_goods_info',
+      url: 'widget://html/v1/shop_info.html',
+      pageParam: {
+          id:id,
+      }
+  });
+}
+
+//倒计时
+function daojishi(){
+
+
+			//获取还剩多少天
+			var day=parseInt(timediff/3600/24);
+			//获取还剩多少小时
+			var hour=parseInt(timediff/3600%24);
+			//获取还剩多少分钟
+			var minute=parseInt(timediff/60%60);
+			//获取还剩多少秒
+			var second=timediff%60;
+			//输出还剩多少时间
+			//document.getElementById("1").innerHTML=day;
+			//document.getElementById("2").innerHTML=hour;
+			//document.getElementById("3").innerHTML=minute;
+			//document.getElementById("4").innerHTML=second;
+      /*$(".shi").html(hour);
+      $(".fen").html(minute);
+      $(".miao").html();*/
+      if(timediff>0){
+      $(".js").html("距结束:"+((hour<10)?("0"+hour):hour)+":"+((minute<10)?("0"+minute):minute)+":"+((second<10)?("0"+second):second));
+    }else{
+      $(".js").html("请等待...");
+    }
+      //alert("距结束:"+hour+":"+minute+":"+second)
+			setTimeout(function(){daojishi();},1000);
+      timediff--;
+			if(timediff<=0){return;}
+			}
+
+daojishi();
+</script>

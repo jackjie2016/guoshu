@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <style type="text/css">
+        .text-white {
+            color: #ffffff !important;
+        }
+
+        .aui-grid [class*=aui-col-] {
+            padding: 0.75rem 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="aui-content">
+        <ul class="aui-list aui-list-in aui-margin-b-15">
+            <li class="aui-list-item" onclick="to_dizhi()">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-location aui-text-info"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">收货地址</div>
+                </div>
+            </li>
+            <!--<li class="aui-list-item" onclick="to_myshoucang()">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-like aui-text-danger"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">我的收藏</div>
+                </div>
+            </li>-->
+            <li class="aui-list-item">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-image aui-text-info"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">我的资料</div>
+                </div>
+            </li>
+        </ul>
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item" onclick="tuichu()">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-close aui-text-warning"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">退出</div>
+                </div>
+            </li>
+        </ul>
+    </section>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../../script/zhu.js"></script>
+<script type="text/javascript">
+    apiready = function() {}
+
+    function tuichu() {
+        api.removePrefs({
+            key: 'login_id'
+        });
+        api.removePrefs({
+            key: 'user'
+        });
+        api.sendEvent({
+            name: 'tuichu'
+        });
+        fanhui();
+    }
+
+    function to_dizhi(){
+      api.openWin({
+          name: 'to_dizhi',
+          url: 'widget://html/v1/common_win.html',
+          pageParam: {
+              id:0,
+              title:"地址管理",
+              muban:"address_list_frm"
+          }
+      });
+    }
+
+    function to_myshoucang(){
+      api.openWin({
+          name: 'to_shoucang',
+          url: 'widget://html/v1/common_win.html',
+          pageParam: {
+              id:0,
+              title:"我的收藏",
+              muban:"myshoucang"
+          }
+      });
+    }
+</script>
+
+</html>

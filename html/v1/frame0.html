@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>首页</title>
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+		<link rel="stylesheet" href="../../css/zhu.css" />
+    <style>
+    html,body{background-color: #fff;}
+#daojishik{font-size: 12px;}
+    .yihang img{ width:16px; height:16px;vertical-align:middle}
+    .yihang{ color:#38bd60; font-size:12px; padding:10px 0; line-height: 18px;}
+    #kkk{overflow-x:scroll;white-space: nowrap;}
+    /*分类开始*/
+.fenlei{ overflow:hidden;}
+.yiji{ width:20%; float:left; margin-top:10px; color:#535353;}
+.yiji img{ width:50px; height:50px;}
+.huixian{ height:10px; background-color:#f5f5f5; margin:10px 0;}
+/*抢购开始*/
+.qianggou{ overflow:hidden; padding:10px 10px 0;}
+.qianggou1{ overflow-x:scroll;white-space: nowrap; padding:0 10px; margin-bottom:10px;}
+.lv{ color:#45c25c;}
+.xianshi{ margin-left:4px; margin-right:10px;}
+.kuang{ color:#FFF; background-color:#000; padding:1px 4px; border-radius:4px; font-size:10px;}
+.chanpin{ width:100px; position:relative; display:inline-block; margin-right:2%;}
+.chanpintu{ width:100%; padding:5px;}
+.che{ width:30px; height:30px; border-radius:50%; position:absolute;bottom:3px;right:10px;}
+.biaoti{ color:#000; margin-bottom:10px;}
+/*特色开始*/
+.tese{ margin-left:4px;}
+.zhuanqu{ width:94%; margin:0 3%; margin-bottom:10px;}
+td{ border:#eeeeee solid 1px;}
+.er{ width:50% !important; overflow: hidden;padding:10px;}
+.tupian img{ width:50%;}
+.tupian1 img{ width:100%;}
+.zi{ color:#ee7d43;}
+.hong{ color:#ff3d7b;}
+.zi,.lv,.hong,.li{ letter-spacing:1px; margin-bottom:4px;}
+.datu img{ width:100%;}
+.datu{ border-top:#f5f5f5 solid 10px;padding: 10px;}
+.over-cang:active{background: #555555;}
+    </style>
+
+    <script type="text/javascript" src="../../script/api.js"></script>
+    <script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../../script/zhu.js"></script>
+    <script type="text/javascript" src="../../script/gototop.js"></script>
+</head>
+<body>
+
+<div style="height:190px;"></div>
+<div class="yihang hezi juzhong">
+     <div class="col1" ><img src="../../image/kuaisu.png"/><span>Lo mas rapido es 29 minutos y llega a destino</span></div>
+     <!-- <div class="col1"><img src="../../image/peisong7.png"/><span>desde $0 se envia $0 de envio</span></div> -->
+
+    </div>
+<div class="pad5 cang" id="ad1"></div>
+<!--分类开始-->
+    <div class="fenlei juzhong" id="caidan"></div>
+    <div class="huixian"></div>
+    <!--抢购开始-->
+        <div class="qianggou cang" id="miaoshak">
+         <div class=""><span class="lv cuti">┃</span><span class="cuti xianshi yanse3">Tiempo limitado</span>
+          <span id="daojishik"><span class="kuang shi">0</span> : <span class="kuang fen">0</span> : <span class="kuang miao">0</span></span>
+          <span class="you lv wenzi14 pad-right10"  onclick="to_miaosha()">Mas</span>
+         </div>
+         <div id="kkk"></div>
+        </div>
+        <div class="huixian"></div>
+
+
+        <!--特色开始-->
+            <div class="pad10"><span class="lv cuti">┃</span><span class="cuti tese yanse3">Combinacion de frutas</span></div>
+            <table class="zhuanqu" width="100%">
+             <tr id="guoshulan1">
+
+             </tr>
+             <tr id="guoshulan2">
+
+             </tr>
+            </table>
+
+<!--本周特价-->
+            <div class="datu" id="tuijian1" onclick="to_tejia()"><img src="../../image/datu1.jpg" /></div>
+                <div class="qianggou1" id="tuijian1_body"></div>
+                <!--本周特价-->
+                <!--
+                <div class="datu"><img src="../../image/datu2.jpg" /></div>
+                <div class="qianggou1">
+                 <div class="chanpin">
+                  <img class="chanpintu" src="../../image/chanpin3.jpg" />
+                  <div class="biaoti">大西瓜大西瓜大西瓜大西瓜</div>
+                  <div class="jiage"><span class="yanse2">¥28.90</span><br /><span class="yanse0 wenzi10"><s>¥39.90</s></span></div>
+                  <span class="you"><img class="che" src="../../image/buy.png" /></span>
+                 </div>
+                 <div class="chanpin">
+                  <img class="chanpintu" src="../../image/chanpin2.jpg" />
+                  <div class="biaoti">当季水果当季水果当季水果</div>
+                  <div class="jiage"><span class="yanse2">¥28.90</span><br /><span class="yanse0 wenzi10"><s>¥39.90</s></span></div>
+                  <span class="you"><img class="che" src="../../image/buy.png" /></span>
+                 </div>
+                 <div class="chanpin">
+                  <img class="chanpintu" src="../../image/chanpin1.jpg" />
+                  <div class="biaoti">鱼冷冻鱼冷冻鱼冷冻鱼冷冻</div>
+                  <div class="jiage"><span class="yanse2">¥28.90</span><br /><span class="yanse0 wenzi10"><s>¥39.90</s></span></div>
+                  <span class="you"><img class="che" src="../../image/buy.png" /></span>
+                 </div>
+                </div>
+                <div class="datu"><img src="../../image/datu3.jpg" /></div>
+                <div class="qianggou1">
+                 <div class="chanpin">
+                  <img class="chanpintu" src="../../image/chanpin3.jpg" />
+                  <div class="biaoti">大西瓜大西瓜大西瓜大西瓜</div>
+                  <div class="jiage"><span class="yanse2">¥28.90</span><br /><span class="yanse0 wenzi10"><s>¥39.90</s></span></div>
+                  <span class="you"><img class="che" src="../../image/buy.png" /></span>
+                 </div>
+                 <div class="chanpin">
+                  <img class="chanpintu" src="../../image/chanpin2.jpg" />
+                  <div class="biaoti">当季水果当季水果当季水果</div>
+                  <div class="jiage"><span class="yanse2">¥28.90</span><br /><span class="yanse0 wenzi10"><s>¥39.90</s></span></div>
+                  <span class="you"><img class="che" src="../../image/buy.png" /></span>
+                 </div>
+                 <div class="chanpin">
+                  <img class="chanpintu" src="../../image/chanpin1.jpg" />
+                  <div class="biaoti">鱼冷冻鱼冷冻鱼冷冻鱼冷冻</div>
+                  <div class="jiage"><span class="yanse2">¥28.90</span><br /><span class="yanse0 wenzi10"><s>¥39.90</s></span></div>
+                  <span class="you"><img class="che" src="../../image/buy.png" /></span>
+                 </div>
+                </div>
+                <div class="datu"><img src="../../image/datu4.jpg" /></div>
+                <div class="qianggou1">
+                 <div class="chanpin">
+                  <img class="chanpintu" src="../../image/chanpin3.jpg" />
+                  <div class="biaoti">大西瓜大西瓜大西瓜大西瓜</div>
+                  <div class="jiage"><span class="yanse2">¥28.90</span><br /><span class="yanse0 wenzi10"><s>¥39.90</s></span></div>
+                  <span class="you"><img class="che" src="../../image/buy.png" /></span>
+                 </div>
+                 <div class="chanpin">
+                  <img class="chanpintu" src="../../image/chanpin2.jpg" />
+                  <div class="biaoti">当季水果当季水果当季水果</div>
+                  <div class="jiage"><span class="yanse2">¥28.90</span><br /><span class="yanse0 wenzi10"><s>¥39.90</s></span></div>
+                  <span class="you"><img class="che" src="../../image/buy.png" /></span>
+                 </div>
+                 <div class="chanpin">
+                  <img class="chanpintu" src="../../image/chanpin1.jpg" />
+                  <div class="biaoti">鱼冷冻鱼冷冻鱼冷冻鱼冷冻</div>
+                  <div class="jiage"><span class="yanse2">¥28.90</span><br /><span class="yanse0 wenzi10"><s>¥39.90</s></span></div>
+                  <span class="you"><img class="che" src="../../image/buy.png" /></span>
+                 </div>
+               </div>-->
+
+               <div class="height10 bg2 clear"></div>
+           	   <div class="title bg2"><span class="xxxx">◆</span>Lo que te recomendamos<span class="xxxx">◆</span></div>
+           		 <div class="bg2 pad5" id="tuijian2"></div>
+               <div onclick="returnToTop()" style="position:fixed;bottom:50px;left:100px;z-index:100000;display:block;height:50px;width:100px;border:1px solid black;">回到顶部</div>
+
+</body>
+</html>
+<script>
+var timediff=0,lat,lng;
+apiready=function(){
+//启动自定义状态栏
+  api.openFrame({
+      name: 'ing',
+      url: 'widget://html/v1/top.html',
+      rect: {
+          x: 0,
+          y: 0,
+          w: api.winWidth,
+          h: api.safeArea.top
+      },
+      pageParam: {
+          name: 'test'
+      }
+  });
+
+  api.openFrame({
+      name: 'sousuo',
+      url: 'widget://html/v1/top_sousuo.html',
+      rect: {
+          x: 0,
+          y: api.safeArea.top,
+          w: api.winWidth,
+          h: 42
+      },
+      pageParam: {
+          name: 'test'
+      }
+  });
+//处理状态栏自动透明度
+$(function(){
+
+  $(window).scroll(function(){
+
+　　//do something...
+api.sendEvent({
+    name: 'zhuangtailan',
+    extra: {
+        zhi: $(document).scrollTop()
+    }
+});
+api.sendEvent({
+    name: 'zhuangtailan_sousuo',
+    extra: {
+        zhi: $(document).scrollTop()
+    }
+});
+//console.log( $(document).scrollTop())
+
+});
+
+})
+
+//状态栏结束
+
+
+
+  jiazai();
+  api.setCustomRefreshHeaderInfo({
+  bgColor: '#f2f2f2',
+  images: ['widget://image/jiazai/1.png','widget://image/jiazai/2.png','widget://image/jiazai/3.png','widget://image/jiazai/4.png'],
+  tips: {
+      pull: '下拉刷新',
+      threshold: '松开立即刷新',
+      load: '正在刷新'
+  }
+}, function() {
+  //下拉刷新被触发，自动进入加载状态，使用 api.refreshHeaderLoadDone() 手动结束加载中状态
+  //下拉刷新被触发，使用 api.refreshHeaderLoadDone() 结束加载中状态
+jiazai();
+});
+//开始定位
+
+
+}
+
+
+
+
+
+function jiazai(){
+  api.refreshHeaderLoadDone();
+  get_index();
+  get_tuijian();
+}
+
+
+function returnToTop(){
+	//一键回到顶部
+    api.pageUp({
+    	top:true
+    },function(ret,err){
+    	if (!ret.scrolled) {//是否滚动，为false时说明当前页面已经到达顶部了
+	        //alert("已经滚动到顶部了");
+	    }
+    });
+}
+
+/**
+*获取首页数据
+*/
+function get_index(){
+  api.ajax({
+      url: index_url,
+      method: 'post',
+      data: {
+      }
+  },function(ret, err){
+      if (ret) {
+          if(ret.code==1){
+            api.setPrefs({
+                key: 'ios',
+                value: ret.data.ios
+            })
+            //本周特价
+            if(!$.isEmptyObject(ret.data.promotion)){
+            var tlist=ret.data.promotion,bb='';
+            for (var i = 0; i < json_num(tlist); i++) {
+              bb+='<div class="chanpin">';
+              if(tlist[i].stock_num==0){
+                bb+='<div class="meiyoulek"  onclick="to_goods_info('+tlist[i].goods_id+')"><span class="meiyoule">今日售完</span></div>';
+              }
+               bb+='<img  onclick="to_goods_info('+tlist[i].goods_id+')" class="chanpintu" src="'+tlist[i].image+'" />';
+               bb+='<div  onclick="to_goods_info('+tlist[i].goods_id+')" class="biaoti over-cang">'+tlist[i].goods_name+'</div>';
+               bb+='<div class="jiage yanse2"><span class="wenzi16 yanse2">'+tlist[i].now_price.value.substr(0,tlist[i].now_price.value.length-3)+'</span>'+tlist[i].now_price.value.substr(-3, 3)+'</span><br /><span class="yanse0 wenzi10"><s>¥'+tlist[i].origin_price+'</s></span></div>';
+               bb+='<span class="you"><img   onclick="add_cart('+tlist[i].goods_id+','+tlist[i].goods_sku_id+',\'tj\')" class="che" src="../../image/buy.png" /></span>';
+              bb+='</div>';
+            }
+            //bb+='<div style="clear:both"></div>';
+            $("#tuijian1_body").html(bb);
+            }
+            if(!$.isEmptyObject(ret.data.banner_list.ad3)){
+              $("#tuijian1").html('<a onclick="'+ret.data.banner_list.ad3[0].link+'"><img src="'+ret.data.banner_list.ad3[0].image+'"></a>');
+            }
+            //轮播
+            var banners=ret.data.banner_list.scoll,imgs=[];
+            for (var i = 0; i < json_num(banners); i++) {
+              imgs[i]=banners[i].image;
+            }
+            //alert(JSON.stringify(imgs));
+            banner(imgs);
+            var nav=ret.data.banner_list.nav,str4='';
+            for (var i = 0; i < json_num(nav); i++) {
+              str4+='<div class="yiji over-cang" onclick="'+nav[i].link+'"><img src="'+nav[i].image+'" /><br /><span class="wenzi12">'+nav[i].name+'</span></div>'
+            }
+            str4+='<div class="clear"></div>';
+            //console.log(str4);
+            $("#caidan").html(str4);
+
+            //$(".ad33").html('<a href="'+ret.data.banner_list.ad3[0].link+'"><img src="'+ret.data.banner_list.ad3[0].image+'"></a>');
+
+            //限时秒杀
+            if(!$.isEmptyObject(ret.data.falsh.goods_list)){
+            var newlist=ret.data.falsh.goods_list,str1='';
+
+            timediff=ret.data.falsh.info[0].status.countdown;
+            //console.log(timediff)
+            if(timediff>=0){
+              $("#daojishik").html('<span class="kuang shi">0</span> : <span class="kuang fen">0</span> : <span class="kuang miao">0</span>');
+              daojishi();
+            }else{
+              $("#daojishik").html(ret.data.falsh.info[0].status.text);
+            }
+            for (var i = 0; i < json_num(newlist); i++) {
+              str1+='<div class="chanpin">';
+              if(newlist[i].stock_num==0){
+                str1+='<div class="meiyoulek"  onclick="to_goods_info('+newlist[i].goods_id+')"><span class="meiyoule">今日售完</span></div>';
+              }
+               str1+='<img  onclick="to_goods_info('+newlist[i].goods_id+')" class="chanpintu" src="'+newlist[i].image+'" />';
+               str1+='<div  onclick="to_goods_info('+newlist[i].goods_id+')" class="biaoti over-cang">'+newlist[i].goods_name+'</div>';
+               str1+='<div class="jiage yanse2"><span class="wenzi16 yanse2">'+newlist[i].now_price.value.substr(0,newlist[i].now_price.value.length-3)+'</span>'+newlist[i].now_price.value.substr(-3, 3)+'</span><br /><span class="yanse0 wenzi10"><s>¥'+newlist[i].origin_price+'</s></span></div>';
+               str1+='<span class="you"><img   onclick="add_cart('+newlist[i].goods_id+','+newlist[i].goods_sku_id+',\'tj\')" class="che" src="../../image/buy.png" /></span>';
+              str1+='</div>';
+            }
+            $("#kkk").html(str1);
+            $("#miaoshak").removeClass("cang");
+          }else{
+            $("#miaoshak").addClass("cang");
+          }
+
+            //果蔬栏
+            var tuijian=ret.data.recommendlist,str3='';
+            str3='<td class="er" onclick="to_guoshulan2('+tuijian[0].hurdles_id+')">'+
+             '<div class="zi">'+tuijian[0].hurdles_name+'</div>'+
+             '<div class="wenzi10 yanse0">'+tuijian[0].desc+'</div>'+
+             '<div class="tupian"><img src="'+tuijian[0].image[0]+'" /><img src="'+tuijian[0].image[1]+'" /></div>'+
+            '</td>'+
+            '<td  class="er">'+
+             '<div class="hong">'+tuijian[1].hurdles_name+'</div>'+
+             '<div class="wenzi10 yanse0">'+tuijian[1].desc+'</div>'+
+             '<div class="tupian"><img src="'+tuijian[1].image[0]+'" /><img src="'+tuijian[1].image[1]+'" /></div>'+
+            '</td>';
+            $("#guoshulan1").html(str3);
+            str3='<td  class="er">'+
+             '<div class="lv">'+tuijian[2].hurdles_name+'</div>'+
+             '<div class="wenzi10 yanse0">'+tuijian[2].desc+'</div>'+
+             '<div class="tupian"><img src="'+tuijian[2].image[0]+'" /><img src="'+tuijian[2].image[1]+'" /></div>'+
+            '</td>'+
+            '<td class="er">'+
+             '<div class="hong">'+tuijian[3].hurdles_name+'</div>'+
+             '<div class="wenzi10 yanse0">'+tuijian[3].desc+'</div>'+
+             '<div class="tupian"><img src="'+tuijian[3].image[0]+'" /><img src="'+tuijian[3].image[1]+'" /></div>'+
+            '</td>';
+            $("#guoshulan2").html(str3);
+          }
+      } else {
+          tishi( err.msg );
+      }
+  });
+
+}
+
+//获取随机商品
+
+
+//启动幻灯片
+function banner(x){
+
+      var UIScrollPicture = api.require('UIScrollPicture');
+   UIScrollPicture.open({
+    rect: {
+        x: 0,
+        y: 0,
+        w: api.winWidth,
+        h: 190
+    },
+    data: {
+        paths:x
+    },
+    styles: {
+        caption: {
+            height: 35,
+            color: '#E0FFFF',
+            size: 13,
+            bgColor: '#696969',
+            position: 'bottom'
+        },
+        indicator: {
+           dot:{
+             w:10,
+             h:10,
+             r:5,
+             margin:4
+          },
+            align: 'right',
+            color: '#888',
+            activeColor: '#38bd60'
+        }
+    },
+    placeholderImg: 'widget://image/goods_img.png',
+    contentMode: 'scaleToFill',
+    interval: 3,
+    fixedOn: api.frameName,
+    loop: true,
+    fixed: false
+   }, function(ret, err) {
+    if (ret) {
+        //alert(JSON.stringify(ret));
+    } else {
+        //alert(JSON.stringify(err));
+    }
+  });
+}
+//加入购物车动画
+function add_cart(id,sku_id,objs){
+  is_login();
+   add_to_cart(id,sku_id);
+}
+
+function add_to_cart(goods_id,sku_id){
+  api.ajax({
+      url: add_to_cart_url,
+      method: 'post',
+      data: {
+          values: {
+              token: api.getPrefs({sync: true,key:'login_id'}),
+              goods_id:goods_id,
+              goods_sku_id:sku_id,
+              goods_num:1
+          }
+      }
+  },function(ret, err){
+      if (ret) {
+            tishi(ret.msg);
+            if(ret.code==1){
+              num=ret.data.cart_total_num
+              api.sendEvent({
+                  name: 'update_cart_num',
+                  extra: {
+                      num: num
+                  }
+              });
+            }
+
+      } else {
+          //alert( JSON.stringify( err ) );
+          tishi(err.msg)
+      }
+  });
+
+}
+
+//倒计时
+function daojishi(){
+ if(timediff<=0){
+  $(".shi").html("00");
+  $(".fen").html("00");
+  $(".miao").html("00");
+ }
+
+			//获取还剩多少天
+			var day=parseInt(timediff/3600/24);
+			//获取还剩多少小时
+			var hour=parseInt(timediff/3600%24);
+			//获取还剩多少分钟
+			var minute=parseInt(timediff/60%60);
+			//获取还剩多少秒
+			var second=timediff%60;
+			//输出还剩多少时间
+			//document.getElementById("1").innerHTML=day;
+			//document.getElementById("2").innerHTML=hour;
+			//document.getElementById("3").innerHTML=minute;
+			//document.getElementById("4").innerHTML=second;
+      $(".shi").html((hour<10)?("0"+hour):hour);
+      $(".fen").html((minute<10)?("0"+minute):minute);
+      $(".miao").html((second<10)?("0"+second):second);
+			setTimeout(function(){daojishi();},1000);
+      timediff--;
+			if(timediff==0){return;}
+			}
+
+
+
+
+      function to_miaosha(){
+        api.openWin({
+            name: 'to_miaosha',
+            url: 'widget://html/v1/common_win.html',
+            pageParam: {
+                id:0,
+                title:"Tiempo limitado",
+                muban:"miaosha"
+            }
+        });
+      }
+      function to_tejia(){
+        api.openWin({
+            name: 'to_tejia',
+            url: 'widget://html/v1/prom_win.html',
+            pageParam: {
+                id:0,
+                title:"Precio especial esta semana",
+                muban:"prom_body"
+            }
+        });
+      }
+
+      function to_guoshulan(){
+        api.openWin({
+            name: 'to_guoshulan',
+            url: 'widget://html/v1/tuijian_win.html',
+            pageParam: {
+                id:0,
+                title:"Fruta azul",
+                muban:"tuijian_body"
+            }
+        });
+      }
+
+      function to_guoshulan2(m){
+        api.openWin({
+            name: 'to_guoshulan',
+            url: 'widget://html/v1/tuijian_win.html',
+            pageParam: {
+                id:m,
+                title:"Fruta azul",
+                muban:"tuijian_body"
+            }
+        });
+      }
+</script>

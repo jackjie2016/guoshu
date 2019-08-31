@@ -1,0 +1,391 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+     <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+     <link rel="stylesheet" type="text/css" href="../../../css/iconfont/iconfont.css" />
+    <style type="text/css">
+        p {
+            margin-bottom:0.5rem;
+        }
+ 
+	.card-info{
+	width:100%;
+	height:13.5rem;
+	display:block;
+	position:relative;
+	z-index:-1;
+	overflow:hidden;
+	background: white; 
+	}
+	.card-info::after{
+	    content:'';
+	    width:140%;
+		height:10rem;
+		position:absolute;
+		left:-20%;
+		top:0;
+		z-index:-1;	 
+		border-radius: 0 0 100% 100%;
+       background: linear-gradient(120deg,#2f3648, #2f354d);
+	}
+	 
+	.vip-card{
+	width:90%;left:5%;top:30%;
+    background: url(../../../image/vipcard_bg.png) 100%;
+    background-size: 100%;
+    border-radius: 0.5rem;
+    height: 9rem;
+    background-repeat: no-repeat;
+	}
+	.card_text{
+	background: #e8e8e8;
+	border-radius: 0.5rem;
+	    color: black !important;
+    font-size: 0.5rem;
+	}
+	
+	.close_card_text{
+	display: inline-block;
+    width: auto;
+    text-align: center;
+    min-width: 0.8rem;
+    height: 1rem;
+    line-height: 1rem;
+    padding: 0 0.2rem;
+    font-size: 0.5rem;
+    color: #ffffff;
+    background-color: black;
+    border-radius: 0.5rem;
+    position: absolute;
+    left: 96%;
+    top: -0.3rem;
+    z-index: 99;
+	}
+	.aui-content{
+	
+	background:#fff;}
+	
+	.Increase{
+ 
+    border: 1px #eee solid;
+    border-radius: 50%;
+    width: 1.4rem;
+    height: 1.4rem;
+	}
+.coupon_frm{
+border: #2db050 solid 2px;
+    border-radius: 0 0.5rem 0.5rem 0;
+}
+.coupon_btn{
+line-height: 1.2rem; height: 1.2rem;
+}
+    </style>
+</head>
+<body>
+
+   <section class=" card-info" >
+        <div class="aui-card-list vip-card" style=" ">
+            <div class="aui-card-list-header">
+                 <div class="aui-col-xs-3"  onclick="open_profile()" >
+                        <img src="../../../image/72.png" class="aui-img-round"  style=" width: 80%; ">
+                    </div>
+                    <div class="aui-col-xs-9  " onclick="open_profile()">
+                        <div class="aui-list-item-text text-white aui-font-size-18"><div style=" font-weight: bold; ">38dd4ef6d <i class="iconfont iconvip4 aui-text-warning"></i></div></div>
+                        <div class="aui-list-item-text text-white">
+                            <div class="aui-btn aui-btn-primary" style=" line-height: 1.2rem; height: 1.2rem;background:#056e19 ">已到期</div>
+                        </div>
+                    </div>
+            </div>
+            <div class="aui-card-list-content-padded">
+                已为你节省 <b style=" color: white; ">$ 86.99 </b>
+            </div>
+            <div class="aui-card-list-footer aui-padded-t-0 ">
+                  <div class="aui-row" style="    width: 100%;">
+            <div class="aui-col-xs-4  ">
+                <big class="aui-text-default">已领券<small> </small></big>
+                <div class="aui-gird-lable aui-font-size-14 aui-padded-t-5"> <b class="aui-padded-r-5" style=" color: black; ">3</b></div>
+            </div>
+            <div class="aui-col-xs-4  " onclick="open_user_coupon_list()">
+                <big class="aui-text-default">积分</big>
+                <div class="aui-gird-lable aui-font-size-14 aui-padded-t-5"><b class="aui-padded-r-5" style=" color: black; ">3</b></div>
+            </div>
+            <div class="aui-col-xs-4">
+                <big class="aui-text-default">vip特价商品</big>
+                <div class="aui-gird-lable aui-font-size-14 aui-padded-t-5"><b class="aui-padded-r-5" style=" color: black; ">3</b>件</div>
+            </div>
+        </div>
+            </div>
+        </div>
+    </section>
+    <section class="aui-content"  >
+       <div class="aui-info aui-margin-t-5 aui-padded-l-10 aui-padded-r-10  " style=" background: white; " onclick="open_order_list(0)">
+          <div class="aui-info-item">
+               <span class="aui-margin-l-5" style=" color: black; font-size: 0.75rem;font-weight: bold; ">会员卡特权</span>
+              </div>
+      </div>
+       
+       <div class="aui-grid">
+            <div class="aui-row">
+                <div class="aui-col-xs-3">
+		 
+                    <i class="iconfont icondaizhifu2 aui-font-size-18" style=" font-size: 1.5rem !important; " onclick="open_order_list(1)"></i>
+                    <div class="aui-grid-label" >专享券</div>
+                    <div style=" font-size: 0.5rem; color: #d2d2d4; " >专享券</div>
+                </div>
+                <div class="aui-col-xs-3">
+				          
+                    <i class="iconfont iconnogoods " style=" font-size: 1.5rem !important; " onclick="open_order_list(2)"></i>
+                    <div class="aui-grid-label">专享价</div>
+                    <div style=" font-size: 0.5rem; color: #d2d2d4; ">专享券</div>
+                </div>
+                <div class="aui-col-xs-3">
+				  
+                    <i class="iconfont icondaipingjia2" style=" font-size: 1.5rem !important; " onclick="open_order_list(3)"></i>
+                    <div class="aui-grid-label">2倍积分</div>
+                    <div style=" font-size: 0.5rem; color: #d2d2d4; ">积分可抵扣现金</div>
+                </div>
+                <div class="aui-col-xs-3">
+                    <i class="iconfont iconshouhou" style=" font-size: 1.5rem !important; "></i>
+                    <div class="aui-grid-label">更多特权</div>
+                    <div style=" font-size: 0.5rem; color: #d2d2d4; ">更多特权</div>
+                </div>
+            </div>
+        </div>
+		
+		  <div class="aui-content-padded card_text aui-padded-10 aui-margin-t-0">
+		   <div class="close_card_text"><i class="aui-iconfont aui-icon-close"></i></div>
+             AUI 2.0新增了主题皮肤样式，开发者可以通过修改相关属性来自定义主题样式，该演示为测试演示，修改效果并不完全。 
+          </div>
+		  
+		   <div class="aui-content-padded   aui-padded-10 aui-padded-l-15 aui-padded-r-15 aui-margin-t-0 ">
+		   <div class="aui-btn  aui-btn-block aui-btn-sm" style="background:#323a51 !important;color:#2db050 !important">立即开通</div>
+          </div>
+    </section>
+	
+ 
+    <div class="aui-content aui-margin-t-10">
+	   <div class="aui-info aui-margin-t-5 aui-padded-l-10 aui-padded-r-10  " style=" background: white; " onclick="open_order_list(0)">
+          <div class="aui-info-item">
+               <span class="aui-margin-l-5" style=" color: black; font-size: 0.75rem;font-weight: bold; "><div class="aui-label aui-label-info aui-margin-r-5">1</div>会员专享优惠券</span>
+              </div>
+      </div>
+	  
+	  <div class="aui-row aui-padded-10 aui-card-list">
+             <div class="aui-col-xs-6">
+			 <div class="coupon_frm aui-margin-t-0 aui-margin-10 aui-padded-b-10 aui-padded-l-10 aui-padded-t-0">
+			 <div class="aui-card-list-header aui-padded-0" style="min-height:1.2rem;color:#2db050 !important;">
+                <div>$<b style=" font-size: 1.5rem !important; ">10</b></div>
+            </div>
+
+             <div class="aui-card-list-content-padded aui-padded-0 aui-padded-b-5" style=" font-size: 0.5rem;   ">
+			满69使用
+            </div>
+			 
+			
+			  <div class="aui-card-list-footer aui-padded-0" style=" min-height: 1.2rem;">
+                  <div class="aui-btn aui-btn-success item3 coupon_btn "  @click="receive_list(index)">Recibir</div> 
+                </div>
+			        
+	         </div>
+	         </div>
+			    <div class="aui-col-xs-6">
+			 <div class="coupon_frm aui-margin-t-0 aui-margin-10 aui-padded-b-10 aui-padded-l-10 aui-padded-t-0">
+			 <div class="aui-card-list-header aui-padded-0" style="min-height:1.2rem;color:#2db050 !important;">
+                <div>$<b style=" font-size: 1.5rem !important; ">10</b></div>
+            </div>
+
+            <div class="aui-card-list-content-padded aui-padded-0 aui-padded-b-5" style=" font-size: 0.5rem;   ">
+			满69使用
+            </div>
+			 
+			
+			  <div class="aui-card-list-footer aui-padded-0" style=" min-height: 1.2rem;">
+                    <div class="aui-btn aui-btn-success item3 aui-btn-outlined coupon_btn" onclick="close_couplist()" >Usar ahora</div>
+                </div>
+			        
+	         </div>
+	         </div>
+      <div class="aui-col-xs-6">
+			 <div class="coupon_frm aui-margin-t-0 aui-margin-10 aui-padded-b-10 aui-padded-l-10 aui-padded-t-0 ">
+			 <div class="aui-card-list-header aui-padded-0" style="min-height:1.2rem;color:#2db050 !important;">
+                <div>$<b style=" font-size: 1.5rem !important; ">10</b></div>
+            </div>
+
+             <div class="aui-card-list-content-padded aui-padded-0 aui-padded-b-5" style=" font-size: 0.5rem;   ">
+			满69使用
+            </div>
+			 
+			
+			  <div class="aui-card-list-footer aui-padded-0" style=" min-height: 1.2rem;">
+                  <div class="aui-btn aui-btn-success item3 coupon_btn "  @click="receive_list(index)">Recibir</div> 
+                </div>
+			        
+	         </div>
+	         </div>
+			    <div class="aui-col-xs-6">
+			 <div class="coupon_frm aui-margin-t-0 aui-margin-10 aui-padded-b-10 aui-padded-l-10 aui-padded-t-0">
+			 <div class="aui-card-list-header aui-padded-0" style="min-height:1.2rem;color:#2db050 !important;">
+                <div>$<b style=" font-size: 1.5rem !important; ">10</b></div>
+            </div>
+
+            <div class="aui-card-list-content-padded aui-padded-0 aui-padded-b-5" style=" font-size: 0.5rem;   ">
+			满69使用
+            </div>
+			 
+			
+			  <div class="aui-card-list-footer aui-padded-0" style=" min-height: 1.2rem;">
+                    <div class="aui-btn aui-btn-success item3 aui-btn-outlined coupon_btn" onclick="close_couplist()" >Usar ahora</div>
+                </div>
+			        
+	         </div>
+	         </div>
+	   	  
+	  </div>
+	</div>
+	
+	 <div class="aui-content aui-margin-t-10">
+	   <div class="aui-info aui-margin-t-5 aui-padded-l-10 aui-padded-r-10 " style=" background: white; " onclick="open_order_list(0)">
+          <div class="aui-info-item">
+               <span class="aui-margin-l-5" style=" color: black; font-size: 0.75rem;font-weight: bold; "><div class="aui-label aui-label-info aui-margin-r-5">2</div>购物双倍积分</span>
+              </div>
+			       
+		 
+      </div>
+	  <div class="aui-list-item-media" >
+                                <img src="../../../image/vip_point.png"  >
+                            </div>
+							
+							   <div class="aui-content-padded   aui-padded-10 aui-padded-l-15 aui-padded-r-15 aui-margin-t-0 ">
+		   <div class="aui-btn  aui-btn-block aui-btn-sm" style="background:#323a51 !important;color:#2db050 !important">立即开启积分加速</div>
+          </div>
+	</div>
+	
+	<div class="aui-content aui-margin-t-10">
+	   <div class="aui-info aui-margin-t-5 aui-padded-l-10 aui-padded-r-10 " style=" background: white; " onclick="open_order_list(0)">
+          <div class="aui-info-item">
+               <span class="aui-margin-l-5" style=" color: black; font-size: 0.75rem;font-weight: bold; " id="goods_item"><div class="aui-label aui-label-info aui-margin-r-5">3</div>会员价商品</span>
+              </div>
+      </div>
+	  
+	  <!-- 商品列表 -->
+  <div class="goods-list aui-row "  >
+       
+	<div class="aui-row   aui-padded-t-10 aui-padded-r-10 aui-padded-l-10 order-info-list" style=" border-bottom: 1px solid #eee; ">
+	       
+             <div class="aui-col-xs-3">
+		         <img src="../../../image/liulangnan.png"  >
+		</div>
+		<div class="aui-col-xs-9">
+		<div class="aui-card-list   aui-padded-0 aui-padded-l-10">
+		   
+            <div class="aui-card-list-header aui-padded-0" style="min-height:1.2rem">
+                卡片布局头部区域
+            </div>
+
+            <div class="aui-card-list-content-padded aui-padded-0">
+                
+                     <div class="aui-list-item-inner   aui-padded-l-0 info-text aui-ellipsis-1" style=" font-size: 0.5rem; color: #d2d2d4; ">
+                        内容区域，卡片列表布局样式可以实现APP中常见的各类样式
+                     </div>
+           
+            </div>
+			
+			
+			<div class="aui-row">
+             <div class="aui-col-xs-6">
+		         <div class="aui-card-list-footer aui-padded-0" style=" min-height: 1.2rem;">
+                  <div class="aui-card-list-content-padded aui-font-size-12" style="display:flex;padding: 0;">
+                      <span>$</span> 19.99  </div>  
+                </div>
+                <div class="aui-card-list-content-padded aui-font-size-12  aui-padded-0" style="padding: 0;min-height: 1.2rem;    color: #47c45e;" >
+				
+                            $15.99  <i class="iconfont iconvip aui-font-size-20"></i>
+                  </div>
+		    </div>
+			 <div class="aui-col-xs-6">
+		          <div class="aui-info   ">
+                            <div class="aui-info-item"> </div>
+                            <div class="aui-info-item">
+                               <div class="aui-bar aui-bar-btn"   >
+                               <div class="car-btn Increase " style="color: #ddd;">
+                               <i class="iconfont icongouwuchekong"></i>
+                               </div>
+                               </div>
+                            </div>
+                        </div>
+		    </div>
+		</div>
+		
+            </div>
+            </div>
+        </div>
+    <div class="aui-row   aui-padded-t-10 aui-padded-r-10 aui-padded-l-10 order-info-list" style=" border-bottom: 1px solid #eee; ">
+	       
+             <div class="aui-col-xs-3">
+		         <img src="../../../image/liulangnan.png"  >
+		</div>
+		<div class="aui-col-xs-9">
+		<div class="aui-card-list   aui-padded-0 aui-padded-l-10">
+		   
+            <div class="aui-card-list-header aui-padded-0" style="min-height:1.2rem">
+                卡片布局头部区域
+            </div>
+
+            <div class="aui-card-list-content-padded aui-padded-0">                
+                     <div class="aui-list-item-inner   aui-padded-l-0 info-text aui-ellipsis-1" style=" font-size: 0.5rem; color: #d2d2d4; ">
+                        内容区域，卡片列表布局样式可以实现APP中常见的各类样式
+                     </div>           
+            </div>
+		 
+		<div class="aui-row">
+             <div class="aui-col-xs-6">
+		         <div class="aui-card-list-footer aui-padded-0" style=" min-height: 1.2rem;">
+                  <div class="aui-card-list-content-padded aui-font-size-12" style="display:flex;padding: 0;">
+                      <span>$</span> 19.99  </div>  
+                </div>
+                <div class="aui-card-list-content-padded aui-font-size-12  aui-padded-0" style="padding: 0;min-height: 1.2rem;    color: #47c45e;" >
+				
+                            $15.99  <i class="iconfont iconvip aui-font-size-20"></i>
+                  </div>
+		    </div>
+			 <div class="aui-col-xs-6">
+			     <div class="aui-info   ">
+                            <div class="aui-info-item"> </div>
+                            <div class="aui-info-item">
+                               <div class="aui-bar aui-bar-btn"  >
+                               <div class="car-btn Increase " style="color: #2db050;">
+                               <i class="iconfont icongouwuchekong"></i>
+                               </div>
+                               </div>
+                            </div>
+                        </div>
+						
+		      
+		    </div>
+		</div>
+			 
+            </div>
+            </div>
+        </div>
+    
+	</div>
+ </div>
+	 
+							
+	  <div class="aui-content-padded   aui-padded-10 aui-padded-l-15 aui-padded-r-15 aui-margin-t-0 ">
+		   <div class="aui-btn  aui-btn-block aui-btn-sm" style="background:#323a51 !important;color:#2db050 !important">开通会员卡</div>
+      </div>
+	</div>
+	
+   
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript">
+    apiready = function () {
+    }
+</script>
+</html>

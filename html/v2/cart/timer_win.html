@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,aItemress=no">
+    <title>结算界面选择时间</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+        <link rel="stylesheet" type="text/css" href="../../../css/aui-new.css" />
+</head>
+<body style="background-color:rgba(255,255,255,0);padding:0px;">
+   <div id="app">
+    <div style="display:block; " v-bind:style="styleObject">
+    </div>
+
+
+  </div>
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#app',
+    data: {
+      styleObject: {
+        background: 'black',
+        height: 0,
+        opacity: 0.5,
+       },
+        height: 0,//显示当前索引
+    },
+    methods: {
+    },
+  });
+    apiready = function(){
+        api.parseTapmode();
+        console.log(api.winHeight);
+        vm.styleObject['height']=api.winHeight+'px';
+          console.log(api.winHeight);
+          var height= api.winHeight;
+          var frm_height=height/2;
+		  var winWidth = api.winWidth;
+		  var select_width=winWidth/2;
+          console.log(frm_height);
+
+          api.sendEvent({
+            name: 'close_timer_select',
+           });
+         api.openFrame({
+              name: 'timer_frm',
+              url: 'timer_frm.html',
+              bounces: false,
+              rect: {
+                  x: 0,
+                  y: frm_height,
+                  w: 'auto',
+                  h: frm_height,
+              }
+          });
+          api.openFrame({
+                     name: 'timer_select',
+                     url: 'timer_select.html',
+                     bounces: false,
+                     rect: {
+                         x: select_width,
+                         y: frm_height+45,
+                         w: select_width,
+                         h: frm_height -45- 60,
+                     }
+                 })
+
+          api.addEventListener({
+                name: 'close_timer_select'
+              }, function(ret, err) {
+                api.closeFrame();
+            });
+    }
+
+</script>
+</html>

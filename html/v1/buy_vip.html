@@ -1,0 +1,305 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+  	<link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+  	<link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+  	<link rel="stylesheet" type="text/css" href="../../css/zhu.css"/>
+  	<script type="text/javascript" src="../../script/api.js"></script>
+  	<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+  	<script type="text/javascript" src="../../script/zhu.js"></script>
+    <style>
+    html,body{background: #fff;}
+    .dingbu{ background-color:#2e3748; overflow:hidden;}
+      .kaitong{ padding:15px;}
+      .fanhui{ width:16px; height:16px; margin-top:-4px;}
+      .kaitong span{ margin-left:30px; font-size:16px; letter-spacing:1px;}
+      .touxiang img{ width:42px; height:42px; margin-top:-2px; margin-right:10px;}
+      /*会员标识   .nicheng img{ width:14px; height:14px; margin-top:-6px; margin-left:2px;}*/
+      .yihang{ color:#FFF; overflow:hidden; padding:15px; }
+      /*内容开始*/
+      .erhang{ padding:15px;}
+      .tubiao{ width:30px; height:30px;}
+      .jiage{ padding:25px 10px 10px; overflow:hidden;}
+      .lists{float: left;width: 50%;padding: 10px;}
+      .nianka{ padding:10px; background-color:#f2f2f2; border-radius:6px;position: relative;}
+      .nianka.on{background-color:#e8ffef;}
+      .lv{ color:#333;}
+      .on .lv{color:#30b04f;}
+      .zhe{ color:#FFF; font-size:10px; background-color:#F00; padding:1px 9px; position:absolute;  border-radius:19px 19px 19px 0;
+       margin-left: -14px; margin-top: -30px;}
+      .yuanjia{ margin-left:4px; }
+      .gao{ height:40px;}
+      .jika{ padding:20px 15px 5px; width:40%; border-radius:8px; background-color:#f5f5f5; margin-left:10px; }
+      .wenhao{ width:14px; height:14px; margin-top:-2px;}
+      .shuoming{ padding:5px 10px 15px 10px; border-bottom:#f5f5f5 solid 10px;}
+      .yue{ padding:0 10px 10px ;  border-bottom:#f5f5f5 solid 10px;}
+      .tu{ width:18px; height:18px; margin-right:5px; margin-top:-2px;}
+      .xinyong{ padding-right:42px; background:url(../../image/gengduo1.png) center right no-repeat; background-size:14px;}
+      .zhifu-btn{ color:#FFF; border:#2cb45b solid 1px; background-color:#27cc53; border-radius:50px; margin:50px 10px 10px ; padding:10px;}
+
+
+      .sex{ padding-left: 21px;line-height: 18px; height: 18px;width: 18px;background: url(../../image/x2.png) center left no-repeat;background-size: 18px;font-size: 14px;color: #666;margin: 3px 5px; position: absolute;right: 5px;top: 5px;z-index: 100;}
+      .on .sex {background: url(../../image/x1.png) center left no-repeat;background-size: 18px;}
+
+      .zhifu {
+        height: auto;
+        margin: 10px;
+        background-color: #FFF;
+      }
+      .xuanzes{background: url(../../image/x2.png) center left no-repeat;background-size: 16px;height: 16px;width: 16px;}
+  		 .on .xuanzes{background: url(../../image/x1.png) center left no-repeat;	background-size: 16px;}
+       .paytype {
+   			text-align: left;
+   			padding: 5px 0 8px;
+   			margin: 0 -10;
+   			border-bottom: 1px solid #f2f2f2;
+   		}
+    </style>
+</head>
+
+<body>
+
+  <!--顶部开始-->
+      <div class="dingbu">
+       <div class="yihang">
+        <div class="touxiang zuo"><img src="../../image/221.png" /></div>
+        <div class="nicheng zuo" id="nicheng"></div><br />        <!-- 会员标识<img src="../../image/vip2.png" />-->
+        <div class="shijian wenzi12 zuo" id="lv_ing">绿卡未开通</div>
+       </div>
+      </div>
+  <!--内容开始-->
+      <div class="erhang cuti juzhong">开通绿卡享三大权益，预计每单省4.44元</div>
+      <div class="hezi juzhong">
+       <div class="col1 wenzi12"><img class="tubiao" src="../../image/youhuiquan01.png" /><br />专享券</div>
+       <div class="col1 wenzi12"><img class="tubiao" src="../../image/tejia02.png" /><br />专享特价</div>
+       <div class="col1 wenzi12"><img class="tubiao" src="../../image/jiasu01.png" /><br />2倍积分</div>
+      </div>
+      <div class="jiage" id="xinxi">
+
+      </div>
+      <div class="wenzi10 yanse0 shuoming">叮咚绿卡会员权益说明<img class="wenhao" src="../../image/yiwen.png" /></div>
+      <!--支付 开始-->
+    	<div class="zhifu">
+
+    		<div class="paytype"><b class="wenzi14 left10">支付方式</b>
+    			<img onclick="xuan_zhifu()" class="you" style="height:16px;margin-right:10px;margin-top:6px;" src="../../image/chakan.png" />
+    			<span onclick="xuan_zhifu()" class="you yanse0 wenzi12 top5 right5" id="card_num">未设置支付方式</span>
+          <div class="clear"></div>
+    		</div>
+
+    <div id="pay_list" style="display:none;">
+    		<!--<div onclick="zhifus(this)" class="paytype pay_list" data-zhi="-1" data-name="余额支付">
+    				<img style="height:16px;margin-right:10px;margin-top:5px;margin-left:10px;" align="left" src="../../image/yue.png" />
+    			  <b class="wenzi12">余额支付</b>
+    			<span class="you xuanzes top5 right10 on"></span>
+    		</div>
+    		<div onclick="zhifus(this)"class="paytype pay_list" data-zhi="-2" data-name="现金支付">
+    				<img style="height:16px;margin-right:10px;margin-top:5px;margin-left:10px;" align="left" src="../../image/cash.png" />
+    			  <b class="wenzi12">现金支付</b>
+    			<span class="you xuanzes top5 right10"></span>
+    		</div>-->
+    		<div id="xinyongka">
+    		<div onclick="zhifus(this)" class="paytype pay_list" data-zhi="1" data-name="信用卡:4458">
+    				<img style="height:16px;margin-right:10px;margin-top:5px;margin-left:10px;" align="left" src="../../image/xinyongka.png" />
+    			  <b class="wenzi12 zuo hanggao24">5555</b>
+    				<img style="height:16px;margin-right:10px;margin-top:5px;margin-left:10px;" align="left" src="../../image/cc-mastercard.png" />
+    			<span class="you xuanzes top5 right10"></span>
+    			<div class="clear"></div>
+    		</div>
+
+    	</div>
+
+
+    	</div>
+
+    	</div>
+      <div class="zhifu-btn juzhong top5 cuti" onclick="zhifu()">立即支付</div>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../../script/zhu.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+      jiazai();
+      jiazai2();
+      get_user();
+    }
+
+$(function(){
+  $(".jiage").on('click',".nianka",function(){
+$(".nianka").removeClass("on");
+$(this).addClass("on");
+  });
+})
+
+
+function xuan_zhifu() {
+  $("#pay_list").slideToggle();
+}
+function zhifus(m){
+  $(".pay_list").removeClass("on");
+  $(m).addClass("on");
+  $("#card_num").html($(m).data("name"));
+  xuan_zhifu();
+}
+
+function jiazai(){
+api.ajax({
+    url: card_url,
+    method: 'post',
+    data: {
+        values: {
+            token: api.getPrefs({sync: true,key:'login_id'}),
+        }
+    }
+},function(ret, err){
+    if (ret) {
+      //  alert( JSON.stringify( ret ) );
+
+        if(ret.code==1){
+          if($.isEmptyObject(ret.data.list)){
+            //$(".biaodan").addClass("on");
+          }else{
+
+            var goods=ret.data.list,str='',default_id=ret.data.card_id;
+            for (var i = 0; i < json_num(goods); i++) {
+              str+='<div onclick="zhifus(this)" class="paytype pay_list" data-zhi="'+goods[i].card_id+'" data-name="信用卡:'+goods[i].last4num+'">';
+                  str+='<img style="height:16px;margin-right:10px;margin-top:5px;margin-left:10px;" align="left" src="../../image/xinyongka.png" />';
+                  str+='<b class="wenzi12 zuo hanggao24">'+goods[i].last4num+'</b>';
+                  str+='<img style="height:16px;margin-right:10px;margin-top:5px;margin-left:10px;" align="left" src="'+((goods[i].card_type==0)?'../../image/visa-01.png':'../../image/cc-mastercard.png')+'" />';
+                str+='<span class="you xuanzes top5 right10"></span>';
+                str+='<div class="clear"></div>';
+              str+='</div>';
+            }
+            $("#xinyongka").html(str);
+
+          }
+
+        }
+    } else {
+        //alert( JSON.stringify( err ) );
+    }
+});
+
+}
+
+
+function jiazai2(){
+
+api.ajax({
+		url: lvka_list_url,
+		method: 'post',
+		data: {
+				values: {
+						token: api.getPrefs({sync: true,key:'login_id'})
+				}
+		}
+},function(ret, err){
+		if (ret) {
+
+	//alert( JSON.stringify( ret ) );
+				if(ret.code==1){
+					var data=ret.data.list.data,str='';
+					if($.isEmptyObject(data)){
+						tishi("没有了");return false;
+					}
+
+					for (var i = 0; i < json_num(data); i++) {
+						str+=' <div class="lists">';
+           str+='<div data-id="'+data[i].id+'" class="nianka '+((i==0)?"on":"")+'"><span class="sex"></span>';
+            str+='<div class="cuti"><span class="zhe cang">5折</span>'+data[i].name+':'+data[i].expire_day+'天</div>';
+            str+='<div class="wenzi10 yanse0 gao">'+data[i].short_desc+'</div>';
+          str+='  <div class="lv">¥<span class="wenzi18 lv cuti">'+data[i].price+'</span><span class="wenzi10 yanse0 yuanjia cang"><s>¥180</s></span></div>';
+        str+='  </div>';
+           str+='</div>';
+					}
+
+					$("#xinxi").html(str);
+
+				}
+		} else {
+				//alert( JSON.stringify( err ) );
+		}
+});
+
+}
+
+function zhifu(){
+jiazaizhong();
+  api.ajax({
+      url: buy_lvka_url,
+      method: 'post',
+      data: {
+          values: {
+              token: api.getPrefs({sync: true,key:'login_id'}),
+              vip_card_id:$(".nianka.on").data('id'),
+              credit_card_id:$(".pay_list.on").data('zhi')
+          }
+      }
+  },function(ret, err){
+    jiazaiend();
+      if (ret) {
+          //alert( JSON.stringify( ret ) );
+          if(ret.code==1){
+            tishi(ret.msg);
+            api.sendEvent({
+                name: 'vip_shuaxin'
+            });
+            setTimeout(function(){fanhui();},1500);
+          }else{
+              tishi(ret.msg);
+          }
+      } else {
+        tishi(err.msg);
+          //alert( JSON.stringify( err ) );
+      }
+  });
+
+
+}
+
+
+function get_user(){
+  api.ajax({
+      url: user_center_url,
+      method: 'post',
+      data: {
+        values:{  token: api.getPrefs({sync: true,key:'login_id'})}
+      }
+  },function(ret, err){
+    api.refreshHeaderLoadDone();
+    if(ret){
+      var user=ret.data.userInfo;
+      var level='<img src="../../image/lvka_ico.png" align="right" width="16">';
+
+      if(user.is_vip==0){
+        $("#nicheng").html(user.nickName);
+      $("#lv_ing").html('Aún no has abierto una tarjeta verde.');
+    }else{
+      $("#nicheng").html(user.nickName+level);
+      var linshi=Date.parse(Date())/1000;
+      if(user.vip_card_end_time<linshi){
+        $("#lv_ing").html('Expirado');
+      }else{
+        $("#lv_ing").html(shijian3(user.vip_card_end_time)+'Vencimiento');
+      }
+    }
+      $("#quan_num").html(ret.data.couponCount);
+      $("#mobile").html(user.mobile);
+
+
+    }else{
+        tishi( err.msg );
+    }
+  })
+}
+</script>
+
+</html>

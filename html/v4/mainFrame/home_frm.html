@@ -1,0 +1,1193 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/icons/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/public.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/aui-slide.css" />
+	<style>
+	.aui-bar-nav .aui-title{
+	text-align:left;
+	}
+      .aui-slide-node img{
+	  height:none !important;
+	  }
+	  	/*.icon{font-size: 1.2rem !important;}*/
+      .fix-btn .icon{font-size: 1.5rem !important;}
+	</style>
+</head>
+<body>
+<div id="app">
+      <div id="address" class="aui-row aui-padded-b-15">
+    	 <div class="aui-row aui-padded-r-15  aui-padded-l-15"   style=" background: #6becff; ">
+					 <div class="aui-col-xs-1 ">
+					   <div class="    text-center ">
+                       <span class="icon iconfont iconoutline-location_on-px  " style="    font-size: 1rem !important;"></span>
+                        </div>
+					 </div>
+					 <div class="aui-col-xs-10 aui-padded-l-5 aui-padded-t-5 "  onclick="select_address()">
+              <div class=" cart-title aui-ellipsis-1 aui-font-size-14  " style=" height: 1.2rem; line-height: 1.2rem; ">
+                         Enviar a Av. {{location}}
+                </div>
+					  </div>
+					 <div class="aui-col-xs-1  ">
+					     <div class="    text-center   ">
+                      <span class="icon iconfont iconround-expand_more-px-copy"    onclick="select_address()"  style="    font-size: 1rem !important;" ></span>
+             </div>
+
+					  </div>
+					  </div>
+      </div>
+     <!--轮播模块--->
+    <section class="aui-content " style=" background: white;box-shadow: 0 0 10px #f0f0f0;border:1px solid #efefef ">
+		<div id="aui-slide" class="aui-padded-l-15 aui-padded-r-15 aui-invisible">
+        <div class="aui-slide-wrap" id="banners">
+            <div class="aui-slide-node bg-dark">
+                <img src="../../../image/4541.jpg" />
+            </div>
+            <div class="aui-slide-node bg-dark">
+                <img src="../../../image/2490335.jpg" />
+            </div>
+            <div class="aui-slide-node bg-dark">
+                <img src="../../../image/2658874.jpg" />
+            </div>
+        </div>
+  <div class="aui-slide-page-wrap aui-padded-l-15 aui-padded-r-15"><!--分页容器--></div>
+    </div>
+	</section>
+
+
+    <section class="aui-content   aui-padded-t-15 aui-padded-b-15">
+	    <div class="ship-tips aui-margin-b-15 aui-padded-l-15 aui-padded-r-15" >
+
+	 	   <div class="aui-tips-title aui-font-size-12 aui-ellipsis-1" style=" text-align: center; width: 100%; ">
+		     <i class="iconfont iconoutline-local_shipping-pxG aui-font-size-16"></i>
+		   ¡Lo mas rápido es 29 minutos y llega a destino!</div>
+
+        </div>
+        <div class=" aui-margin-b-15 aui-padded-l-15 aui-padded-r-15" >
+          <div class="aui-card-list">
+                   <div class="aui-card-list-content">
+                <img src="../../../image/Frutas.png" />
+            </div>
+           </div>
+           <div class="aui-card-list">
+                   <div class="aui-card-list-content">
+                <img src="../../../image/Verduras.png" />
+            </div>
+          </div>
+        </div>
+        <div class="aui-margin-b-15 aui-padded-l-15 aui-padded-r-15  ">
+                <div class="aui-row aui-row-padded font-bold">
+                    <div class="aui-col-xs-3">
+                        <img src="../../../image/Descuentos.png">
+						<div class="aui-font-size-12 text-center aui-ellipsis-1">Descuentos</div>
+                    </div>
+                    <div class="aui-col-xs-3">
+                        <img src="../../../image/vip.png">
+							<div class="aui-font-size-12 text-center aui-ellipsis-1">V.I.P</div>
+                    </div>
+                    <div class="aui-col-xs-3">
+                        <img src="../../../image/puntos.png">
+							<div class="aui-font-size-12 text-center aui-ellipsis-1">Puntos</div>
+                    </div>
+					   <div class="aui-col-xs-3">
+                        <img src="../../../image/cupones.png">
+							<div class="aui-font-size-12 text-center aui-ellipsis-1" >Cupones</div>
+                    </div>
+                </div>
+        </div>
+    </section>
+
+	<section class="aui-content   aui-padded-t-15 aui-padded-b-0 aui-margin-b-15" style=" background: white; " v-if="flashlist.has == 1">
+
+    <div class="aui-info aui-padded-t-0 aui-padded-l-15 aui-padded-r-15   font-bold aui-ellipsis-1" >
+          <div class="aui-info-item aui-ellipsis-1">
+               <span   class="black-font aui-font-size-18  " >Ofertas por tiempo limitado</span>
+              </div>
+     <div class="aui-info-item lv-font aui-ellipsis-1" onclick="open_flash()">Ver más </div>
+      </div>
+	   <div class="aui-info aui-padded-t-0 aui-padded-l-15 aui-padded-r-15   " >
+          <div class="aui-info-item aui-ellipsis-1">
+               <span   class="Timrer " >Termina en {{hh}}:{{mm}}:{{ss}}</span>
+          </div>
+      </div>
+      <div class="aui-info aui-padded-0 aui-padded-l-15 aui-padded-r-15   " v-if="flashlist.has == 1">
+        <div class="rows-list">
+					<ul style="display: flex;">
+						<!--注意： 商品个数*6rem-->
+						<li class="aui-row limitado-poduct aui-margin-r-15 aui-padded-10" v-for="(goods,index) in flashlist.goods_list" tapmode >
+						  <div class="aui-col-xs-6">
+						    <img :src="goods.image" v-on:click="to_goods_info(goods.goods_id)" :id="forId(index,'flash')" class="w-80" >
+						   </div>
+						   <div class="aui-col-xs-6">
+						     <div class="aui-card-list ">
+						     <div class=" aui-padded-0">
+						     {{goods.goods_name}}
+						     </div>
+						      <div class=" aui-padded-0 info-text now-price">
+						     ${{goods.now_price.value}} x kg
+						        </div>
+						      <div class=" aui-padded-0  old-price">
+						           ${{goods.origin_price}} x kg
+						      </div>
+
+							    <div class="aui-btn add_cart" @click="add_to_cart(index,'flash')" v-if="goods.stock_num >0">Agregar</div>
+
+						     </div>
+						   </div>
+						</li>
+						<!-- <li class="aui-row limitado-poduct aui-padded-10 aui-margin-r-15"  >
+						  <div class="aui-col-xs-6">
+						    <img src="../../../image/p/p1.png">
+						   </div>
+						   <div class="aui-col-xs-6">
+						     <div class="aui-card-list ">
+						     <div class=" aui-padded-0">
+						     Manzana
+						     </div>
+						      <div class=" aui-padded-0 info-text now-price">
+						     $40,00 x kg
+						        </div>
+						      <div class=" aui-padded-0  old-price">
+						           $60,00 x kg
+						      </div>
+							  <div class="aui-btn add_cart">Agregar</div>
+						     </div>
+						   </div>
+						</li>
+
+							<li class="aui-row limitado-poduct aui-padded-10 aui-margin-r-15"  >
+						  <div class="aui-col-xs-6">
+						    <img src="../../../image/p/p1.png">
+						   </div>
+						   <div class="aui-col-xs-6">
+						     <div class="aui-card-list ">
+						     <div class=" aui-padded-0">
+						     Manzana
+						     </div>
+						      <div class=" aui-padded-0 info-text now-price">
+						     $40,00 x kg
+						        </div>
+						      <div class=" aui-padded-0  old-price">
+						           $60,00 x kg
+						      </div>
+						     </div>
+						   </div>
+						</li> -->
+						 </ul>
+				</div>
+    </div>
+    </section>
+
+   <section class="aui-content   aui-padded-t-15 aui-padded-b-0 aui-margin-b-15"  style=" background: white; " >
+      <div class="aui-info aui-padded-t-0 aui-padded-l-15 aui-padded-r-15  font-bold " >
+          <div class="aui-info-item">
+               <span class="black-font aui-font-size-18 " >Combos</span>
+              </div>
+     <div class="aui-info-item lv-font">Ver más </div>
+      </div>
+
+
+
+       <div class="aui-margin-b-15 aui-padded-l-15 aui-padded-r-15  ">
+                <div class="aui-row aui-row-padded goods_list_row">
+                    <div class="aui-col-xs-6  goods_list_item" v-for="(goods,index) in comboslist" tapmode>
+					 <div class="goods-content aui-padded-15">
+                        <img :src="goods.image" v-on:click="to_goods_info(goods.goods_id)" :id="forId(index,'combos')">
+
+						  <div class="aui-card-list  font-bold">
+                        <div class=" aui-padded-0">
+                             {{goods.goods_name}}
+                        </div>
+                        <div class=" now-price">
+                            ${{goods.now_price.value}}
+                        </div>
+                        <div class=" vip-price" >
+                          <div v-if="goods.vip_price!=0.00">
+                            ${{goods.vip_price}} V.I.P.
+                          </div>
+                        </div>
+
+
+							  <div v-if="goods.cart_num==0">
+			            	    <div class="aui-btn add_cart" @click="add_to_cart(index,'combos')" v-if="goods.stock_num >0">Agregar</div>
+                         </div>
+                         <div v-else>
+
+	                    <div class="aui-row  cart_page_input "  style="margin-top: 0.2rem;">
+			           	  <div class="aui-col-xs-3    lv-border plus-btn" style="line-height: 1.2rem !important;">
+			           	  <i class="aui-iconfont aui-icon-minus" tapmode v-on:click="cutdown_to_cart(index,'combos')"></i>
+			           	 </div>
+			           	  <div class="aui-col-xs-6 lv-border  aui-ellipsis-1 text-content"  >
+			           	   {{goods.cart_unit_num}}
+			           	  </div>
+			           	 <div class="aui-col-xs-3  lv-border minus-btn" style="line-height: 1.2rem !important;">
+			           	   <i class="aui-iconfont aui-icon-plus" tapmode @click="add_to_cart(index,'combos')" v-if="goods.stock_num>goods.cart_num"></i>
+						      <i class="aui-iconfont aui-icon-plus" style="color: #ddd;"  v-else></i>
+			           	    </div>
+  			           	   </div>
+
+                          </div>
+                        </div>
+                    </div>
+                    </div>
+
+
+                    <!-- <div class="aui-col-xs-6 goods_list_item">
+						 <div class="goods-content aui-padded-15">
+                        <img src="../../../image/p/p5.png">
+							 <div class="aui-card-list  ">
+                       <div class="  aui-padded-0">
+                           Frutos Rojos
+                       </div>
+                        <div class=" now-price">
+                            $360,00
+                        </div>
+                        <div class=" vip-price">
+                            $340,00 V.I.P.
+                        </div>
+			           	<div class="aui-btn add_cart">Agregar</div>
+                       </div>
+                    </div>
+                    </div> -->
+
+
+
+
+                </div>
+
+        </div>
+    </section>
+
+   	<section class="aui-content   aui-padded-t-15 aui-padded-b-0 aui-margin-b-15" style=" background: white; " v-if="promlist.length>0">
+
+    <div class="aui-info aui-padded-t-0 aui-padded-l-15 aui-padded-r-15  font-bold " >
+          <div class="aui-info-item">
+               <span   class="black-font aui-font-size-18" >Ofertas de la semana</span>
+              </div>
+     <div class="aui-info-item lv-font">Ver más </div>
+      </div>
+
+
+
+      <div class="aui-info aui-padded-0 aui-padded-l-15 aui-padded-r-15   ">
+        <div class="rows-list">
+					<ul style="    display: flex;">
+						<!--注意： 商品个数*6rem-->
+						<li class="aui-row limitado-poduct aui-margin-r-15 aui-padded-10" v-for="(goods,index) in promlist" >
+						  <div class="aui-col-xs-6">
+						    <img :src="goods.image"  :id="forId(index,'prom')" v-on:click="to_goods_info(goods.goods_id)" class="w-80">
+						   </div>
+						   <div class="aui-col-xs-6">
+						     <div class="aui-card-list ">
+						     <div class=" aui-padded-0">
+						     {{goods.goods_name}}
+						     </div>
+						      <div class=" aui-padded-0 info-text now-price">
+						     {{goods.now_price.value}} x kg
+						        </div>
+						      <div class=" aui-padded-0  old-price">
+						           {{goods.origin_price}} x kg
+						      </div>
+
+
+			            	     <div class="aui-btn add_cart" @click="add_to_cart(index,'prom')" v-if="goods.stock_num >0">Agregar</div>
+
+
+						     </div>
+						   </div>
+						</li>
+
+
+						 </ul>
+				</div>
+    </div>
+    </section>
+     <section class="aui-content   aui-padded-t-15 aui-padded-b-0 aui-margin-b-15"  >
+
+      <div class="aui-info aui-padded-t-0 aui-padded-l-15 aui-padded-r-15   " >
+          <div class="aui-info-item">
+               <span   class="black-font font-bold aui-font-size-18" >Destacados</span>
+             </div>
+      </div>
+
+
+
+       <div class="aui-margin-b-15 aui-padded-l-15 aui-padded-r-15  " >
+                <div class="aui-row aui-row-padded goods_list_row">
+                  <div class="aui-col-xs-6  goods_list_item" v-for="(goods,index) in like_goods">
+					          <div class="goods-content aui-padded-15">
+                   <img :src="goods.image" v-on:click="to_goods_info(goods.goods_id)" :id="forId(index,'like')">
+						  <div class="aui-card-list  font-bold">
+                        <div class=" aui-padded-0 aui-ellipsis-1">
+                            {{goods.goods_name}}
+                        </div>
+                        <div class=" now-price">
+                            ${{goods.now_price.value}}
+                        </div>
+                        <div class=" vip-price">
+                          <div v-if="goods.vip_price!='0.00'">
+                            ${{goods.vip_price}} V.I.P.
+                          </div>
+                        </div>
+                        <div v-if="goods.cart_num==0">
+			            	      <div class="aui-btn add_cart" @click="add_to_cart(index,'like')"   v-if="goods.stock_num>0" >Agregar</div>
+                         </div>
+                         <div v-else>
+
+	                    <div class="aui-row  cart_page_input "  style="margin-top: 0.2rem;">
+			           	  <div class="aui-col-xs-3    lv-border plus-btn" style="line-height: 1.2rem !important;">
+			           	  <i class="aui-iconfont aui-icon-minus" tapmode v-on:click="cutdown_to_cart(index,'like')"></i>
+			           	 </div>
+			           	  <div class="aui-col-xs-6 lv-border  aui-ellipsis-1 text-content"  >
+			           	   {{goods.cart_unit_num}}
+			           	  </div>
+			           	 <div class="aui-col-xs-3  lv-border minus-btn" style="line-height: 1.2rem !important;">
+			           	   <i class="aui-iconfont aui-icon-plus" tapmode @click="add_to_cart(index,'like')" v-if="goods.stock_num>goods.cart_num"></i>
+						      <i class="aui-iconfont aui-icon-plus" style="color: #ddd;"  v-else></i>
+			           	    </div>
+  			           	   </div>
+
+                          </div>
+                        </div>
+                    </div>
+                    </div>
+
+
+					    <!-- <div class="aui-col-xs-6 goods_list_item">
+						 <div class="goods-content aui-padded-15">
+                        <img src="../../../image/p/p4.png">
+							 <div class="aui-card-list  font-bold">
+                       <div class=" aui-padded-0">
+                           Frutos Rojos
+                       </div>
+                       <div class=" now-price">
+                            $360,00
+                        </div>
+                        <div class=" vip-price">
+                            $340,00 V.I.P.
+                        </div>
+			           	<div class="aui-btn add_cart">Agregar</div>
+                       </div>
+                    </div>
+                    </div> -->
+ <div class="aui-col-xs-6 goods_list_item">
+						 <div class="goods-content aui-padded-15">
+                        <img src="../../../image/p/p5.png">
+							 <div class="aui-card-list  ">
+                       <div class="  aui-padded-0">
+                           Frutos Rojos
+                       </div>
+                        <div class=" now-price">
+                            $360,00
+                        </div>
+                        <div class=" vip-price">
+                            $340,00 V.I.P.
+                        </div>
+			           	<div class="aui-btn add_cart">Agregar</div>
+                       </div>
+                    </div>
+                    </div>
+
+					 <div class="aui-col-xs-6 goods_list_item">
+						 <div class="goods-content aui-padded-15">
+                        <img src="../../../image/p/p5.png">
+							 <div class="aui-card-list  ">
+                       <div class="  aui-padded-0">
+                           Frutos Rojos
+                       </div>
+                        <div class=" now-price">
+                            $360,00
+                        </div>
+                        <div class=" vip-price">
+                            $340,00 V.I.P.
+                        </div>
+			           	  <div class="aui-row  cart_page_input "  style="margin-top: 0.2rem;">
+			           	  <div class="aui-col-xs-3    lv-border plus-btn" style="line-height: 1.2rem !important;">
+			           	  <i class="aui-iconfont aui-icon-minus"></i>
+			           	 </div>
+			           	  <div class="aui-col-xs-6 lv-border  aui-ellipsis-1 text-content"  >
+			           	   12222 kg
+			           	  </div>
+			           	 <div class="aui-col-xs-3  lv-border minus-btn" style="line-height: 1.2rem !important;">
+			           	   <i class="aui-iconfont aui-icon-plus"></i>
+			           	    </div>
+  			           	   </div>
+                       </div>
+                    </div>
+                    </div>
+
+                </div>
+        </div>
+    </section>
+    <!--右侧固定-->
+    <div class="fix-btn">
+      <div class="kf" onclick="open_chat()"  style="color: white;">	<i class="icon iconfont iconoutline-headset_mic-px"></i></div>
+      <div class="top aui-margin-t-10"  onclick="returnToTop()" v-bind:class="{ 'aui-invisible': scoll_H<100 }"   style="color: #5a2ed4;"><i class="icon iconfont iconoutline-arrow_upward-px"></i></div>
+    </div>
+	  </div>
+
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/aui-slide.js" ></script>
+<script type="text/javascript" src="../../../script/vue.js" ></script>
+<script type="text/javascript" src="../../../script/T.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript" src="../../../script/aui-scroll.js"></script>
+<script type="text/javascript">
+     var vm = new Vue({
+      el: '#app',
+      data: {
+          location:'',
+          timeer:0,
+          scorll_list: [],
+          nav_list: [],
+
+          promlist: [],
+          promlist_width:6,
+
+          flashlist: [],
+          flashlist_width:6,
+
+          comboslist: [],
+
+
+          weekpromlist:[],
+          weekpromlist_width:6,
+
+          recommendlist: [],
+
+          like_goods:[],
+          like_goods_even:[],
+          like_goods_odd:[],
+          like_goods_page:1,
+          like_goods_has_more:1,
+					hh:00,
+					mm:00,
+					ss:00,
+					count:0,
+					timeer2:0,
+
+					scoll_H:0,
+
+      },
+      methods: {
+          forId:function(index,moudle){
+            return moudle+'_'+index;
+          },
+		open_nav:function(index) {
+				// console.log(vm.nav_list[index]['link']);
+				to_do(vm.nav_list[index]['link']);
+			 return vm.nav_list[index]['link'];
+			},
+
+
+          init: function () {
+
+              api.ajax({
+                  url: index_url,
+                  method: 'post',
+                  timeout: 30,
+                  dataType: 'json',
+                  returnAll: false,
+                  data: {
+                      values: {
+                          name: 'values'
+                      }
+                  }
+              }, function (ret, err) {
+                  if (ret) {
+                    // console.log(JSON.stringify(ret));
+                      vm.scorll_list = ret.data.banner_list.scoll;
+                      //轮播
+                      var banners=ret.data.banner_list.scoll,imgs=[];
+                      for (var i = 0; i < json_num(banners); i++) {
+                        imgs[i]=banners[i].image;
+                      }
+                      //alert(JSON.stringify(imgs));
+
+
+
+                      var margin_top=$api.byId('address').offsetHeight;
+
+                      banner(imgs,200,api.winWidth,0,margin_top);
+                      // vm.nav_list =ret.data.banner_list.nav;
+											// var nav=ret.data.banner_list.nav,str4='';
+											// // class="aui-col-xs-3"
+											// for (var i = 0; i < json_num(nav); i++) {
+											// 	str4+='<div  class="aui-col-xs-3" style="width:20%;" onclick="'+nav[i].link+'"><img src="'+nav[i].image+'" style="width: 50%;margin:auto; " /> <div class="aui-grid-label  aui-ellipsis-1">'+nav[i].name+'</div> </div>'
+											// }
+											// document.getElementById("nav").innerHTML=str4;
+                      vm.promlist = ret.data.promotion;
+                      vm.promlist_width=ret.data.promotion.length*6;
+                      vm.flashlist = ret.data.falsh;
+                      vm.comboslist=ret.data.combos.data;
+                      if(ret.data.falsh.has){
+                          vm.flashlist_width=ret.data.falsh.goods_list.length*6;
+													console.log(JSON.stringify(ret.data.falsh.info[0]['status']['countdown']))
+													vm.count= ret.data.falsh.info[0]['status']['countdown'];
+													var temp_count = vm.count;
+													vm.timeer2 = temp_count;
+													var coutnnum = setInterval(function () {
+															if(vm.timeer2 == 0){
+																	clearInterval(coutnnum);
+																	return;
+															}else{
+																vm.hh=parseInt(vm.timeer2/3600);
+																vm.mm=parseInt((vm.timeer2-vm.hh*3600)/60);
+																vm.ss=vm.timeer2-vm.hh*3600-vm.mm*60;
+																	vm.timeer2 -= 1;
+															}
+													},'1000');
+                      }
+
+                      //    vm.recommendlist = ret.data.recommendlist;
+                      //  console.log(JSON.stringify(vm.recommendlist));
+
+                  } else {
+                      api.alert(JSON.stringify(err));
+                  }
+              });
+
+              vm.get_like_goods();
+          },
+          get_like_goods:function() {
+						console.log(api.getPrefs({sync: true,key:'login_id'}));
+						if(vm.like_goods_has_more){
+							api.ajax({
+									url: like_goods_url,
+									method: 'post',
+									timeout: 30,
+									dataType: 'json',
+									returnAll: false,
+									data: {
+											values: {
+													category_id: 0,
+                          type: 'is_hot',
+													page: vm.like_goods_page,
+													token: api.getPrefs({sync: true,key:'login_id'}),
+											}
+									}
+							}, function (ret, err) {
+								// Log(api.getPrefs({sync: true,key:'login_id'}));
+								Log(err);
+
+								if (ret) {
+									if (vm.like_goods_page == 1) {
+									    vm.like_goods=ret.data.list.data;
+											 var j=1;
+											for (var i = 0; i < ret.data.list.data.length; i++) {
+											    if(j==1){
+												  vm.like_goods_even.push(ret.data.list.data[i]);
+												   j=0;
+												  }else{
+													j=1;
+												  vm.like_goods_odd.push(ret.data.list.data[i]);
+												   }
+											}
+
+									} else {
+									        var j=1;
+											for (var i = 0; i < ret.data.list.data.length; i++) {
+                        vm.like_goods.push(ret.data.list.data[i]);
+												if(j==1){
+													j=0;
+												  vm.like_goods_even.push(ret.data.list.data[i]);
+												  }else{
+												  j=1;
+												  vm.like_goods_odd.push(ret.data.list.data[i]);
+												  }
+											}
+									}
+									if( ret.data.list.current_page<ret.data.list.last_page){
+										 vm.like_goods_page += 1;
+									}else{
+											vm.like_goods_has_more=0;
+									}
+									console.log(vm.like_goods_has_more);
+											// console.log(JSON.stringify(ret));
+									} else {
+											console.log(JSON.stringify(err));
+									}
+
+							});
+						}
+
+           },
+
+          open_collect:function () {
+              if(is_login()){
+                  openWin('index','collection')
+              }else{
+                  go_login();
+              }
+          },
+  		    to_goods_info:function (goods_id) {
+					   open_goods_detail(goods_id);
+  				},
+          open_goodslist:function (tag) {
+              var pageParam = '';
+              if(tag == 1){
+                  pageParam = {is_new:1};
+              }
+              if(tag == 2){
+                  pageParam = {is_hot:1};
+              }
+              if(tag == 3){
+                  pageParam = {is_rec:1};
+              }
+              api.openWin({
+                  name: 'goods_list',
+                  url: 'widget://html/index/goods_list.html',
+                  pageParam: pageParam,
+              });
+          },
+
+		      add_to_cart:function(index,moudle){
+
+				    var goodinfo;
+					  goodinfo=vm.getGoodsInof(index,moudle);
+
+
+			  	  if(is_login()){
+ 				  	 api.ajax({
+ 				  			 url: add_to_cart_url,
+ 					  		 method: 'post',
+ 					  		 data: {
+ 						  			 values: {
+ 											 token: api.getPrefs({sync: true,key:'login_id'}),
+ 											 goods_id:goodinfo['goods_id'],
+ 											 goods_sku_id:goodinfo['goods_sku_id'],
+ 											 goods_num:1
+ 						  			 }
+ 						  	 }
+ 				  	   },function(ret, err){
+ 						  	 if (ret) {
+ 										//  tishi(ret.msg);
+
+ 										 if(ret.code==1){
+											var fly_img=goodinfo.image
+										 	var box=document.getElementById(moudle+'_'+index);
+										 	vm.fly_cart(fly_img,box.getBoundingClientRect().left,box.getBoundingClientRect().top);
+
+											 //修改产品数量
+										  vm.changeCartNum(index,moudle,ret.data.now_goods_num,ret.data.clc_now_goods_num);
+
+ 										 api.sendEvent({
+ 												 name: 'update_cart_num',
+ 										 });
+ 										 api.sendEvent({
+ 												 name: 'update_cart_list',//更新购物车列表
+ 										 });
+										//  api.sendEvent({
+										// 		 name: 'update_cart_list',//更新购物车列表
+										//  });
+
+									}else{
+									 tishi( ret.msg );
+										Log(ret);
+									}
+
+ 						  	 } else {
+ 						  			 alert( JSON.stringify( err ) );
+ 									//  console.log(err.msg)
+ 						  	 }
+ 				   	   });
+ 			    	}else{
+ 				  		go_login();
+ 				   }
+			  	},
+
+					cutdown_to_cart:function(index,moudle){
+						var goodinfo;
+						goodinfo=vm.getGoodsInof(index,moudle);
+					 //特价
+
+					 if(is_login()){
+ 				  	 api.ajax({
+ 				  			 url: cutdown_to_cart_url,
+ 					  		 method: 'post',
+ 					  		 data: {
+ 						  			 values: {
+ 											 token: api.getPrefs({sync: true,key:'login_id'}),
+ 											 goods_id:goodinfo['goods_id'],
+ 											 goods_sku_id:goodinfo['goods_sku_id'],
+ 										   deviceid: api.deviceId,
+ 						  			 }
+ 						  	 }
+ 				  	   },function(ret, err){
+ 						  	 if (ret) {
+ 										//  tishi(ret.msg);
+
+ 										 if(ret.code==1){
+											 Log(ret);
+											 //修改产品数量
+										  vm.changeCartNum(index,moudle,ret.data.now_goods_num,ret.data.clc_now_goods_num);
+
+ 										 api.sendEvent({
+ 												 name: 'update_cart_num',
+ 										 });
+ 										 api.sendEvent({
+ 												 name: 'update_cart_list',//更新购物车列表
+ 										 });
+										//  api.sendEvent({
+										// 		 name: 'update_cart_list',//更新购物车列表
+										//  });
+
+ 										 }
+
+ 						  	 } else {
+ 						  			 alert( JSON.stringify( err ) );
+ 									//  console.log(err.msg)
+ 						  	 }
+ 				   	   });
+ 			    	}else{
+ 				  		go_login();
+ 				   }
+					},
+					getGoodsInof:function(index,moudle){
+						if(moudle=='prom'){
+							goodinfo=vm.promlist[index];
+						}
+						//秒杀
+						if(moudle=='flash'){
+							goodinfo=vm.flashlist.goods_list[index];
+							console.log(JSON.stringify(goodinfo));
+						}
+
+            //秒杀
+						if(moudle=='combos'){
+							goodinfo=vm.comboslist[index];
+							console.log(JSON.stringify(goodinfo));
+						}
+
+					  //猜你喜欢
+						if(moudle=='like'){
+							goodinfo=vm.like_goods[index];
+						}
+						if(moudle=='like_even'){
+							goodinfo=vm.like_goods_even[index];
+						}
+						if(moudle=='like_odd'){
+						 goodinfo=vm.like_goods_odd[index];
+					 }
+
+			      	//本周特价
+				  	if(moudle=='week'){
+					 	  goodinfo=vm.weekpromlist[index];
+					  }
+					  return goodinfo;
+					},
+
+          changeCartNum:function(index,moudle,num,unit_num){
+			     	if(moudle=='prom'){
+			     	 vm.promlist[index].cart_num=num;
+			     	 vm.promlist[index].cart_unit_num=unit_num;
+			     	}
+
+					if(moudle=='combos'){
+			     	 vm.comboslist[index].cart_num=num;
+			     	 vm.comboslist[index].cart_unit_num=unit_num;
+			     	}
+			     	//秒杀
+			     	if(moudle=='flash'){
+			     	 vm.flashlist.goods_list[index].cart_num=num;
+			     	 vm.flashlist.goods_list[index].cart_unit_num=unit_num;
+			     		}
+			     	//猜你喜欢
+			     	if(moudle=='like'){
+			     	 vm.like_goods[index].cart_num=num;
+			     	 vm.like_goods[index].cart_unit_num=unit_num;
+			     	 }
+			     	if(moudle=='like_even'){
+			     	 vm.like_goods_even[index].cart_num=num;
+			     	 vm.like_goods_even[index].cart_unit_num=unit_num;
+			     	 }
+			     	if(moudle=='like_odd'){
+			     	 vm.like_goods_odd[index].cart_num=num;
+			     	 vm.like_goods_odd[index].cart_unit_num=unit_num;
+			     	 }
+
+			     	//本周特价
+			     	if(moudle=='week'){
+			     	vm.weekpromlist[index].cart_num=num;
+			     	}
+			     	},
+			    fly_cart:function (img,x,y){
+
+            // var box=document.getElementById(moudle+'_'+index);
+
+						 //发送飞入的图片
+						 api.sendEvent({
+						     name: 'fly_img',
+						     extra: {
+						         img: img
+						     }
+						  });
+              //打开飞入的窗口
+					  	api.setFrameAttr({
+								name: 'fly_frm',
+								bounces: false,
+								hidden:true,
+								vScrollBarEnabled: false,
+								hScrollBarEnabled: false,
+								rect: {
+										x: x,
+										y: y,
+										w: 70,
+										h: 70
+								},
+					   	});
+             vm.timeer=10;
+             //初始化坐标
+             var x1=x;
+             var y1=y;
+
+             //计算比例，以小的为参照
+             var vx,vy,sx,sy;
+             sy=cart_top-y-40;
+             sx=cart_left-x-40;
+             //sy 不可能等于0 的情况出现
+             if(sx==0){
+               vy=sy/Math.abs(sy);
+             }else{
+					  		vx=sx/vm.timeer;
+                vy=(vx*sy)/sx;
+             }
+					  	// vm.timeer = temp_count;
+					  	var coutnnum = setInterval(function () {
+							 	if(vm.timeer == 0){
+								    	// api.closeFrame({
+							        //   name: 'fly_frm'
+							        // });
+											api.setFrameAttr({
+													name: 'fly_frm',
+													hidden:true,
+											});
+										clearInterval(coutnnum);
+										return;
+								 }else{
+									        x1 += vx;
+									        y1 += vy;
+									        api.setFrameAttr({
+									           name: 'fly_frm',
+									           rect:{
+									             x:x1,
+									             y:y1,
+									           }
+									        });
+										vm.timeer -= 1;
+								}
+						},'100');
+
+          },
+
+                 // 是否可配送区域
+                 isAllow:function(lat,lng){
+                   api.ajax({
+                       url: is_allow_area_url,
+                       method: 'post',
+                       data: {
+                           values: {
+                             lat:lat,
+                             lng:lng,
+                           }
+                       }
+                     },function(ret, err){
+                       if (ret) {
+                          console.log(JSON.stringify(ret));
+                          if(ret.code==1){
+                            if(ret.data>0){
+
+
+                              vm.getAllowList(lat,lng);
+
+                            }else{
+                              //  弹出提示不可配送区域
+
+                              api.openFrame({
+                                   name: 'blank',
+                                   url: './blank.html',
+                                   bounces: false,
+                                   rect: {
+                                       x: 0,
+                                       y: 0,
+                                       w: 'auto',
+                                       h: 'auto',
+                                   },
+                                   pageParam: {
+                                         type:2
+                                   },
+                               });
+                            }
+                          }
+                       } else {
+                           alert( JSON.stringify( err ) );
+
+                       }
+                     });
+                   console.log(lat+','+lng);
+
+                 },
+                //获取默认地址
+                getDefaultaddress:function(){
+
+                  api.ajax({
+                      url: default_address_url,
+                      method: 'post',
+                      timeout: 30,
+                      dataType: 'json',
+                      returnAll: false,
+                      data: {
+                          values: {
+                              token: api.getPrefs({sync: true,key:'login_id'})
+                          }
+                      }
+                  }, function (ret, err) {
+
+                      if (ret) {
+                        console.log(JSON.stringify(ret));
+                        vm.location=ret.data.detail;
+                      } else {
+                          api.alert(JSON.stringify(err));
+                      }
+                  });
+                },
+                //获取默认地址
+                set_default_address: function (address_id) {
+                    api.ajax({
+                        url: set_default_address_url,
+                        method: 'post',
+                        timeout: 30,
+                        dataType: 'json',
+                        returnAll: false,
+                        data: {
+                            values: {
+                                token:api.getPrefs({sync: true,key:'login_id'}),
+                                address_id: address_id,
+                            }
+                        }
+                    }, function (ret, err) {
+                        if (ret) {
+                            api.toast({
+                                msg: '设置成功',
+                                duration: 2000,
+                                location: 'bottom'
+                            });
+                        } else {
+                            api.alert(JSON.stringify(err));
+                        }
+                    });
+                },
+                //获取1000m 内可配送的地址
+                getAllowList:function(lat,lng){
+                    var origin=lat+','+lng;
+                  api.ajax({
+                      url: push_list_address_url,
+                      method: 'post',
+                      timeout: 30,
+                      dataType: 'json',
+                      returnAll: false,
+                      data: {
+                          values: {
+                              token: api.getPrefs({sync: true,key:'login_id'}),
+                              origin: origin
+                          }
+                      }
+                   }, function (ret, err) {
+                     console.log(JSON.stringify(err));
+                     console.log(JSON.stringify(ret));
+                      if (ret) {
+                        if(ret.code==1){
+                             console.log(ret.data.list.length);
+                          if(ret.data.list.length>0){
+                            if(ret.data.list.length==1){
+                              vm.location=ret.data.list[0].detail;
+                              if(ret.data.list[0].address_id!=ret.data.default_address){
+                                 vm.set_default_address(ret.data.list[0].address_id);
+                              }
+                            }else{
+                              api.openFrame({
+                                   name: 'blank',
+                                   url: './blank.html',
+                                   bounces: false,
+                                   rect: {
+                                       x: 0,
+                                       y: 0,
+                                       w: 'auto',
+                                       h: 'auto',
+                                   },
+                                   pageParam: {
+                                       list: ret.data,
+                                       type:1
+                                   },
+                               });
+                            }
+
+                          }else{
+                            vm.getGeocodeName(lat,lng);
+                          }
+                        }
+
+
+                      }
+
+                    });
+                },
+
+                getGeocodeName:function(lat,lng){
+                  api.ajax({
+                      url: google_geocode_url,
+                      method: 'post',
+                      data: {
+                          values: {
+                              latlng:lat+','+lng,
+                          }
+                      }
+                    },function(ret, err){
+                      if (ret) {
+                         console.log(JSON.stringify(ret));
+
+                           if(ret.status=='OK'){
+                                vm.location=ret.results[0].coustom_formatted_address.detail;
+                           }else{
+                             //  弹出提示不可配送区域
+                                 alert( JSON.stringify( err ) );
+                           }
+
+                      } else {
+                          alert( JSON.stringify( err ) );
+
+                      }
+                    });
+                },
+
+      },watch:{
+        fly_pos:{
+            handler: function (val, oldVal) {
+              console.log(JSON.stringify(val));
+            }
+        }
+      }
+   });
+
+
+	  var slide3 = new auiSlide({
+        container:document.getElementById("aui-slide"),
+        // "width":300,
+        "height":200,
+        "speed":500,
+        "autoPlay": 3000, //自动播放
+        "loop":true,
+        "pageShow":true,
+        "pageStyle":'line',
+        'dotPosition':'center'
+    })
+	   function currentFun(index) {
+        // console.log(index);
+    }
+var cart_top=-1,cart_left=-1;
+apiready = function () {
+     console.log('获取位置1');
+  vm.init();
+   console.log('获取位置2');
+  api.startLocation({
+    accuracy: '10m',
+    filter: 1,
+    autoStop: true
+   }, function(ret, err){
+      console.log('获取位置信息成功');
+     if(ret && ret.status){
+         //获取位置信息成功
+
+         console.log(JSON.stringify(ret));
+         vm.isAllow(ret.latitude,ret.longitude);
+       }else{
+         console.log(JSON.stringify(err));
+      }
+   });
+  api.setRefreshHeaderInfo({
+      visible: true,
+      loadingImg: 'widget://image/refresh.png',
+      bgColor: '#f4f4f4',
+      textColor: '#333333',
+      textDown: '下拉刷新...',
+      textUp: '松开刷新...',
+      showTime: true
+  }, function(ret, err) {
+
+      vm.init();
+      setTimeout("api.refreshHeaderLoadDone()",'500');
+  });
+
+
+  //地址选择
+  api.addEventListener({
+      name: 'home_address_select'
+  }, function(ret, err){
+      if( ret ){
+           vm.getDefaultaddress();
+      }else{
+           // alert( JSON.stringify( err ) );
+      }
+  });
+
+  api.addEventListener({
+      name: 'scrolltobottom',
+      extra: {
+          threshold: 0            //设置距离底部多少距离时触发，默认值为0，数字类型
+      }
+  }, function (ret, err) {
+    console.log('到底部了')
+      vm.get_like_goods();
+  });
+
+
+
+
+ var scroll = new auiScroll({
+  listen:true, //是否监听滚动高度，开启后将实时返回滚动高度
+  distance:200 //判断到达底部的距离，isToBottom为true
+ },function(ret){
+  vm.scoll_H=ret.scrollTop;
+ //  发生滚动条高度;
+  api.sendEvent({
+     name: 'home_scoll_top',
+     extra: {
+         top: ret.scrollTop,
+     }
+   });
+});
+
+api.addEventListener({
+    name: 'flush_main_frame'//刷新主界面
+}, function(ret, err){
+  console.log('flush_main_frame 刷新');
+   vm.init();
+});
+
+ // 询问购物车的位置
+if(cart_top==-1){
+  api.sendEvent({
+      name: 'ask_cart_pos',
+   });
+}
+//获取购物车的位置
+api.addEventListener({
+    name: 'cart_pos'
+}, function(ret, err){
+    if( ret ){
+         console.log('获取购物车位置')
+         console.log(JSON.stringify(ret))
+         cart_top=ret.value.cart_top;
+         cart_left=ret.value.cart_left;
+    }
+});
+	}
+</script>
+</html>

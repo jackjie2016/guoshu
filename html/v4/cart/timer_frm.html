@@ -1,0 +1,257 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/icons/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/public.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/T.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/aui-slide.css" />
+	<style>
+
+      .cate-list .cate-item{
+
+	  }
+
+	  .aui-radio{
+		  width: 0.75rem;
+	 	  height: 0.75rem;
+
+	  }
+
+
+	</style>
+</head>
+<body>
+ <div id="app">
+
+      <section class="aui-content   aui-padded-t-0 aui-padded-b-0 aui-margin-b-15 aui-margin-t-15"  >
+	     <div class="aui-margin-b-15 aui-padded-l-15 aui-padded-r-15  "  >
+	    <div class="aui-row"  >
+                <div class="w-20-5 " v-bind:class="{'margin-r-6':index<3}"   v-for="(vo,index) in datelist" v-bind:key="index" tapmode v-on:click="select_date(index)">
+				     <span class="aui-margin-l-5 goods-content text-center w-100 aui-padded-t-10  aui-padded-b-10 "  v-bind:class="{'lv-bg':cun_date_index==index}"  >
+					  <div class="cart-weight  aui-font-size-12 font-bold text-center">
+                          {{vo.text}}
+                        </div>
+			            <div class=" cart-title aui-ellipsis-1 aui-font-size-20 font-black text-center">
+                             {{vo.date}}
+                        </div>
+
+					</span>
+
+                </div>
+                <!-- <div class="w-20-5 margin-r-6">
+				     <span class="aui-margin-l-5 goods-content text-center w-100 aui-padded-t-10  aui-padded-b-10 " >
+					  <div class="cart-weight  aui-font-size-12 font-bold text-center">
+                          Martes
+                        </div>
+			            <div class=" cart-title aui-ellipsis-1 aui-font-size-20 font-black text-center">
+                           17
+                        </div>
+
+					</span>
+
+                </div>
+                <div class="w-20-5 margin-r-6">
+				     <span class="aui-margin-l-5 goods-content text-center w-100 aui-padded-t-10  aui-padded-b-10  lv-bg" >
+					  <div class="cart-weight  aui-font-size-12 font-bold text-center">
+                          Miercoles
+                        </div>
+			            <div class=" cart-title aui-ellipsis-1 aui-font-size-20 font-black text-center">
+                           18
+                        </div>
+
+					</span>
+
+                </div>
+                <div class="w-20-5 " style=" width: 20%; ">
+				     <span class="aui-margin-l-5 goods-content text-center w-100 aui-padded-t-10  aui-padded-b-10 " >
+					  <div class="cart-weight  aui-font-size-12 font-bold text-center">
+                          Jueves
+                        </div>
+			            <div class=" cart-title aui-ellipsis-1 aui-font-size-20 font-black text-center">
+                           19
+                        </div>
+
+					</span>
+
+                </div> -->
+
+            </div>
+
+
+            </div>
+
+	   <div class="aui-margin-t-15 aui-margin-b-15 aui-padded-l-15 aui-padded-r-15  "  >
+                <div class="  aui-row goods_list_row">
+
+                    <div class="goods_col_item"    v-for="(vo,index) in timelist" v-bind:key="index" tapmode v-on:click="to_select_time(index)">
+					 <div class="goods-content aui-padded-5 aui-row" v-bind:class="{'lv-bg':cun_time_index==index}" >
+
+					 <div class="aui-col-xs-1 aui-invisible">占位</div>
+					 <div class="aui-col-xs-10   ">
+					 	  <div class=" aui-padded-l-5 ">
+                        <div class=" cart-title aui-ellipsis-1 aui-font-size-20 font-black text-center">
+                            {{vo.show_time}}
+                        </div>
+                        <div class="cart-weight  aui-font-size-12 font-bold text-center">
+                          {{vo.desc}}
+                        </div>
+                        </div>
+					  </div>
+					  <div class="aui-col-xs-1  aui-invisible">占位</div>
+                    </div>
+                    </div>
+				   <!-- <div class="goods_col_item  " >
+					 <div class="goods-content aui-padded-5 aui-row lv-bg">
+
+					 <div class="aui-col-xs-1  aui-invisible">占位</div>
+					 <div class="aui-col-xs-10   ">
+					 	  <div class=" aui-padded-l-5 ">
+                        <div class=" cart-title aui-ellipsis-1 aui-font-size-20 font-black text-center">
+                            11 a 12 hs
+                        </div>
+                        <div class="cart-weight  aui-font-size-12 font-bold text-center">
+                          Costo de Envío $80,00
+                        </div>
+                        </div>
+					  </div>
+					  <div class="aui-col-xs-1  aui-invisible">占位</div>
+                    </div>
+                    </div> -->
+                </div>
+        </div>
+
+	</section>
+
+
+     <div style="height:3.5rem;display:block;">
+     </div>
+   <footer class="aui-bar aui-bar-tab  " id="footer" style="border-bottom:1px solid #eee;border-top:1px solid #eee;border-radius: 1.5rem 1.5rem 0 0;">
+     <section class="aui-content aui-margin-b-10 aui-padded-15 ">
+
+            <div class="aui-row  " >
+                <div class="aui-col-xs-2 aui-invisible">2 </div>
+
+
+                <div class="aui-col-xs-8">
+               <div class="aui-btn  lv-bg aui-btn-sm font-bold black-font aui-font-size-16 " style=" line-height:2.2rem; height:2.2rem;padding:0 1rem; border-radius:2rem;width:100%;" v-if="select_time>0" onclick="cart_confirm()">Continuar</div>
+               <div class="aui-btn   aui-btn-sm font-bold black-font aui-font-size-16 " style=" line-height:2.2rem; height:2.2rem;padding:0 1rem; border-radius:2rem;width:100%;" v-else >Continuar</div>
+                </div>
+              <div class="aui-col-xs-2 aui-invisible">2 </div>
+
+
+            </div>
+
+    </section>
+     </footer>
+</div>
+
+
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+
+<script type="text/javascript" src="../../../script/T.js"></script>
+<script type="text/javascript" src="../../../script/iScroll-lite.js"></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/common.js" ></script>
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#app',
+    data: {
+      cun_date_index:0,
+      cun_time_index:0,
+      datelist:[],
+      timelist:[],
+
+      select_time:0,
+      active:-1,
+      date_shottime:'',
+      date_fulltime:'',
+    },
+    methods: {
+      init:function(){
+
+        api.ajax({
+            url: get_date_list_url,
+            method: 'get',
+            data: {
+
+            }
+        },function(ret, err){
+          vm.datelist=ret.data;
+          vm.cun_date_index=0;
+          vm.select_time=0;
+          vm.get_time_list(0);
+        })
+      },
+      select_date:function(index){
+        vm.cun_date_index=index;
+        vm.select_time=0;
+        vm.get_time_list(index);
+      },
+      get_time_list:function(index){
+
+        api.ajax({
+            url: get_time_list_url,
+            method: 'get',
+            data: {
+                  values:{date: vm.datelist[index].shottime}
+            }
+        },function(ret, err){
+          vm.timelist=ret.data;
+          vm.cun_time_index=0;
+          vm.select_time=  vm.timelist[0].shottime;
+          console.log(JSON.stringify(ret.data));
+        })
+      },
+      to_select_time:function(index){
+        vm.cun_time_index=index;
+        vm.select_time=  vm.timelist[index].shottime;
+        console.log(index);
+      }
+    },
+
+    watch:{
+
+
+     }
+
+
+  });
+    apiready = function(){
+       api.parseTapmode();
+       vm.init();
+
+
+
+    }
+
+
+
+    function cart_confirm(){
+      api.openWin({
+          name: 'submit_win',
+          url: 'widget://html/v4/cart/submit_win.html',
+          pageParam: {
+              // select_time: api.pageParam.goods_id
+              select_time: vm.select_time
+          }
+      });
+    }
+    function cart_confirm(){
+      api.openWin({
+          name: 'submit_win',
+          url: 'widget://html/v4/cart/submit_win.html',
+          pageParam: {
+              // select_time: api.pageParam.goods_id
+              select_time: vm.select_time
+          }
+      });
+    }
+
+</script>
+</html>

@@ -1,0 +1,234 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/iconfont/iconfont.css" />
+
+    <style>
+       #footer{
+         height: 200px;
+
+       }
+       .loser{
+             color: #999;
+       }
+	   .iconfont:before{
+	       border: 1px solid #ddd;
+  	       border-radius: 50%;
+    	   padding: 5px;
+	   }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="aui-content aui-margin-b-15">
+       <ul class="aui-list aui-list-in">
+
+
+
+        <!-- <li class="aui-list-item" v-if="local_address!=''" tapmode v-on:click="select_address(-1)">
+               <div class="aui-list-item-label-icon aui-text-success">
+                   <i class="iconfont icondangqianlouceng-copy"></i>
+               </div>
+               <div class="aui-list-item-inner" :class="{'loser':local_address.area_id==0}"  style="display:block; padding:10px 0;">
+                   {{local_address.formatted_address}}
+
+				  <big class="aui-gird-lable aui-font-size-16   "> {{vo.structured_formatting.main_text}}</big>
+                   <div class="aui-gird-lable aui-font-size-12  " style=" color: #999999;">{{vo.structured_formatting.secondary_text}}</div>
+
+               </div>
+           </li> -->
+
+               <!-- <li class="aui-list-item" v-for="(vo,index) in near_address_list" v-bind:key="index" tapmode v-on:click="select_address(index)">
+               <div class="aui-list-item-label-icon">
+                   <i class="iconfont iconfujin-"></i>
+               </div>
+               <div class="aui-list-item-inner" :class="{'loser':vo.area_id==0}">
+                   {{vo.name}}
+               </div>
+           </li> -->
+           <li class="aui-list-item" v-for="(vo,index) in address_list" v-bind:key="index" tapmode v-on:click="select_address(index)">
+               <div class="aui-list-item-label-icon">
+                   <i class="iconfont icondangqianlouceng-copy aui-text-success" v-if="index==0"></i>
+				    <i class="iconfont iconfujin-" v-else></i>
+               </div>
+               <div class="aui-list-item-inner" :class="{'loser':vo.area_id==0}" style="display:block; padding:10px 0;">
+                       <!--{{vo.formatted_address}}-->
+					  <big class="aui-gird-lable aui-font-size-16   "> {{vo.coustom_formatted_address.detail}}</big>
+                   <div class="aui-gird-lable aui-font-size-12  " style=" color: #999999;">{{vo.coustom_formatted_address.ext}}</div>
+               </div>
+           </li>
+
+
+       </ul>
+   </div>
+</div>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript">
+
+var vm = new Vue({
+    el: '#app',
+    data: {
+      search_input: '',
+      place_id:'',
+      local_address:[],
+      near_address_list:[],
+      address_list:[],
+    },
+    methods: {
+        get_local_address:function(place_id){
+          api.ajax({
+             url: google_details_url,
+             method: 'get',
+             data: {
+               values:{token: api.getPrefs({sync: true,key:'login_id'}),placeid:place_id}
+             }
+          },function(ret, err){
+              // console.log(JSON.stringify(err));
+              // console.log(JSON.stringify(ret));
+          if(ret){
+          if(ret.status=='OK'){
+            if(vm.local_address==''){
+              console.log('2222');
+            }
+            vm.local_address=ret.result;
+            console.log(vm.local_address.length);
+            //  console.log(JSON.stringify(ret.result));
+            var pos=ret.result.geometry.viewport.northeast.lat+','+ret.result.geometry.viewport.northeast.lng;
+            api.sendEvent({
+                name: 'search_address_pos',
+                extra: {
+                    lat: ret.result.geometry.viewport.northeast.lat,
+                    lng: ret.result.geometry.viewport.northeast.lng
+                }
+             });
+
+            vm.get_near_address(pos);
+           }
+          }else{
+           vm.local_address=[];
+           vm.near_address_list=[];
+         }
+         });
+
+        },
+        get_near_address:function(pos) {
+         console.log(pos);
+         api.ajax({
+             url: google_nearbysearch_url,
+             method: 'get',
+             data: {
+               values:{token: api.getPrefs({sync: true,key:'login_id'}),location:pos}
+             }
+         },function(ret, err){
+
+           if(ret){
+           if(ret.status=='OK'){
+             vm.near_address_list=ret.results;
+            //  console.log(ret.results);
+           }
+         }else{
+           vm.near_address_list=[];
+         }
+         });
+         },
+        select_address:function(pos){
+           if(pos==-1){
+             var select_placeid=vm.local_address.place_id,
+                  geometry=vm.local_address.geometry;
+
+                  if(vm.local_address.area_id==0){
+                    return false;
+                  }
+           }else{
+             var select_placeid=vm.address_list[pos].place_id,
+                 geometry=vm.address_list[pos].geometry;
+                 if(vm.address_list[pos].area_id==0){
+                   return false;
+                 }
+           }
+          //  api.sendEvent({
+          //      name: 'select_address',
+          //      extra: {
+          //          select_placeid: select_placeid,
+          //          geometry:geometry
+          //      }
+          //  });
+          api.openWin({
+              name: 'map_confirm',
+              url: './map_confirm_win.html',
+              pageParam: {
+                   select_placeid: select_placeid,
+                   geometry:geometry
+              }
+          });
+
+
+        },
+        get_geocode_address:function(pos) {
+            api.ajax({
+                url: google_geocode_url,
+                method: 'get',
+                data: {
+                  values:{token: api.getPrefs({sync: true,key:'login_id'}),latlng:pos}
+                }
+            },function(ret, err){
+              // console.log(JSON.stringify(ret))
+              if(ret){
+              if(ret.status=='OK'){
+                vm.local_address=ret.results[0];
+				vm.address_list=ret.results;
+              }
+            }
+            });
+        },
+    } ,watch:{
+        search_input:{
+           handler: function (val, oldVal) {
+
+           }
+        },
+        },
+   });
+    apiready = function(){
+        api.parseTapmode();
+        var header = $api.byId('aui-header');
+        $api.fixStatusBar(header);
+        var headerPos = $api.offset(header);
+        var body_h = $api.offset($api.dom('body')).h;
+
+        // api.addEventListener({
+        //     name: 'mapto_search_address'
+        // }, function(ret, err){
+        //   if(ret){
+        //     console.log(JSON.stringify(ret));
+        //     vm.place_id=ret.value.place_id;
+        //     vm.get_local_address(ret.value.place_id)
+        //   }
+        // });
+
+        api.addEventListener({
+            name: 'center_pos_loading'
+        }, function(ret, err){
+          console.log(JSON.stringify(ret));
+          console.log(JSON.stringify(err));
+          if(ret){
+            console.log(JSON.stringify(ret));
+            vm.get_geocode_address(ret.value.pos);
+            vm.get_near_address(ret.value.pos)
+          }
+        });
+
+    };
+    function closeWin(){
+        api.closeWin({
+        });
+    }
+</script>
+</html>

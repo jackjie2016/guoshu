@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no" />
+		<title>首页</title>
+		<link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+		<link rel="stylesheet" href="../../../css/aui-slide.css" />
+	  <link rel="stylesheet" type="text/css" href="../../../css/iconfont/iconfont.css" />
+		<link rel="stylesheet" href="../../../css/home.css" />
+
+	</head>
+	<body class="pt-idx">
+		<!--首页头部-->
+		   <div id="app">
+		   <!--首页头部-->
+		<!--轮播-->
+		<!-- <div class="idx-banner" id="idx-banner" style="height:190px;">
+			<div class="aui-slide-wrap">
+				<div class="aui-slide-node bg-dark" v-for="(banner,index) in scorll_list" tapmode>
+					<a href=""><img :src="banner.image" /></a>
+					{{index}}
+				</div>
+
+			</div>
+
+		</div> -->
+		<div style="height:200px;"></div>
+ 	 <div class="yihang hezi juzhong">
+ 	      <div class="col1" ><img src="../../../image/kuaisu.png"/><span>Lo mas rapido es 29 minutos y llega a destino</span></div>
+ 	      <!-- <div class="col1"><img src="../../image/peisong7.png"/><span>desde $0 se envia $0 de envio</span></div> -->
+
+ 	     </div>
+		<!--首页菜单-->
+
+		<section class="aui-grid aui-margin-b-15">
+			 <div class="aui-row" id="nav">
+					 <!-- <div class="aui-col-xs-3"  v-for="(nav,index) in nav_list"  v-if="index<8" tapmode @click="open_nav(index)">
+
+							 <img :src="nav.image" alt="" style="width: 50%;margin:auto; ">
+
+							 <div class="aui-grid-label">{{nav.name}}</div>
+					  </div> -->
+			 </div>
+	 </section>
+
+		<!--特色标签-->
+		<!-- <div class="ts-tags">
+			<span><i class="iconfont icon-peisongjilu"></i>最快29分钟送达</span>
+			<span><i class="iconfont icon-qian"></i>0元起送 0元配送</span>
+			<span><i class="iconfont icon-iconfront-"></i>无理由退货</span>
+		</div> -->
+
+		<!--限时抢购-->
+
+		<div class="xsqg" v-if="flashlist.has == 1">
+			<div class="pub-title">
+				<i class="line"></i>
+				<span class="name">Esperando para comenzar</span>
+				<div class="time">
+					<b>{{hh}}</b>: <b>{{mm}}</b> : <b>{{ss}}</b>
+
+					<!-- //进行中 -->
+						<!-- <b>En progreso</b> -->
+						<!--  已结束-->
+						<!-- <b>Terminado</b> -->
+
+						<!-- <b>Próximamente</b> -->
+				</div>
+				<div href="" class="more" onclick="open_flash()">Más</div>
+			</div>
+			<!--横向商品列表-->
+			<div class="rows-list">
+				<ul  v-bind:style="{ width: flashlist_width + 'rem' }">
+					<!--注意： 商品个数*6rem-->
+					<li v-for="(goods,index) in flashlist.goods_list" tapmode>
+						<div href="" class="pic" v-on:click="to_goods_info(goods.goods_id)">
+							<img :src="goods.image" alt="" :id="forId(index,'flash')"/>
+							<div class="no" v-if="goods.stock_num==0">
+	    						<span>Fuera de stock</span>
+	    					</div>
+						</div>
+						<h3 class="name"><a href="">{{goods.goods_name}}</a></h3>
+						<div class="price"  >
+							<div class="txt">
+								<p class="cur"><span>$</span>{{goods.now_price.value}}</p>
+								<p class="old">${{goods.origin_price}}</p>
+							</div>
+							<span class="car-btn  Increase"   @click="add_to_cart(index,'flash')" v-if="goods.stock_num >0">
+								<i class="iconfont icongouwuchekong"></i>
+							</span>
+							<!-- <div class="car-btn  Increase" v-if="goods.stock_num >0"  @click="add_to_cart(index,'flash')"><i class="iconfont icongouwuchekong"></i></div> -->
+							<div  class="see-more" v-else>Similar  <i class="iconfont icon-right"></i> </div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!--特色专区-->
+		<div class="tszq"  >
+      <div v-if="recommendlist.length==4">
+			<div class="pub-title" >
+				<i class="line"></i>
+				<span class="name">Fruta azul</span>
+
+			 <div  class="more" onclick="	to_guoshulan()">Más</div>
+
+			</div>
+			<div class="adv-box aui-row">
+				<!--这里是广告图，文字一般都是做在图里-->
+				<a href="" class="aui-col-xs-6 brn btn" @click="to_guoshulan2(recommendlist[0].hurdles_id)">
+					<h3 class="tit col-1">{{recommendlist[0].hurdles_name}}</h3>
+					<p class="desc">{{recommendlist[0].desc}}</p>
+					<ul>
+						<li><img :src="recommendlist[0].image[0]" alt="" /></li>
+						<li><img :src="recommendlist[0].image[1]" alt="" /></li>
+					</ul>
+				</a>
+				<a href="" class="aui-col-xs-6 btn" @click="to_guoshulan2(recommendlist[1].hurdles_id)">
+					<h3 class="tit col-2">{{recommendlist[1].hurdles_name}}</h3>
+					<p class="desc">{{recommendlist[1].desc}}</p>
+					<ul>
+						<li><img :src="recommendlist[1].image[0]" alt="" /></li>
+						<li><img :src="recommendlist[1].image[1]" alt="" /></li>
+					</ul>
+				</a>
+				<a href="" class="aui-col-xs-6 brn" @click="to_guoshulan2(recommendlist[2].hurdles_id)">
+					<h3 class="tit col-3">{{recommendlist[2].hurdles_name}}</h3>
+					<p class="desc">{{recommendlist[2].desc}}</p>
+					<ul>
+						<li><img :src="recommendlist[2].image[0]" alt="" /></li>
+						<li><img :src="recommendlist[2].image[1]" alt="" /></li>
+					</ul>
+				</a>
+				<a href="" class="aui-col-xs-6 brn" @click="to_guoshulan2(recommendlist[3].hurdles_id)">
+					<h3 class="tit col-3">{{recommendlist[3].hurdles_name}}</h3>
+					<p class="desc">{{recommendlist[3].desc}}</p>
+					<ul>
+						<li><img :src="recommendlist[3].image[0]" alt="" /></li>
+						<li><img :src="recommendlist[3].image[1]" alt="" /></li>
+					</ul>
+				</a>
+			</div>
+      </div>
+
+
+			<!--本月特价-->
+			<div class="adv-single">
+				<!-- <a href="" class="imgs"><img src="../../image/v3/adv6.png" /></a> -->
+
+				<div class="pub-title">
+					<i class="line"></i>
+					<span class="name">Precio especial esta semana</span>
+
+					<div   class="more" onclick="to_tejia()">Más</div>
+				</div>
+				<!--横向商品列表-->
+				<div class="rows-list " id="promlist">
+					<ul   v-bind:style="{ width: promlist_width + 'rem' }">
+						<!--注意： 商品个数*6rem-->
+						<li v-for="(goods,index) in promlist" tapmode>
+							<div  class="pic" v-on:click="to_goods_info(goods.goods_id)">
+								<img :src="goods.image" alt=""   :id="forId(index,'prom')"/>
+								<div class="no" v-if="goods.stock_num==0">
+										<span>Fuera de stock</span>
+									</div>
+							</div>
+							<h3 class="name">{{goods.goods_name}}</h3>
+							<div class="price">
+								<div class="txt">
+									<p class="cur"><span>$</span>{{goods.now_price.value}}</p>
+									<p class="old">${{goods.origin_price}}</p>
+								</div>
+								<span class="car-btn  Increase"   @click="add_to_cart(index,'prom')" v-if="goods.stock_num >0"><i class="iconfont icongouwuchekong"></i></span>
+								<div href="" class="see-more" v-else>Similar  <i class="iconfont icon-right"></i> </div>
+							</div>
+						</li>
+
+					</ul>
+				</div>
+			</div>
+		</div>
+
+
+
+
+     <!--猜你喜欢-->
+
+   		<div class="cnxh">
+   			<div class="title"><span><i></i><b>Adivina lo que te gusta</b><i></i></span></div>
+			<div class="aui-col-xs-12 goods-list">
+			<ul class="aui-col-xs-6">
+
+   				<li  v-for="(goods,index) in like_goods_even" tapmode>
+   					<div class="item">
+   						<div  class="pic" v-on:click="to_goods_info(goods.goods_id)">
+   						<img :src="goods.image" alt=""  :id="forId(index,'like_even')"  />
+						   <div class="no" v-if="goods.stock_num==0">
+   								<span>Fuera de stock</span>
+   							</div>
+   						</div>
+   						<h3 class="name">{{goods.goods_name}}</h3>
+   						<!-- <div class="tags">
+   							<span>{{goods.now_price.text}}</span>
+   						</div> -->
+   						<div class="price">
+   							<div class="txt">
+   								<div class="cur"><span>$</span>{{goods.now_price.value}}   								<div class="old" v-if="goods.origin_price!='0.00'">${{goods.origin_price}}</div></div>
+
+   								<div class="lkj" v-if="goods.vip_price!='0.00'"><span><i class="iconfont iconvip"></i>   </span style="font-size:0.9rem">${{goods.vip_price}}</div>
+   								</div>
+
+   						</div>
+
+
+
+						<div class="cart"  >
+
+						  <div class="aui-bar aui-bar-btn" style="width:80%;" type="count" id="demo" v-if="goods.cart_num==0">
+								<div class="car-btn Increase "  @click="add_to_cart(index,'like_even')"   v-if="goods.stock_num>0"   >
+								<i class="iconfont icongouwuchekong"></i>
+								</div>
+								<div class="car-btn Increase " style="color: #ddd;"   v-else>
+								 <i class="iconfont icongouwuchekong"></i>
+							 </div>
+							 </div>
+
+	           <div class="op-btn-item" v-else >
+							 	<div class=" aui-col-xs-12">
+							 		<div class="op-btn minus  aui-col-xs-3" @click="cutdown_to_cart(index,'like_even')">
+							 				<i class="aui-iconfont aui-icon-minus"></i>
+							 		</div>
+							 <div class="aui-item-input aui-col-xs-6">
+							 			{{goods.cart_unit_num}}
+							 </div>
+							 <div class="op-btn plus  aui-col-xs-3"  @click="add_to_cart(index,'like_even')" v-if="goods.stock_num>goods.cart_num" >
+							 			<i class="aui-iconfont aui-icon-plus"></i>
+							 </div>
+							 <div class="op-btn plus  aui-col-xs-3" style="color: #ddd;"   v-else >
+									 <i class="aui-iconfont aui-icon-plus"></i>
+							</div>
+							 </div>
+							</div>
+							</div>
+   					</div>
+
+   				</li>
+
+			</ul>
+			<ul class="aui-col-xs-6">
+				<li  v-for="(goods,index) in like_goods_odd" tapmode>
+   					<div class="item">
+   						<div  class="pic" v-on:click="to_goods_info(goods.goods_id)">
+   						<img :src="goods.image" alt=""  :id="forId(index,'like_odd')"  />
+						   <div class="no" v-if="goods.stock_num==0">
+   								<span>Fuera de stock</span>
+   							</div>
+   						</div>
+   						<h3 class="name">{{goods.goods_name}}</h3>
+   						<!-- <div class="tags">
+   							<span>{{goods.now_price.text}}</span>
+   						</div> -->
+   						<div class="price">
+   							<div class="txt">
+   								<div class="cur"><span>$</span>{{goods.now_price.value}}			<div class="old" v-if="goods.origin_price!='0.00'">${{goods.origin_price}}</div></div>
+
+   								<div class="lkj" v-if="goods.vip_price!='0.00'"><span><i class="iconfont iconvip"></i>   </span style="font-size:0.9rem">${{goods.vip_price}} </div>
+   								</div>
+
+   						</div>
+					<div class="cart"  >
+
+					  <div class="aui-bar aui-bar-btn" style="width:80%;" type="count" id="demo" v-if="goods.cart_num==0">
+							<div class="car-btn Increase "  @click="add_to_cart(index,'like_odd')"   v-if="goods.stock_num>0"   >
+							<i class="iconfont icongouwuchekong"></i>
+							</div>
+							<div class="car-btn Increase " style="color: #ddd;"   v-else>
+							 <i class="iconfont icongouwuchekong"></i>
+						 </div>
+						 </div>
+
+           <div class="op-btn-item" v-else >
+						 	<div class=" aui-col-xs-12">
+						 		<div class="op-btn minus  aui-col-xs-3" @click="cutdown_to_cart(index,'like_odd')">
+						 				<i class="aui-iconfont aui-icon-minus"></i>
+						 		</div>
+						 <div class="aui-item-input aui-col-xs-6">
+						 			{{goods.cart_unit_num}}
+						 </div>
+						 <div class="op-btn plus  aui-col-xs-3"  @click="add_to_cart(index,'like_odd')" v-if="goods.stock_num>goods.cart_num" >
+						 			<i class="aui-iconfont aui-icon-plus"></i>
+						 </div>
+						 <div class="op-btn plus  aui-col-xs-3" style="color: #ddd;"   v-else >
+								 <i class="aui-iconfont aui-icon-plus"></i>
+						</div>
+						 </div>
+						</div>
+						</div>
+
+   					</div>
+
+   				</li>
+
+
+
+
+
+			</ul>
+			</div>
+
+   		</div>
+
+		<!--右侧固定-->
+		<div class="fix-btn">
+			<a class="kf" onclick="open_chat()" >	<i class="iconfont iconkefu5"></i></a>
+			<a class="top"  onclick="returnToTop()"  v-if="scoll_H>100"><i class="iconfont iconUpward"></i></a>
+		</div>
+
+  </div>
+	</body>
+
+
+  <script type="text/javascript" src="../../../script/api.js"></script>
+  <script type="text/javascript" src="../../../script/vue.js"></script>
+  <script type="text/javascript" src="../../../script/common.js"></script>
+  <script type="text/javascript" src="../../../script/aui-scroll.js"></script>
+
+  <script type="text/javascript">
+
+     var vm = new Vue({
+      el: '#app',
+      data: {
+          timeer:0,
+          scorll_list: [],
+          nav_list: [],
+
+          promlist: [],
+          promlist_width:6,
+
+          flashlist: [],
+          flashlist_width:6,
+
+          weekpromlist:[],
+          weekpromlist_width:6,
+
+          recommendlist: [],
+
+          like_goods:[],
+          like_goods_even:[],
+          like_goods_odd:[],
+          like_goods_page:1,
+          like_goods_has_more:1,
+					hh:0,
+					mm:0,
+					ss:0,
+					count:0,
+					timeer2:0,
+
+					scoll_H:0,
+
+      },
+      methods: {
+          forId:function(index,moudle){
+            return moudle+'_'+index;
+          },
+					to_guoshulan2:function(id){
+						api.openWin({
+								name: 'to_guoshulan',
+								url: 'widget://html/v1/tuijian_win.html',
+								pageParam: {
+										id:id,
+										title:"Fruta azul",
+										muban:"tuijian_body"
+								}
+						});
+					},
+					open_nav:function(index) {
+						// console.log(vm.nav_list[index]['link']);
+					    to_do(vm.nav_list[index]['link']);
+						 return vm.nav_list[index]['link'];
+					},
+
+
+          init: function () {
+           api.refreshHeaderLoadDone();
+              api.ajax({
+                  url: index_url,
+                  method: 'post',
+                  timeout: 30,
+                  dataType: 'json',
+                  returnAll: false,
+                  data: {
+                      values: {
+                          name: 'values'
+                      }
+                  }
+              }, function (ret, err) {
+                  if (ret) {
+                    // console.log(JSON.stringify(ret));
+                      vm.scorll_list = ret.data.banner_list.scoll;
+                      //轮播
+                      var banners=ret.data.banner_list.scoll,imgs=[];
+                      for (var i = 0; i < json_num(banners); i++) {
+                        imgs[i]=banners[i].image;
+                      }
+                      //alert(JSON.stringify(imgs));
+                      banner(imgs,200,api.winWidth);
+
+                      vm.nav_list =ret.data.banner_list.nav;
+
+
+											var nav=ret.data.banner_list.nav,str4='';
+											// class="aui-col-xs-3"
+											for (var i = 0; i < json_num(nav); i++) {
+												str4+='<div  class="aui-col-xs-3" style="width:20%;" onclick="'+nav[i].link+'"><img src="'+nav[i].image+'" style="width: 50%;margin:auto; " /> <div class="aui-grid-label  aui-ellipsis-1">'+nav[i].name+'</div> </div>'
+											}
+
+
+											document.getElementById("nav").innerHTML=str4;
+
+
+                      vm.promlist = ret.data.promotion;
+                      vm.promlist_width=ret.data.promotion.length*6;
+
+                      vm.flashlist = ret.data.falsh;
+                      if(ret.data.falsh.has){
+                          vm.flashlist_width=ret.data.falsh.goods_list.length*6;
+													console.log(JSON.stringify(ret.data.falsh.info[0]['status']['countdown']))
+													vm.count= ret.data.falsh.info[0]['status']['countdown'];
+
+													var temp_count = vm.count;
+													vm.timeer2 = temp_count;
+													var coutnnum = setInterval(function () {
+															if(vm.timeer2 == 0){
+																	clearInterval(coutnnum);
+																	return;
+															}else{
+																vm.hh=parseInt(vm.timeer2/3600);
+																vm.mm=parseInt((vm.timeer2-vm.hh*3600)/60);
+																vm.ss=vm.timeer2-vm.hh*3600-vm.mm*60;
+																	vm.timeer2 -= 1;
+
+
+
+															}
+													},'1000');
+
+
+
+                      }
+
+
+
+                      vm.recommendlist = ret.data.recommendlist;
+                      // console.log(JSON.stringify(vm.recommendlist));
+
+                  } else {
+                      api.alert(JSON.stringify(err));
+                  }
+              });
+
+              vm.get_like_goods();
+          },
+          get_like_goods:function() {
+						console.log(api.getPrefs({sync: true,key:'login_id'}));
+						if(vm.like_goods_has_more){
+							api.ajax({
+									url: like_goods_url,
+									method: 'post',
+									timeout: 30,
+									dataType: 'json',
+									returnAll: false,
+									data: {
+											values: {
+													category_id: 0,
+													page: vm.like_goods_page,
+													token: api.getPrefs({sync: true,key:'login_id'}),
+											}
+									}
+							}, function (ret, err) {
+								// Log(api.getPrefs({sync: true,key:'login_id'}));
+								Log(err);
+
+								if (ret) {
+									if (vm.like_goods_page == 1) {
+
+											 var j=1;
+											for (var i = 0; i < ret.data.list.data.length; i++) {
+											    if(j==1){
+												  vm.like_goods_even.push(ret.data.list.data[i]);
+												   j=0;
+												  }else{
+													j=1;
+												  vm.like_goods_odd.push(ret.data.list.data[i]);
+												   }
+											}
+											console.log((vm.like_goods));
+									} else {
+									        var j=1;
+											for (var i = 0; i < ret.data.list.data.length; i++) {
+												if(j==1){
+													j=0;
+												  vm.like_goods_even.push(ret.data.list.data[i]);
+												  }else{
+												  j=1;
+												  vm.like_goods_odd.push(ret.data.list.data[i]);
+												  }
+											}
+									}
+									if( ret.data.list.current_page<ret.data.list.last_page){
+										 vm.like_goods_page += 1;
+									}else{
+											vm.like_goods_has_more=0;
+									}
+									console.log(vm.like_goods_has_more);
+											// console.log(JSON.stringify(ret));
+									} else {
+											console.log(JSON.stringify(err));
+									}
+
+							});
+						}
+
+           },
+
+          open_collect:function () {
+              if(is_login()){
+                  openWin('index','collection')
+              }else{
+                  go_login();
+              }
+          },
+  		    to_goods_info:function (goods_id) {
+					open_goods_detail(goods_id);
+  				},
+          open_goodslist:function (tag) {
+              var pageParam = '';
+              if(tag == 1){
+                  pageParam = {is_new:1};
+              }
+              if(tag == 2){
+                  pageParam = {is_hot:1};
+              }
+              if(tag == 3){
+                  pageParam = {is_rec:1};
+              }
+              api.openWin({
+                  name: 'goods_list',
+                  url: 'widget://html/index/goods_list.html',
+                  pageParam: pageParam,
+              });
+          },
+
+		  add_to_cart:function(index,moudle){
+
+				   var goodinfo;
+					 goodinfo=vm.getGoodsInof(index,moudle);
+
+
+			  	 if(is_login()){
+ 				  	 api.ajax({
+ 				  			 url: add_to_cart_url,
+ 					  		 method: 'post',
+ 					  		 data: {
+ 						  			 values: {
+ 											 token: api.getPrefs({sync: true,key:'login_id'}),
+ 											 goods_id:goodinfo['goods_id'],
+ 											 goods_sku_id:goodinfo['goods_sku_id'],
+ 											 goods_num:1
+ 						  			 }
+ 						  	 }
+ 				  	   },function(ret, err){
+ 						  	 if (ret) {
+ 										//  tishi(ret.msg);
+
+ 										 if(ret.code==1){
+											var fly_img=goodinfo.image
+										 	var box=document.getElementById(moudle+'_'+index);
+										 	vm.fly_cart(fly_img,box.getBoundingClientRect().left,box.getBoundingClientRect().top);
+
+											 //修改产品数量
+										  vm.changeCartNum(index,moudle,ret.data.now_goods_num,ret.data.clc_now_goods_num);
+
+ 										 api.sendEvent({
+ 												 name: 'update_cart_num',
+ 										 });
+ 										 api.sendEvent({
+ 												 name: 'update_cart_list',//更新购物车列表
+ 										 });
+										//  api.sendEvent({
+										// 		 name: 'update_cart_list',//更新购物车列表
+										//  });
+
+									}else{
+									 tishi( ret.msg );
+										Log(ret);
+									}
+
+ 						  	 } else {
+ 						  			 alert( JSON.stringify( err ) );
+ 									//  console.log(err.msg)
+ 						  	 }
+ 				   	   });
+ 			    	}else{
+ 				  		go_login();
+ 				   }
+			  	},
+
+					cutdown_to_cart:function(index,moudle){
+						var goodinfo;
+						goodinfo=vm.getGoodsInof(index,moudle);
+					 //特价
+
+					 if(is_login()){
+ 				  	 api.ajax({
+ 				  			 url: cutdown_to_cart_url,
+ 					  		 method: 'post',
+ 					  		 data: {
+ 						  			 values: {
+ 											 token: api.getPrefs({sync: true,key:'login_id'}),
+ 											 goods_id:goodinfo['goods_id'],
+ 											 goods_sku_id:goodinfo['goods_sku_id'],
+ 										   deviceid: api.deviceId,
+ 						  			 }
+ 						  	 }
+ 				  	   },function(ret, err){
+ 						  	 if (ret) {
+ 										//  tishi(ret.msg);
+
+ 										 if(ret.code==1){
+											 Log(ret);
+											 //修改产品数量
+										  vm.changeCartNum(index,moudle,ret.data.now_goods_num,ret.data.clc_now_goods_num);
+
+ 										 api.sendEvent({
+ 												 name: 'update_cart_num',
+ 										 });
+ 										 api.sendEvent({
+ 												 name: 'update_cart_list',//更新购物车列表
+ 										 });
+										//  api.sendEvent({
+										// 		 name: 'update_cart_list',//更新购物车列表
+										//  });
+
+ 										 }
+
+ 						  	 } else {
+ 						  			 alert( JSON.stringify( err ) );
+ 									//  console.log(err.msg)
+ 						  	 }
+ 				   	   });
+ 			    	}else{
+ 				  		go_login();
+ 				   }
+					},
+					getGoodsInof:function(index,moudle){
+						if(moudle=='prom'){
+							goodinfo=vm.promlist[index];
+						}
+						//秒杀
+						if(moudle=='flash'){
+							goodinfo=vm.flashlist.goods_list[index];
+							console.log(JSON.stringify(goodinfo));
+						}
+					//猜你喜欢
+						if(moudle=='like'){
+							goodinfo=vm.like_goods[index];
+						}
+						if(moudle=='like_even'){
+							goodinfo=vm.like_goods_even[index];
+						}
+						if(moudle=='like_odd'){
+						 goodinfo=vm.like_goods_odd[index];
+					 }
+
+					//本周特价
+					 if(moudle=='week'){
+						 goodinfo=vm.weekpromlist[index];
+					 }
+					 return goodinfo;
+					},
+          changeCartNum:function(index,moudle,num,unit_num){
+			     	if(moudle=='prom'){
+			     	 vm.promlist[index].cart_num=num;
+			     	 vm.promlist[index].cart_unit_num=unit_num;
+			     	}
+			     	//秒杀
+			     	if(moudle=='flash'){
+			     	 vm.flashlist.goods_list[index].cart_num=num;
+			     	 vm.flashlist.goods_list[index].cart_unit_num=unit_num;
+			     		}
+			     	//猜你喜欢
+			     	if(moudle=='like'){
+			     	 vm.like_goods[index].cart_num=num;
+			     	 vm.like_goods[index].cart_unit_num=unit_num;
+			     	 }
+			     	if(moudle=='like_even'){
+			     	 vm.like_goods_even[index].cart_num=num;
+			     	 vm.like_goods_even[index].cart_unit_num=unit_num;
+			     	 }
+			     	if(moudle=='like_odd'){
+			     	 vm.like_goods_odd[index].cart_num=num;
+			     	 vm.like_goods_odd[index].cart_unit_num=unit_num;
+			     	 }
+
+			     	//本周特价
+			     	if(moudle=='week'){
+			     	vm.weekpromlist[index].cart_num=num;
+			     	}
+			     	},
+			    fly_cart:function (img,x,y){
+
+            // var box=document.getElementById(moudle+'_'+index);
+
+						 //发送飞入的图片
+						api.sendEvent({
+						    name: 'fly_img',
+						    extra: {
+						        img: img
+						    }
+						 });
+            //打开飞入的窗口
+						api.setFrameAttr({
+								name: 'fly_frm',
+								bounces: false,
+								hidden:true,
+								vScrollBarEnabled: false,
+								hScrollBarEnabled: false,
+								rect: {
+										x: x,
+										y: y,
+										w: 70,
+										h: 70
+								},
+						});
+            vm.timeer=10;
+            //初始化坐标
+            var x1=x;
+            var y1=y;
+
+            //计算比例，以小的为参照
+            var vx,vy,sx,sy;
+            sy=cart_top-y-40;
+            sx=cart_left-x-40;
+            //sy 不可能等于0 的情况出现
+            if(sx==0){
+              vy=sy/Math.abs(sy);
+            }else{
+							vx=sx/vm.timeer;
+              vy=(vx*sy)/sx;
+            }
+						// vm.timeer = temp_count;
+						var coutnnum = setInterval(function () {
+								if(vm.timeer == 0){
+								    	// api.closeFrame({
+							        //   name: 'fly_frm'
+							        // });
+											api.setFrameAttr({
+													name: 'fly_frm',
+													hidden:true,
+											});
+										clearInterval(coutnnum);
+										return;
+								}else{
+									        x1 += vx;
+									        y1 += vy;
+									        api.setFrameAttr({
+									           name: 'fly_frm',
+									           rect:{
+									             x:x1,
+									             y:y1,
+									           }
+									        });
+										vm.timeer -= 1;
+								}
+						},'100');
+
+          },
+      },watch:{
+        fly_pos:{
+            handler: function (val, oldVal) {
+              console.log(JSON.stringify(val));
+            }
+        }
+      }
+   });
+
+
+     var cart_top=-1,cart_left=-1;
+      apiready = function () {
+				vm.init();
+				api.setRefreshHeaderInfo({
+						visible: true,
+						loadingImg: 'widget://image/refresh.png',
+						bgColor: '#f4f4f4',
+						textColor: '#333333',
+						textDown: '下拉刷新...',
+						textUp: '松开刷新...',
+						showTime: true
+				}, function(ret, err) {
+
+						vm.init();
+						setTimeout("api.refreshHeaderLoadDone()",'500');
+				});
+
+				api.addEventListener({
+						name: 'scrolltobottom',
+						extra: {
+								threshold: 0            //设置距离底部多少距离时触发，默认值为0，数字类型
+						}
+				}, function (ret, err) {
+					console.log('到底部了')
+						vm.get_like_goods();
+				});
+
+
+
+
+       var scroll = new auiScroll({
+        listen:true, //是否监听滚动高度，开启后将实时返回滚动高度
+        distance:200 //判断到达底部的距离，isToBottom为true
+       },function(ret){
+	      vm.scoll_H=ret.scrollTop;
+			 //  发生滚动条高度;
+        api.sendEvent({
+           name: 'home_scoll_top',
+           extra: {
+               top: ret.scrollTop,
+           }
+         });
+	    });
+
+			api.addEventListener({
+					name: 'flush_main_frame'//刷新主界面
+			}, function(ret, err){
+				console.log('flush_main_frame 刷新');
+				 vm.init();
+			});
+
+       // 询问购物车的位置
+      if(cart_top==-1){
+        api.sendEvent({
+            name: 'ask_cart_pos',
+         });
+      }
+      //获取购物车的位置
+      api.addEventListener({
+          name: 'cart_pos'
+      }, function(ret, err){
+          if( ret ){
+               console.log('获取购物车位置')
+               console.log(JSON.stringify(ret))
+               cart_top=ret.value.cart_top;
+               cart_left=ret.value.cart_left;
+          }
+      });
+			//打开头部
+			console.log('重新打卡头部')
+       api.openFrame({
+           name: 'home_top',
+           url: './home_top.html',
+           bounces: false,
+           rect: {
+               x: 0,
+               y: 0,
+               w: 'auto',
+               h: 70
+           },
+           pageParam: {
+               type: api.pageParam.type
+           }
+       })
+
+       };
+
+
+       function to_tejia(){
+         api.openWin({
+             name: 'to_tejia',
+             url: 'widget://html/v1/prom_win.html',
+             pageParam: {
+                 id:0,
+                 title:"Precio especial esta semana",
+                 muban:"prom_body"
+             }
+         });
+       }
+			 function to_guoshulan(){
+		 		api.openWin({
+		 				name: 'to_guoshulan',
+		 				url: 'widget://html/v1/tuijian_win.html',
+		 				pageParam: {
+		 						id:0,
+		 						title:"Fruta azul",
+		 						muban:"tuijian_body"
+		 				}
+		 		});
+
+		 	}
+
+
+
+  </script>
+</html>

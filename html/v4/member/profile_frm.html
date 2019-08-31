@@ -1,0 +1,288 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+</head>
+<body>
+    <div class="aui-content" id="app">
+        <ul class="aui-list aui-list-in aui-list-noborder">
+
+            <li class="aui-list-item" tapmode onclick="zknightH5ImgcutUpImg()">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    头像
+                    <div class="aui-list-item-right">
+                        <img :src="head_path" class="aui-img-round"  style=" width: 1.8rem;height:1.8rem; ">
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item" tapmode onclick="openWin('btn_bar_win')">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    昵称
+					 <div class="aui-list-item-right">
+                        eeee
+                    </div>
+                </div>
+
+            </li>
+			    <li class="aui-list-item" tapmode onclick="openWin('btn_bar_win')">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    性别
+					 <div class="aui-list-item-right">
+                        男
+                    </div>
+                </div>
+
+            </li>
+             <li class="aui-list-item" tapmode onclick="openWin('btn_bar_win')">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    手机号
+					 <div class="aui-list-item-right">
+                        159*****799
+                    </div>
+                </div>
+
+            </li>
+
+          <li class="aui-list-item" tapmode onclick="openWin('btn_bar_win')">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    绑定mercadopago账号
+					 <div class="aui-list-item-right">
+                        666**@qq.com
+                    </div>
+                </div>
+
+            </li>
+
+               <li class="aui-list-item" tapmode onclick="openWin('btn_bar_win')">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    修改密码
+					 <div class="aui-list-item-right">
+                        159*****799
+                    </div>
+                </div>
+
+            </li>
+
+        </ul>
+    </div>
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript" src="../../../script/zknight_h5imgcut_common.js"></script>
+<script type="text/javascript">
+var vm = new Vue({
+		el: '#app',
+		data: {
+				 head_path:'../../../image/72.png',
+		},
+		methods: {
+		},
+	});
+
+	apiready = function(){
+		//裁剪完毕后，页面接受参数并保存
+		api.addEventListener({
+	        name:'zknight_img_cut_event'
+        },function(ret,err){
+        	var img = ret.value.cutOutImg;
+        	//裁剪完成
+        	if(img){
+
+	        	// $('#head_img').attr('src', img);
+						var fsDir = api.fsDir;
+						var fs = api.require('fs');
+						// vm.head_path=fs+':/'+img;
+						up_img(img);
+
+						console.log(vm.head_path);
+        	}
+        });
+	};
+
+   function up_img(file){
+		console.log(api.getPrefs({sync: true,key:'login_id'}));
+    console.log(file);
+		api.ajax({
+			url: upload_avater_url,
+			method: 'post',
+			data: {
+
+        values: {
+            token: api.getPrefs({sync: true,key:'login_id'}),
+        },
+				files: {
+						iFile: file,
+				}
+
+			}
+		},function(ret, err){
+      console.log(JSON.stringify(ret))
+        console.log(JSON.stringify(err))
+			 if (ret) {
+				 if(ret.data){
+						// var content='img['+ret.data.src+']';
+						vm.head_path=ret.data;
+						// message(content,1);
+						console.log(ret.data);
+            update_user_info('avatarUrl',ret.data);
+				 }
+			 } else {
+					//alert( JSON.stringify( err ) );
+			 }
+	 });
+
+}
+// 'avatarUrl'
+function update_user_info(field,content){
+
+ api.ajax({
+   url: update_user_info_url,
+   method: 'post',
+   data: {
+     values: {
+         token:api.getPrefs({sync: true,key:'login_id'}),
+         field:field,
+         content:content
+     }
+
+   }
+ },function(ret, err){
+    if (ret) {
+       console.log(JSON.stringify(ret));
+    } else {
+       //alert( JSON.stringify( err ) );
+    }
+});
+
+}
+	/**
+	 * 打开图片选择弹框
+	 */
+    function zknightH5ImgcutUpImg(){
+        api.actionSheet({
+            //title: '上传图片',
+            cancelTitle: '取消',
+            buttons: ['拍照','从手机相册选择']
+        }, function(ret, err) {
+            if (ret) {
+                zknightH5ImgcutGetPicture(ret.buttonIndex);
+            }
+        });
+    }
+
+    /**
+     * 从本地选择图片或拍照图片进行裁剪
+     */
+    function zknightH5ImgcutGetPicture(sourceType) {
+        if(sourceType==1){ // 拍照
+        	var resultList = api.hasPermission({
+			    list:['camera']
+			});
+			if(!resultList[0].granted){
+				api.confirm({
+				    title: '提示',
+				    msg: '请授权访问摄像头',
+				    buttons: ['确定', '取消']
+				}, function(confirmret, confirmerr) {
+				    var index = confirmret.buttonIndex;
+				    if(index == 1){
+				    	api.requestPermission({
+						    list:['camera'],
+						    code:1
+						}, function(requestret, requesterr){
+						    if(requestret.list[0].granted){
+						    	api.getPicture({
+					                sourceType: 'camera',
+					                encodingType: 'jpg',
+					                mediaValue: 'pic',
+					                allowEdit: false,
+					                destinationType: 'base64',
+					                quality: 100,
+					                saveToPhotoAlbum: false,
+					                targetWidth: 1000,
+					                targetHeight: 1000
+					            }, function(ret, err) {
+					                if (ret.data) {
+					                   zknightH5ImgcutOpenCut(ret.data);
+					                }
+					            });
+						    }
+						});
+				    }
+				});
+			} else {
+				api.getPicture({
+	                sourceType: 'camera',
+	                encodingType: 'jpg',
+	                mediaValue: 'pic',
+	                allowEdit: false,
+	                destinationType: 'base64',
+	                quality: 100,
+	                saveToPhotoAlbum: false,
+	                targetWidth: 1000,
+	                targetHeight: 1000
+	            }, function(ret, err) {
+	                if (ret.data) {
+	                   zknightH5ImgcutOpenCut(ret.data);
+	                }
+	            });
+			}
+        } else if (sourceType==2){ // 从相机中选择
+        	var resultList = api.hasPermission({
+			    list:['photos']
+			});
+			if(!resultList[0].granted){
+				api.confirm({
+				    title: '提示',
+				    msg: '请授权访问相册',
+				    buttons: ['确定', '取消']
+				}, function(confirmret, confirmerr) {
+				    var index = confirmret.buttonIndex;
+				    if(index == 1){
+				    	api.requestPermission({
+						    list:['photos'],
+						    code:1
+						}, function(requestret, requesterr){
+						    if(requestret.list[0].granted){
+						    	api.getPicture({
+				                    sourceType: 'library',
+				                    encodingType: 'jpg',
+				                    mediaValue: 'pic',
+				                    destinationType: 'base64',
+				                    quality: 100,
+				                    targetWidth: 1000,
+				                	targetHeight: 1000
+				                }, function(ret, err) {
+				                    if (ret.data) {
+				                    	zknightH5ImgcutOpenCut(ret.data);
+				                    }
+				            	});
+						    }
+						});
+				    }
+				});
+			} else {
+				api.getPicture({
+                    sourceType: 'library',
+                    encodingType: 'jpg',
+                    mediaValue: 'pic',
+                    destinationType: 'base64',
+                    quality: 100,
+                    targetWidth: 1000,
+                	targetHeight: 1000
+                }, function(ret, err) {
+
+                    if (ret.data) {
+                    	zknightH5ImgcutOpenCut(ret.data);
+                    }
+            	});
+			}
+        }
+    }
+</script>
+</html>

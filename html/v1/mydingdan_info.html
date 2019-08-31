@@ -1,0 +1,333 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit" />
+	<link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/zhu.css"/>
+ 	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="../../script/zhu.js"></script>
+	<script type="text/javascript" src="../../script/gototop.js"></script>
+	<script src="https://maps.google.cn/maps/api/js?key=AIzaSyAp7R9ZFep3cdO21_JpUY-5wVGdM3DUcVw&libraries=places&callback=initMap" async defer></script>
+<title>我的订单</title>
+<style type="text/css">
+/* 顶部 开始*/
+#map{width: 100%;height: 100%;background: #000;z-index: 1;left: 0;top: 0;right: 0;bottom: 0;position: fixed;}
+#ing{position: absolute;left: 10px;top: 10%;right:10px;z-index: 10;color: #222;}
+#caidan{position: fixed;left: 0;top: 30px;right:0;z-index: 11;height: auto;}
+
+.caozuo a{padding: 0 10px; line-height: 24px;display: inline-block;border-radius: 12px;border: 1px #333;color: #444;font-size: 12px;margin: 0 5px;}
+.caocuo a.on{padding: 0 10px; line-height: 24px;display: inline-block;border-radius: 12px;border: 1px solid rgb(65, 162, 11);color: rgb(65, 162, 11);font-size: 12px;margin: 0 5px;}
+.touxiang{width: 48px;height: 48px;border-radius: 50%;}
+
+</style>
+</head>
+
+<body>
+	<div id="caidan">
+		<img src="../../image/zuo3.png" style="height:36px;width:36px;margin-left:10px;" onclick="fanhui()">
+	</div>
+<div id="ing">
+	<div class="pad10 bg1 cuti wenzi16" style="padding-bottom:0" id="dingdan_ing">
+		Estado del pedido
+	</div>
+	<!-- <div class="pad10 bg1" style="padding-bottom:0">
+		预计8:00送达
+	</div> -->
+	<div class="pad10 bg1 caozuo">
+		<a id="quxiao_btn" onclick="quxiao()">Cancelar</a>
+		<a id="pingjia_btn" class="on" onclick="pingjia()">Evaluación</a>
+			<a id="shouhuo_btn" onclick="shouhuo()">Confirmar</a>
+		<a onclick="rebuy()">Comprar de nuevo</a>
+	</div>
+
+
+	<!-- <div class="pad10 bg1 hezi top wenzi12">
+		<div class="col1 zhong"><img class="touxiang" src="../../image/221.png"  /></div>
+		<div class="col1 zhong">快递小哥</div>
+		<div class="col2 caozuo juyou"><a>电话小哥</a></div>
+	</div> -->
+
+	<div class="pad10 bg1 hezi">
+		<div class="col1">
+			Hora de la cita
+		</div>
+		<div class="col2" id="book_time">
+			00:00
+		</div>
+	</div>
+	<div class="pad10 bg1 hezi" style="border-top:1px solid #f6f6f6;margin-bottom:10px;">
+		<div class="col1">
+			Dirección
+		</div>
+		<div class="col2" id="dizhi">
+
+		</div>
+	</div>
+
+<div id="goodslist"></div>
+
+
+	<div class="pad10 bg1 hezi top wenzi12">
+		<div class="col1">Cantidad de productos</div>
+		<div class="col1 juyou" id="shop_money">$0</div>
+	</div>
+	<!-- <div class="pad10 bg1 hezi top wenzi12">
+		<div class="col1">配送费</div>
+		<div class="col1 juyou" id="peihuofei">$0</div>
+	</div> -->
+	<div class="pad10 bg1 hezi top wenzi12">
+		<div class="col1">Cupón</div>
+		<div class="col1 juyou" id="coupon_price">$0</div>
+	</div>
+	<div class="pad10 bg1 hezi top wenzi12">
+		<div class="col1">Puntos</div>
+		<div class="col1 juyou" id="jifen"></div>
+	</div>
+	<div class="pad10 bg1 hezi top wenzi12">
+		<div class="col1">Cantidad de pago</div>
+		<div class="col1 juyou" id="money">$0</div>
+	</div>
+	<div class="pad10 bg1 hezi top10 wenzi12">
+		<div class="col1">Número de pedido</div>
+		<div class="col1 juyou" id="order_no"></div>
+	</div>
+	<div class="pad10 bg1 hezi top wenzi12">
+		<div class="col1">Tiempo de pedido</div>
+		<div class="col1 juyou" id="create_time"></div>
+	</div>
+	<div class="pad10 bg1 hezi top wenzi12">
+		<div class="col1">Forma de pago</div>
+		<div class="col1 juyou" id="pay_type"></div>
+	</div>
+
+
+
+</div>
+<div id="map"></div>
+</body>
+</html>
+<script>
+var map,info;
+function initMap() {
+	map = new google.maps.Map(document.getElementById('map'), {
+		center: {lat: -34.397, lng: 150.644},
+		mapTypeControl: false,
+		scaleControl: false,
+		streetViewControl: false,
+		zoomControl: false,
+		fullscreenControl:false,
+		zoom: 8
+	});
+
+}
+
+
+apiready=function(){
+	var header = $api.byId('map');
+	$api.fixStatusBar(header);
+jiazai();
+
+api.addEventListener({
+    name:'swipeup'
+}, function(ret, err){
+  $("#map").css({"position":"fixed"});
+});
+api.sendEvent({
+    name: 'close_confirm'
+});
+
+
+
+$(function(){
+$(window).bind("scroll resize",function(e){  $("#map").css({"position":"fixed"});});
+})
+
+}
+
+
+
+
+
+function jiazai(){
+	api.ajax({
+			url: order_info_url,
+			method: 'post',
+			data: {
+					values: {
+							token: api.getPrefs({sync: true,key:'login_id'}),
+							order_id:api.pageParam.id
+					}
+			}
+	},function(ret, err){
+			if (ret) {
+
+				if(ret.code==1){
+					info=ret.data;
+				shuju=ret.data.order;
+				$("#book_time").html(info.order.book_time.text);
+				$("#dizhi").html(info.order.address.tag+info.order.address.detail+info.order.address.merger_locality);
+				$("#shop_money").html("$"+info.order.pay_price);
+				$("#money").html("$"+info.order.total_price);
+				$("#peihuofei").html(info.order.total_peihuo_price);
+				$("#coupon_price").html(info.order.coupon_price);
+				$("#jifen").html(info.order.integral_money);
+				$("#order_no").html(info.order.order_no);
+				$("#create_time").html(info.order.create_time);
+				$("#pay_type").html(info.order.pay_type.text);
+
+				var goods=shuju.goods;
+				var str='';
+				for (var i = 0; i < json_num(goods); i++) {
+					str+='<div class="pad10 bg1 hezi top" style="border-bottom:1px solid #f6f6f6;"  data-goods_id="'+goods[i].goods_id+'">'+
+						'<div class="col1">'+
+							'<img src="'+goods[i].image.file_path+'" width="100%">'+
+						'</div>'+
+						'<div class="col4 pad-left15">'+
+							'<div class="wenzi14 cuti">'+goods[i].goods_name+'<span class="you">$'+goods[i].total_price+'</span></div>'+
+							'<div class="wenzi12 yanse0">Precio:$'+goods[i].goods_price+' Cantidad:'+goods[i].total_num+'</div>'+
+							'<div class="wenzi12 yanse0 caozuo juyou"><a onclick="to_goods_info('+goods[i].goods_id+')">Añadir al carrito</a></div>'+
+						'</div>'+
+					'</div>';
+
+				}
+         if(shuju.delivery_status.value==20){
+
+					 $("#ing").css("top","50%");
+				 }
+				$("#goodslist").html(str);
+      	$("#pingjia_btn").hide();
+			  $("#quxiao_btn").hide();
+				$("#shouhuo_btn").hide();
+				//alert(str)
+         if(shuju.delivery_status.value==20){
+					 if(shuju.order_status.value==30){
+						 $("#dingdan_ing").html(shuju.order_status.text);
+							$("#shouhuo_btn").hide();
+						}
+							 $("#dingdan_ing").html(shuju.delivery_status.text);
+                $("#shouhuo_btn").show();
+
+				 }
+				 if(shuju.pay_status.value==10){
+           $("#dingdan_ing").html(shuju.pay_status.text);
+					   $("#quxiao_btn").show();
+				 }
+				 if (shuju.order_status.value==20) {
+					  $("#dingdan_ing").html(shuju.order_status.text);
+						$("#quxiao_btn").hide();
+				 }
+
+
+
+				}
+
+					//alert( JSON.stringify( ret ) );
+			} else {
+					//alert( JSON.stringify( err ) );
+			}
+	});
+}
+
+
+
+function quxiao(){
+	api.ajax({
+			url: order_cancel_url,
+			method: 'post',
+			data: {
+					values: {
+							token: api.getPrefs({sync: true,key:'login_id'}),
+							order_id:info.order.order_id
+					}
+			}
+	},function(ret, err){
+			if (ret) {
+				tishi(ret.data);
+				jiazai();
+					//alert( JSON.stringify( ret ) );
+			} else {
+					//alert( JSON.stringify( err ) );
+			}
+	});
+
+}
+
+//评价订单
+function pingjia(){
+	api.openWin({
+			name: 'to_pingjia',
+			url: 'widget://html/v1/pingjia.html',
+			pageParam: {
+					id:info.order.order_id,
+					title:'添加评价',
+					muban:'pingjia'
+			}
+	});
+}
+
+//确认收货
+function shouhuo(){
+
+	api.ajax({
+			url: shouhuo_url,
+			method: 'post',
+			data: {
+					values: {
+							token: api.getPrefs({sync: true,key:'login_id'}),
+					order_id:info.order.order_id
+					}
+			}
+	},function(ret, err){
+			if (ret) {
+				tishi(ret.msg);
+				jiazai();
+					//alert( JSON.stringify( ret ) );
+			} else {
+					//alert( JSON.stringify( err ) );
+			}
+	});
+
+
+
+}
+//再次购买
+function rebuy(){
+	api.ajax({
+			url: readd_to_cart_url,
+			method: 'post',
+			data: {
+					values: {
+							token: api.getPrefs({sync: true,key:'login_id'}),
+							order_id:iid
+					}
+			}
+	},function(ret, err){
+			if (ret) {
+				//tishi(ret.data);
+				if(ret.data.cart_total_num==0){
+					tishi("商品已下架或者库存不足，没有购买成功");
+				}else{
+					to_gouwuche();
+				}
+					//alert( JSON.stringify( ret ) );
+			} else {
+					//alert( JSON.stringify( err ) );
+			}
+	});
+}
+
+//呼叫小哥
+function hujiao(){
+	api.call({
+    type: 'tel',
+    number: info.order.driver.mobile
+});
+}
+</script>

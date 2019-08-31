@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/aui-slide.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/zhu.css" />
+    <script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../../script/layer/layer.js"></script>
+    <style type="text/css">
+    /*顶部开始*/
+
+    .dingbu{ padding:0 10px; position:fixed; z-index:999; left:0; top:0; right:0;}
+    .dingbu .anniu{background:rgba(255,255,255,0.8);border-radius: 50%;width:32px; height:32px;padding: 5px;}
+    .on{ color:#27d24e; border-bottom:#27d24e solid 2px;}
+    .xuanxiang{ text-align:center;}
+    .xuanxiang span{ margin:0 5px; padding-bottom:5px;}
+    /*内容开始*/
+    .zhutu img,.youhui img{ width:100%;}
+    .zhutu{ border-bottom:#f6f6f6 solid 3px;}
+    .chandi{ width:16px; height:16px; margin-top:-2px; margin-right:4px;}
+    .jiage{line-height:38px; border-bottom: #f4f4f4 1px solid;}
+    .yuanjia{ margin-left:4px;}
+    .shijian img{ width:14px; height:14px; margin-top:-4px; margin-right:4px;}
+    .shijian{ padding:10px 0 0;}
+    .youhui{ border-bottom:#f6f6f6 solid 15px;}
+    .gengduo{ width:20px; height:20px;}
+    .zuofa{ width:30%; float:left;}
+    .zuofa img{ width:100%; padding:6px 10px 6px 0;}
+    .huixian{ height:10px; background-color:#f6f6f6; margin:10px 0 0;}
+    /*评价开始*/
+    .pingjia{ padding-bottom:10px;}
+    .touxiang{ width:24px; height:24px; margin-right:6px;}
+    .rating a {  color: #aaa; text-decoration: none;  font-size: 20px; }
+    .rating{ direction: rtl; width:52%;   }
+    .rating a:hover,.rating a:hover ~ a,.rating a:focus,.rating a:focus ~ a{color: orange; cursor: pointer;}
+    .neirong{ padding:0 20px;}
+    .chakan{ border:#dddddd solid 1px; padding:2px; margin:10px auto 0; border-radius:20px; display:inline-block;}
+    /*推荐开始*/
+    .xuxian{ border-bottom:#f4f4f4 dashed 1px;}
+    .qianggou{ overflow:hidden; padding:10px 10px 0;}
+    .chanpin{ width:30%; position:relative; float:left; margin-right:2%;}
+    .chanpintu{ width:100%; padding:5px;}
+    .che{ width:28px; height:28px; border:#ececec solid 1px; padding:3px; border-radius:50%; position:absolute;bottom:12px;right:10px;}
+    .biaoti{ color:#000; margin-bottom:10px;}
+    .xiangqing{ overflow:hidden; margin-bottom:50px;}
+    .xiangqing img{max-width: 100% !important;height: auto !important;}
+    .tupian{ width:100%; height:auto; padding: 1px 10px;}
+    .tupian1{ width:50%; height: auto;  padding: 5px ; float:left; }
+    /*底部开始*/
+    .dibu{ position:fixed; left:0; bottom:0; right:0; background-color:#f6f6f6;height: 40px;line-height: 40px;padding-left: 10px;padding-right: 10px;border-top: 1px solid #e2e2e2;}
+    .dibu img{ width:20px; height:20px;}
+    .jiaru{ color:#FFF; padding:4px 16px; border-radius:24px; background-color:#24d44e;}
+
+    #tuijian2 .t_list{width: 150px;display: inline-block;float: none;overflow: hidden;}
+    #tuijian2 .t_list .t_k{overflow: hidden;}
+
+    .shijian li{display: inline; padding-left: 5px;}
+    .shijian .w{color:#ffffff;background: #ff5757; border-radius: 5px;display: inline-block;font-size: 12px;padding: 2px 4px;height: 16px;line-height: 12px;}
+
+    .jiajian{height: 24px;width: 24px;line-height: 21px;text-align: center; display: inline-block;border-radius: 50%;border:1px solid #888;color: #888;font-size: 18px;}
+    .jiajian_on,.jiajian:active{height: 24px;width: 24px;line-height: 21px;text-align: center; display: inline-block;border-radius: 50%;border:1px solid rgb(65, 162, 11);color: #fff;font-size: 18px; background: rgb(65, 162, 11)}
+    .liang{height: 18px; width: 60px;display: inline-block; font-size: 14px;text-align: center;}
+
+    .car_num{position: absolute;right: 2px;top:3px;display: none;line-height: 18px;height: 16px;min-width: 16px; font-size: 10px;text-align: center;background: red;color: #fff;z-index: 999;border-radius: 8px;}
+
+    </style>
+</head>
+<body>
+  <!--顶部开始-->
+      <div class="dingbu hezi hanggao42 daohang">
+       <div class="col1 zhong" style="height:42px;"><img onclick="fanhui()" class="anniu" src="../../image/fanhui.png" /></div>
+       <div class="col3 xuanxiang" style="opacity:0;">
+        <span class="on dh" onclick="to_scrollTo()">Productos</span><span onclick="to_scrollTo('.louti2')" class="dh">Evaluacion</span><span onclick="to_scrollTo('.louti3')" class="dh">Recomendación</span><span onclick="to_scrollTo('.louti4')" class="dh">Detalles</span>
+       </div>
+       <div class="col1 zhong" style="height:42px;position:relative;"><img class="anniu dongtai cart_tu" onclick="to_gouwuche()" src="../../image/gouwuche1.png" /><span class="car_num"></span></div>
+      </div>
+
+  <!--内容开始-->
+      <div class="zhutu  louti1">
+        <div class="aui-card-list-content" id="aui-slide">
+          <div class="aui-slide-wrap" >
+              <div class="aui-slide-node bg-dark">
+                  <img src="../../image/goods_img.png" />
+              </div>
+          </div>
+          <div class="aui-slide-page-wrap"><!--分页容器--></div>
+        </div>
+      </div>
+      <div class="hezi" id="f_miaosha" >
+
+      </div>
+      <div class="pad10">
+        <div class="hezi">
+          <div class="col7">
+<div class="cuti hanggao24"  id="goods_name"> </div>
+          </div>
+          <div class="col1 zhong">
+            <img onclick="fenxiang()" width="24" height="24" src="../../image/fenxiang.png" />
+          </div>
+        </div>
+
+       <div class="wenzi12 yanse0" id="miaoshu"> </div>
+       <div class="yanse2 pad-top10 padding-bottom10"><small>￥</small><big class="wenzi20" id="jiage">0.00</big><s id="yuanjia" class="wenzi10 yanse0 left5">￥0.00</s></div>
+
+       <div class="shijian wenzi10"><img src="../../image/shijian.png" />Entrega mas rapida mañana a las<span>07:00-07:30</span>送达</div>
+      </div>
+      <div class="hezi bg1 top10 pad5" onclick="list2()">
+        <div class="col1 zhong wenzi12">
+          Cupon
+        </div>
+       <div class="col6 zhong" id="yhq"></div>
+
+     <div class="col1 juyou " style="font-size:20px;padding-right:5px; " >...</div>
+      </div>
+
+  <!--评价开始-->
+      <div class="pad10 louti2">
+       <div class="cuti pingjia">Evaluacion</div>
+       <div id="pingjialist"><div class="text-center">Aun no hay Evaluacion</div></div>
+        <div class="wenzi10 juzhong yanse0 cang" id="pingjia_numk"><span class="chakan">Ver más(<span id="pingjia_num"></span>)</span></div>
+      </div>
+      <div class="huixian"></div>
+  <!--推荐开始-->
+      <div class="qianggou louti3">
+       <div class="cuti">Lo que te recomendamos</div>
+
+       <div id="tuijian2" style="overflow-x:scroll;white-space: nowrap;"></div>
+      </div>
+      <div class="huixian"></div>
+
+       <div class="cuti hanggao28 pad-left10">Especificación</div>
+       <div class="xuxian"></div>
+       <div class="hezi hanggao28 pad-left10">
+        <div class="wenzi10 col1 yanse0">Contenido neto</div><div class="wenzi10 col3 yanse0">500g</div>
+       </div>
+       <div class="xuxian"></div>
+       <div class="hezi hanggao28 pad-left10">
+        <div class="wenzi10 col1 yanse0">Condición de ahorro</div><div class="wenzi10 col3 yanse0">冷藏</div>
+       </div>
+       <div class="xuxian"></div>
+       <div class="hezi hanggao28 pad-left10">
+        <div class="wenzi10 col1 yanse0">Vida útil</div><div class="wenzi10 col3 yanse0">15天</div>
+       </div>
+      <div class="huixian"></div>
+      <div class="cuti hanggao28 pad-left10 louti4">Detalles</div>
+      <div class="xiangqing"  id="goods-detail">Cargando..</div>
+
+
+<div style="height:60px;"></div>
+  <!--底部开始-->
+      <div class="dibu">
+        <span tapmode="jiajian_on" onclick="jian()"  class="jiajian">-</span>
+        <span class="liang">1g</span>
+        <span tapmode="jiajian_on" onclick="jia()" class="jiajian">+</span>
+       <span onclick="shareTo()"  tapmode="btn-app_on" class="btn btn-success btn-app  you top10">Agregar al Carrito de compras</span>
+      </div>
+
+</body>
+<script type="text/javascript" src="../../script/aui-slide.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/zhu.js"></script>
+<script type="text/javascript" src="../../script/gototop.js"></script>
+<script type="text/javascript">
+
+var timediff;
+var gao=300;
+function daojishi(){
+if(timediff<=0){$("#shijian_show").addClass("cang");}else{$("#shijian_show").removeClass("cang");}
+
+			//获取还剩多少天
+			var day=parseInt(timediff/3600/24);
+			//获取还剩多少小时
+			var hour=parseInt(timediff/3600%24);
+			//获取还剩多少分钟
+			var minute=parseInt(timediff/60%60);
+			//获取还剩多少秒
+			var second=timediff%60;
+			//输出还剩多少时间
+			//document.getElementById("1").innerHTML=day;
+			//document.getElementById("2").innerHTML=hour;
+			//document.getElementById("3").innerHTML=minute;
+			//document.getElementById("4").innerHTML=second;
+      $(".shi").html(hour);
+      $(".fen").html(minute);
+      $(".miao").html((second<10)?("0"+second):second);
+			setTimeout(function(){daojishi();},1000);
+      timediff--;
+			if(timediff<=0){return;}
+			}
+      //处理状态栏自动透明度
+      $(function(){
+
+$(".dh").click(function(){
+$(".dh").removeClass("on");
+$(this).addClass("on");
+});
+
+        $(window).scroll(function(){
+
+//处理透明度
+var zhi=$(document).scrollTop();
+var touming=0;
+if(zhi<100){
+  touming=zhi/100;
+}else{
+  touming=1;
+}
+$(".dingbu").css({"background-color":"rgba(255,255,255,"+touming+")"});
+$(".xuanxiang").css({"opacity":touming});
+      //console.log( $(document).scrollTop())
+
+      });
+
+      })
+
+
+var id=0,info={};
+var shop={};
+var car_num=0;
+var now=1;//当前的默认数量
+apiready=function(){
+  gao=api.winWidth;
+  //启动自定义状态栏
+    api.openFrame({
+        name: 'ing2',
+        url: 'widget://html/v1/top2.html',
+        rect: {
+            x: 0,
+            y: 0,
+            w: api.winWidth,
+            h: api.safeArea.top
+        },
+        pageParam: {
+            name: 'test'
+        }
+    });
+    $(".dingbu").css({"top":api.safeArea.top+"px"});
+
+
+  yhq();
+  pingjia();
+
+  api.addEventListener({
+      name: 'update_cart_num_bynum'
+  }, function(ret, err) {
+      var zhi=ret.value;
+      if(zhi.num>0){
+      $(".car_num").html(zhi.num).show();
+      add_to_cart_donghua();
+    }else{
+      $(".car_num").html(0).hide();
+    }
+  });
+  id=api.pageParam.id;
+  get_shop_info();
+  get_tuijian2();
+}
+    banner();
+
+var yhqs="";
+    function yhq(){
+    api.ajax({
+        url: coupon_url,
+        method: 'post',
+        data: {
+  	        values: {
+  	            token: api.getPrefs({sync: true,key:'login_id'})//,only_receive:'true'
+  	        }
+  	    }
+    },function(ret, err){
+     var yhqs=ret.data.list;
+     var str='';
+     for(var i = 0; i <= 1; i++){
+       str+='<span>'+yhqs[i].name+'</span>';
+     }
+    $("#yhq").html(str);
+    });
+
+
+    }
+
+    function lq(id){
+      api.ajax({
+          url: lqkaquan_url,
+          method: 'post',
+          data: {
+              values: {
+                token: api.getPrefs({sync: true,key:'login_id'}),
+                coupon_id:id
+              }
+          }
+      },function(ret, err){
+         tishi(ret.msg);
+    });
+
+    }
+
+    function list2() {
+
+      api.openFrame({
+          name: 'lingquan2',
+          url: 'widget://html/v1/kaquan2.html',
+          rect: {
+              x: 0,
+              y: api.winHeight*0.4,
+              w: api.winWidth,
+              h: api.winHeight*0.6
+          },
+          animation: {
+            type:"movein",                //动画类型（详见动画类型常量）
+        subType:"from_bottom",       //动画子类型（详见动画子类型常量）
+        duration:300                //动画过渡时间，默认300毫秒
+          }
+      });
+  	}
+
+
+
+
+
+    function list1(){
+      api.openWin({
+           name: 'yhqlist',
+          url: 'widget://html/v1/lqyhq.html',
+
+      });
+    }
+
+
+
+
+    function pingjia(){
+
+    api.ajax({
+        url: pingjia_list_url,
+        method: 'post',
+        data: {
+            values: {
+
+                goods_id: api.pageParam.id,
+
+            }
+        }
+    },function(ret, err){
+      if(!ret.data.list)return false;
+        var pingjia=ret.data.list.data;
+        var str="";
+        var pingjia_num=json_num(pingjia);
+        if(pingjia_num>1){
+        $("#pingjia_num").html(pingjia_num);
+        $("#pingjia_numk").fadeIn();
+      }else{
+        return false;
+      }
+      for(var i=0;i<json_num(pingjia);i++){
+
+if(i<=1){
+  str+=' <div>';
+   str+='<div class="wenzi10"><img class="touxiang" src="../../image/touxaing.png" /><span>'+pingjia[i].user.nickName+'</span>';
+    str+='<span class="you yanse0">'+pingjia[i].create_time+'</span></div>';
+    str+='<div class="rating">';
+    switch(pingjia[i].score) {
+                        case 1:
+                        str+='<div>';
+                          str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                          str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                                    str+='</div>';
+                          str+='很不满意';
+                        break;
+                         case 2:
+                         str+='<div>';
+                           str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                           str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                                     str+='</div>';
+                           str+='不满意';
+                        break;
+                        case 3:
+                        str+='<div>';
+                          str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                          str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                          str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                                  str+='</div>';
+                          str+='一般';
+                        break;
+                        case 4:
+                        str+='<div>';
+                          str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                          str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                          str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                          str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                              str+='</div>';
+                          str+='满意';
+                        break;
+                        case 5:
+                        str+='<div>';
+                          str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                          str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                          str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                          str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                          str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                          str+='</div>';
+                          str+='很满意';
+                        break;
+                          }
+    str+='</div>';
+    str+='<div class="wenzi10 neirong">'+pingjia[i].content+'</div>';
+  str+='</div>';
+  //**************
+
+
+}
+
+      }
+
+   $("#pingjialist").html(str);
+
+
+    });
+
+    }
+
+
+    function get_shop_info(){
+      api.ajax({
+          url: goods_info_url,
+          method: 'post',
+          data: {
+              values: {
+                token: api.getPrefs({sync: true,key:'login_id'}),
+                  goods_id: id
+              }
+          }
+      },function(ret, err){
+          if (ret) {
+            if(ret.code==1){
+            $('html,body').animate({scrollTop:0},'slow');
+              //alert( JSON.stringify( ret ) );
+              var data1=ret.data.detail.prom;
+              var str1="";
+              if(data1!=null){
+                  str1='<div class="col4 wenzi14 pad-left10" style="background:#ff5757; color:#ffffff; height:50px;line-height:50px;">'+data1.name+'<span class="wenzi12 left10">'+data1.status.text+'</span></div>';
+                  str1+='<div class="col4 shijian wenzi14" style="height:50px;line-height:50px; background:#F2F2F2;padding-left:10px;"><div class="daojishi cang"><span style=" color:#ff5757;margin-right:5px;">距结束:</span><span class="w h shi">00</span><span class="left5 right5">:</span><span class="w m fen">00</span><span class="left5 right5">:</span><span class="w s miao">00</span></div></div>';
+                  $("#f_miaosha").html(str1);
+
+                  timediff=data1.status.countdown;
+                  //console.log(timediff)
+                  if(timediff>=0){
+                    $(".daojishi").removeClass("cang");
+                  }
+                 daojishi();
+
+              }
+              var data=ret.data.detail;
+              shop=info=data;
+              add_zuji();
+              api.sendEvent({
+                  name: 'get_goods_info',
+                  extra:{
+                    shopinfo:data
+                  }
+              });
+
+              if(ret.data.cart_total_num>0){
+                $(".car_num").html(ret.data.cart_total_num).show();
+              }
+
+
+              var img=data.image;
+              var str='';
+
+              for (var i = 0; i < json_num(img); i++) {
+                str+='<div class="aui-slide-node bg-dark"><img src="'+img[i].file_path+'" /></div>';
+              }
+              $("#aui-slide .aui-slide-wrap").html(str);
+              banner();
+              $("#goods_name").html(data.goods_name);
+              $(".liang").html('1'+shop.units.name);
+              $("#miaoshu").html(data.selling_point);
+              $("#jiage").html(data.now_price.value);
+              $("#yuanjia").html("￥"+data.origin_price);
+              $("#goods-detail").html(data.content);
+
+            }else{
+              tishi(ret.msg);
+              setTimeout(function(){fanhui();},1500);
+            }
+          } else {
+              //alert( JSON.stringify( err ) );
+              tishi(err.msg)
+          }
+      });
+
+    }
+
+    function banner(){
+      var slide = new auiSlide({
+          container:document.getElementById("aui-slide"),
+          // "width":300,
+          "height":gao,
+          "speed":300,
+          "pageShow":true,
+          "pageStyle":'dot',
+          "loop":true,
+          'dotPosition':'center',
+          // currentPage:currentFun
+      })
+    }
+
+
+
+
+
+
+          function to_goods_info(id){
+            to_scrollTo();
+            api.openWin({
+                name: 'to_goods_info',
+                url: 'widget://html/v1/shop_info.html',
+                progress:{
+                  type:"page"
+                },
+                reload:true,
+                pageParam: {
+                    id:id,
+                }
+            });
+
+          }
+
+
+
+
+          function jia(){
+
+            if(now>=shop.sku[0].stock_num){
+                tishi("没有这么多了");
+                return false;
+            }
+            now++;
+            $(".liang").html((now)+shop.units.name);
+          }
+          function jian(){
+            if(now<=1){
+                tishi("最低选择1件");
+                return false;
+            }
+            now--;
+            $(".liang").html((now)+shop.units.name);
+          }
+
+
+
+
+
+
+
+
+
+
+
+
+function to_pingjia_list(){
+  api.openWin({
+      name: 'to_pingjia_list',
+      url: 'widget://html/v1/common_win.html',
+      progress:{
+        type:"page"
+      },
+      reload:true,
+      pageParam: {
+          id:id,
+          title:"商品评价",
+          muban:"shop_info_pingjia"
+      }
+  });
+}
+
+function get_tuijian2(){
+  api.ajax({
+      url: cate_goodslist_url,
+      method: 'post',
+      data: {
+        values:{category_id:1}
+      }
+  },function(ret, err){
+      if (ret) {
+          if(ret.code==1){
+            var data=ret.data.list.data,str='';
+
+            for (var i = 0; i < json_num(data); i++) {
+              if(i<=7){
+              str+='<div class="t_list">';
+                str+='<div class="t_k">';
+                if(data[i].stock_num==0){
+                  str+='<div class="meiyoulek"  onclick="to_goods_info('+data[i].goods_id+')"><span class="meiyoule">抢光了</span></div>';
+                }
+                  str+='<img src="'+data[i].image+'"  onclick="to_goods_info('+data[i].goods_id+')" id="ttj_'+data[i].goods_id+'" class="widthall">';
+                  str+='<div class="wenzi12 over-cang"   onclick="to_goods_info('+data[i].goods_id+')">'+data[i].goods_name+'</div>';
+                  str+='<div class="t_tags">';
+                  if(data[i].prom){
+                  if(data[i].prom.style.value==1){
+                    str+='<span>秒杀</span>';
+                  }else if(data[i].prom.style.value==2){
+                      str+='<span>限时抢购</span>';
+                  }
+                  }
+                  str+='</div>';
+                  str+='<div class="hanggao24 wenzi12 money">￥<span><span class="wenzi16">'+data[i].now_price.value.substr(0,data[i].now_price.value.length-3)+'</span>'+data[i].now_price.value.substr(-3, 3)+'</span><s class="yanse0">￥'+data[i].origin_price+'</s>';
+
+                  str+='</div>';
+                  str+='<div class="hanggao18 height18 wenzi12 lvka-yanse">';
+                  if(data[i].vip_price>0){
+                  str+='￥<span>'+data[i].vip_price+'</span><span class="price-lvka">绿卡价</span>';
+                }else{
+                  str+='<span> </span>';
+                }
+                  str+='</div>';
+                  str+='<img src="../../image/buy.png" class="cart_btn" height="25"    onclick="to_goods_info('+data[i].goods_id+')">';
+                str+='</div>';
+              str+='</div>';
+
+            }
+          }
+            $("#tuijian2").html(str);
+            //console.log(str);
+            //$(".meiyoulek").click(function(){  tishi("抢光了");});
+          }
+
+      } else {
+          tishi( err.msg );
+      }
+  });
+}
+
+function add_to_cart(){
+  api.ajax({
+      url: add_to_cart_url,
+      method: 'post',
+      data: {
+          values: {
+              token: api.getPrefs({sync: true,key:'login_id'}),
+              goods_id:shop.goods_id,
+              goods_sku_id:shop.sku[0].goods_sku_id,
+              goods_num:now
+          }
+      }
+  },function(ret, err){
+      if (ret) {
+            tishi(ret.msg);
+            now=1;
+            $(".liang").html((now)+shop.units.name);
+            if(ret.code==1){
+              api.sendEvent({
+                  name: 'update_cart_num'
+              });
+            }
+
+      } else {
+          //alert( JSON.stringify( err ) );
+          tishi(err.msg)
+      }
+  });
+
+}
+
+function add_to_cart_donghua(){
+  $(".cart_tu").css({"transform":"scale(1.2)"});
+  setTimeout(function(){$(".cart_tu").css({"transform":"scale(0.8)"});},300);
+  setTimeout(function(){$(".cart_tu").css({"transform":"scale(1)"});},600);
+}
+
+
+//增加一个足迹
+function add_zuji(){
+  api.ajax({
+      url: add_zuji_url,
+      method: 'post',
+      data: {
+          values: {
+              token: api.getPrefs({sync: true,key:'login_id'}),
+              goods_id:shop.goods_id,
+              deviceid: api.deviceId
+          }
+      }
+  },function(ret, err){
+
+  });
+}
+
+
+    function shareTo() {
+        var obj = api.require('pullMenu');
+        var arrayPath = [
+            {
+                normal: 'widget://image/logo_wechat.png',
+                highlight: 'widget://image/logo_wechat.png'
+            },
+            {
+                normal: 'widget://image/logo_wechatmoments.png',
+                highlight: 'widget://image/logo_wechatmoments.png'
+            },
+        ];
+        obj.open({
+            type: 'down',
+            h: '200',
+            alpha: '1',
+            bgColor: '#F2F4F9',
+            btnArray: arrayPath
+        }, function (ret, err) {
+            if (ret.index == 0) {
+                sharetoFriend();
+            }
+            if (ret.index == 1) {
+                sharetoFriendCircle();
+            }
+        });
+        if (api.systemType == 'ios') {
+            obj.show();
+        }
+    }
+    function sharetoFriend() {
+
+        //获取微信分享H5链接
+        var shareUrl = goods_share_url + '/info_id/' + vm.info_id;
+        var wx = api.require('wx');
+        wx.isInstalled(function (ret, err) {
+            if (ret.installed) {
+                wx.shareWebpage({
+                    apiKey: '',
+                    scene: 'session',
+                    title: '',
+                    description: '',
+                    thumb: 'widget://image/logo-icon-168.png',
+                    contentUrl: shareUrl
+                }, function (ret, err) {
+                    if (ret.status) {
+                        api.alert({
+                            title: '微信分享',
+                            msg: '微信分享成功',
+                            buttons: ['确定']
+                        });
+                    } else {
+                        api.alert({
+                            title: '微信分享',
+                            msg: '微信分享失败',
+                            buttons: ['确定']
+                        });
+                    }
+                });
+            } else {
+                api.alert({title: '提示', msg: '当前设备未安装微信客户端'});
+            }
+        });
+
+    }
+    function sharetoFriendCircle() {
+
+        //获取微信分享H5链接
+        var shareUrl = goods_share_url + '/info_id/' + vm.info_id;
+        var wx = api.require('wx');
+        wx.isInstalled(function (ret, err) {
+            if (ret.installed) {
+                //alert("当前设备已安装微信客户端");
+                wx.shareWebpage({
+                    apiKey: '',
+                    scene: 'timeline',
+                    title: '',
+                    description: '',
+                    thumb: 'widget://image/logo-icon-168.png',
+                    contentUrl: shareUrl
+                }, function (ret, err) {
+                    if (ret.status) {
+                        api.alert({
+                            title: '微信分享',
+                            msg: '微信分享成功',
+                            buttons: ['确定']
+                        });
+                    } else {
+                        api.alert({
+                            title: '微信分享',
+                            msg: '微信分享失败',
+                            buttons: ['确定']
+                        });
+                    }
+                });
+            } else {
+                api.alert({
+                    title: '微信安装',
+                    msg: '装个微信试试吧，',
+                    buttons: ['确定']
+                });
+            }
+        });
+
+    }
+
+function fenxiang(){
+
+  var str='<div class="hezi pad10" style="height:100%">'+
+  '<div class="col1 zhong" onclick="fenxiang1()"><img src="../../image/facebook.png" width="54" height="54"></div>'+
+  '<div class="col1"></div>'+
+  '</div>';
+  var index = layer.open({
+    type: 1,
+    title: ['分享到', 'magin:0;padding:0;text-align:center;'],
+    area: ['100%', '30%'],
+    skin: 'layui-layer-demo ', //样式类名
+    closeBtn: 1,
+    anim: 2,
+    shadeClose: true, //开启遮罩关闭
+    content: str,
+    offset: 'b'
+  })
+}
+
+function fenxiang1(){
+  var facebook = api.require('facebook');
+facebook.isInstalled(function(ret, err) {
+    if (ret.installed) {
+      facebook.shareLinked({
+              url: 'http://ps.code688.com/download.html',
+              imgUrl: 'http://cloud.code688.com/20190618112205c30c45254.jpg',
+              description: '水果商城',
+              title: '水果商城',
+              quote: '水果商城'
+          }, function(ret, err){
+               if(ret.status) {
+                tishi("分享成功")
+               } else {
+                  tishi(err.msg);
+               }
+         });
+
+    } else {
+        tishi('当前设备未安装facebook客户端');
+    }
+});
+}
+</script>
+</html>

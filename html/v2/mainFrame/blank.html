@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,aItemress=no">
+    <title>结算界面选择优惠券</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+        <link rel="stylesheet" type="text/css" href="../../../css/aui-new.css" />
+</head>
+<body style="background-color:rgba(255,255,255,0);padding:0px;">
+   <div id="app">
+    <div style="display:block; " v-bind:style="styleObject">
+    </div>
+
+
+  </div>
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#app',
+    data: {
+      styleObject: {
+        background: 'black',
+        height: 0,
+        opacity: 0.5,
+       },
+        height: 0,//显示当前索引
+    },
+    methods: {
+    },
+  });
+    apiready = function(){
+        api.parseTapmode();
+        console.log(api.winHeight);
+        vm.styleObject['height']=api.winHeight+'px';
+          console.log(api.winHeight);
+
+
+          if(api.pageParam.type==1){
+            var top= api.winHeight*0.2;
+            var height= api.winHeight*0.6;
+
+            var left= api.winWidth*0.1;
+            var width= api.winWidth*0.8;
+            var frm_height=height/2;
+
+            api.openFrame({
+                 name: 'select_address',
+                 url: './select_address.html',
+                 bounces: false,
+                 rect: {
+                     x: left,
+                     y: top,
+                     w: width,
+                     h: height,
+                 },
+                 pageParam: {
+                     list: api.pageParam.list
+                 },
+             });
+          }
+
+          if(api.pageParam.type==2){
+            var top= api.winHeight*0.8;
+            var height= api.winHeight*0.2;
+
+
+            var width= api.winWidth;
+
+            api.openFrame({
+                 name: 'need_add_address',
+                 url: './need_add_address.html',
+                 bounces: false,
+                 rect: {
+                     x: 0,
+                     y: top,
+                     w: 'auto',
+                     h: height,
+                 },
+
+             });
+          }
+
+
+
+
+
+    }
+
+</script>
+</html>

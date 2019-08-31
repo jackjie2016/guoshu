@@ -1,0 +1,285 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>信用卡提交界面</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../../css/custom_checkout_mercadopago.css"/>
+   	<link rel="stylesheet" type="text/css" href="../../../css/mp_form.css"/>
+
+</head>
+<body>
+
+ <div id="app">
+
+ <!-- <div id="mercadopago-form" > -->
+   <div id="mercadopago-form">
+     <div class="mp-box-inputs mp-col-100">
+       <label for="cardNumber">Credit card number <em>*</em></label>
+       <input type="text" id="cardNumber"  autocomplete="off" v-model="cardholderName" >
+       <span class="mp-error" id="mp-error-205" data-main="#cardNumber" > Parameter cardNumber can not be null/empty </span>
+       <span class="mp-error" id="mp-error-E301" data-main="#cardNumber"> Invalid Card Number </span>
+     </div>
+
+     <div class="mp-box-inputs mp-line">
+       <div class="mp-box-inputs mp-col-45">
+         <label for="cardExpirationMonth">Expiration month <em>*</em></label>
+         <select id="cardExpirationMonth" data-checkout="cardExpirationMonth" name="cardExpirationMonth" v-model="cardExpirationMonth">
+                        <option value="-1"> Month </option>
+                         <option value="1"> 1</option>
+                         <option value="2"> 2</option>
+                         <option value="3"> 3</option>
+                         <option value="4"> 4</option>
+                         <option value="5"> 5</option>
+                         <option value="6"> 6</option>
+                         <option value="7"> 7</option>
+                         <option value="8"> 8</option>
+                         <option value="9"> 9</option>
+                         <option value="10"> 10</option>
+                         <option value="11"> 11</option>
+                         <option value="12"> 12</option>
+                     </select>
+       </div>
+
+       <div class="mp-box-inputs mp-col-10">
+         <div id="mp-separete-date">
+           /
+         </div>
+       </div>
+
+       <div class="mp-box-inputs mp-col-45">
+         <label for="cardExpirationYear">Expiration year <em>*</em></label>
+         <select id="cardExpirationYear"  v-model="cardExpirationYear">
+                          <option value="-1"> Year </option>
+                         <option value="2019"> 2019 </option>
+                         <option value="2020"> 2020 </option>
+                         <option value="2021"> 2021 </option>
+                         <option value="2022"> 2022 </option>
+                         <option value="2023"> 2023 </option>
+                         <option value="2024"> 2024 </option>
+                         <option value="2025"> 2025 </option>
+                         <option value="2026"> 2026 </option>
+                         <option value="2027"> 2027 </option>
+                         <option value="2028"> 2028 </option>
+                         <option value="2029"> 2029 </option>
+                     </select>
+       </div>
+
+       <span class="mp-error" id="mp-error-208" data-main="#cardExpirationMonth"> Invalid Expiration Date </span>
+       <span class="mp-error" id="mp-error-209" data-main="#cardExpirationYear"> </span>
+       <span class="mp-error" id="mp-error-325" data-main="#cardExpirationMonth" > Invalid Expiration Date </span>
+       <span class="mp-error" id="mp-error-326" data-main="#cardExpirationYear"> </span>
+
+     </div>
+
+     <div class="mp-box-inputs mp-col-100">
+       <label for="cardholderName">Card holder name <em>*</em></label>
+       <input type="text" id="cardholderName" name="cardholderName" v-model="cardholderName" autocomplete="off">
+
+       <span class="mp-error" id="mp-error-221" data-main="#cardholderName"> Parameter cardholderName can not be null/empty </span>
+       <span class="mp-error" id="mp-error-316" data-main="#cardholderName"> Invalid Card Holder Name </span>
+     </div>
+
+     <div class="mp-box-inputs mp-line">
+       <div class="mp-box-inputs mp-col-45">
+         <label for="securityCode">Security code <em>*</em></label>
+         <input type="text" id="securityCode" data-checkout="securityCode" autocomplete="off" maxlength="4">
+
+         <span class="mp-error" id="mp-error-224" data-main="#securityCode"> Parameter securityCode can not be null/empty </span>
+         <span class="mp-error" id="mp-error-E302" data-main="#securityCode"> Invalid Security Code </span>
+       </div>
+     </div>
+
+     <div class="mp-box-inputs mp-col-100 mp-doc">
+       <div class="mp-box-inputs mp-col-35 mp-docType">
+         <label for="docType">Document Type <em>*</em></label>
+         <!-- <select id="docType" data-checkout="docType" name="mercadopago_custom[docType]"></select> -->
+
+         <select  id="docType" v-model="docType" @change="getdocTypeSelected">
+             <option :value="docType.id" v-for="docType in identification_list" >{{docType.id}}</option>
+         </select>
+
+         <span class="mp-error" id="mp-error-212" data-main="#docType"> Parameter docType can not be null/empty </span>
+         <span class="mp-error" id="mp-error-322" data-main="#docType"> Invalid Document Type </span>
+       </div>
+
+       <div class="mp-box-inputs mp-col-65 mp-docNumber">
+         <label for="docNumber">Document number <em>*</em></label>
+         <input type="text" id="docNumber" data-checkout="docNumber" name="mercadopago_custom[docNumber]" autocomplete="off">
+         <span class="mp-error" id="mp-error-214" data-main="#docNumber"> Parameter docNumber can not be null/empty </span>
+         <span class="mp-error" id="mp-error-324" data-main="#docNumber"> Invalid Document Number </span>
+       </div>
+     </div>
+   </div>  <!-- end #mercadopago-form -->
+
+   <div class="mp-box-inputs mp-line" style="position:fixed;bottom:0;">
+     <div class="aui-list-item-inner aui-list-item-center aui-list-item-btn" style="display: inline-block;">
+   <div class="aui-btn aui-btn-info aui-margin-r-5" style="margin: auto;" tapmode v-on:click="add_card()" >
+   <font style="vertical-align: inherit;">提交</font>
+
+   </div>
+  </div>
+
+   </div>
+</div>
+
+
+ </body>
+
+
+ <script type="text/javascript" src="../../script/api.js"></script>
+ <script type="text/javascript" src="../../../script/vue.js"></script>
+  <!-- <script type="text/javascript" src="../../../script/mercadopago.js"></script> -->
+  <script type="text/javascript" src="../../../script/zhu.js"></script>
+<script>
+
+var vm = new Vue({
+    el: '#app',
+    data: {
+        cardNumber:'',
+        cardExpirationYear:'',
+        cardExpirationMonth:'',
+        cardholderName:'',
+        security_code:'',
+        docType:'',
+        docNumber:'',
+        docType_list:[],
+        card_token: '',
+        docNumberlimit:{'min_length':0,'max_length':0},
+        cardNumber_error:0,
+        Month_error:0,
+        date_error:0,
+        Year_error:0,
+        holderName_error:0,
+        cvv_error:0,
+        docType_error:0,
+        docNum_error:0
+    },
+    methods: {
+
+      init:function(){
+        console.log(api.getPrefs({sync: true,key:'login_id'}));
+         this.get_token();
+         this.get_identification_list();
+        //  this.active_token();
+      },
+      get_identification_list:function() {
+          api.ajax({
+              url: identification_url,
+              method: 'get',
+              data: {
+                values:{public_key: public_key}
+              }
+          },function(ret, err){
+
+            if(ret){
+            console.log(JSON.stringify(ret));
+            vm.identification_list=ret;
+            }else{
+
+            }
+          })
+       },
+      get_token:function(){
+             api.ajax({
+                 url: card_tokens_url+'?public_key='+public_key,
+                 method: 'post',
+                 data: {
+                  //  values:{public_key: public_key}
+                 }
+             },function(ret, err){
+
+               if(ret){
+               console.log(JSON.stringify(ret));
+               vm.card_token=ret.id;
+
+               }else{
+
+               }
+             })
+       },
+
+    add_card:function() {
+           to_loading();
+           var device=api.deviceId;
+
+           console.log(card_tokens_url+'/'+vm.token+'?public_key='+public_key);
+           if(vm.token!=''){
+             console.log('od');
+             api.ajax({
+                //  url: card_tokens_url+'/'+vm.token+'?public_key='+public_key,
+                 url:createCard_url,
+                 method: 'post',
+                 data: {
+                   values:{
+                     'token':api.getPrefs({sync: true,key:'login_id'}),
+                     'card_token':vm.card_token,
+                     'deviceid':api.deviceId,
+                     'card_number':vm.cardNumber,
+                     'expiration_month':vm.cardExpirationMonth,
+                     'expiration_year':vm.cardExpirationYear,
+                     'cardholderName':vm.cardholderName,
+                     'docType':vm.docType,
+                     'docNumber':vm.docNumber,
+                   }
+                 }
+             },function(ret, err){
+
+               if(ret){
+               console.log(JSON.stringify(ret));
+               api.sendEvent({
+                         name: 'closeloading',
+                       });
+               }else{
+                 console.log(JSON.stringify(err));
+               }
+             })
+           }else{
+             api.alert({
+                 title: 'token 未生成',
+                 msg: 'testmsg',
+             });
+
+           }
+
+        },
+        initdocType(){
+　　　　　　//如果没有这句代码，select中初始化会是空白的，默认选中就无法实现
+            this.docType = this.identification_list[0].id;
+        },
+        getdocTypeSelected:function() {
+             console.log(this.docType)
+        },
+
+      }
+     });
+ // window.onload=function(){
+ //           vm.init();
+ //    }
+apiready=function(){
+    vm.init();
+
+    api.setRefreshHeaderInfo({
+        visible: true,
+        loadingImg: 'widget://image/refresh.png',
+        bgColor: '#f4f4f4',
+        textColor: '#333333',
+        textDown: '下拉刷新...',
+        textUp: '松开刷新...',
+        showTime: true
+    }, function (ret, err) {
+
+        vm.init();
+        setTimeout("api.refreshHeaderLoadDone()", '500');
+    });
+	}
+
+
+
+
+
+
+</script>
+</html>

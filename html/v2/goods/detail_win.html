@@ -1,0 +1,498 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+
+    <style>
+       .op-btn i{
+
+    padding: 0.2rem;
+    color: white;
+
+
+    border-radius: 1rem;
+
+	   }
+
+    </style>
+</head>
+<body style="background-color:rgba(255,255,255,0);">
+<!--
+  <header class="aui-bar aui-bar-nav" id="aui-header"  style="   top: 0; line-height: 2.25rem;">
+    <a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
+        <span class="aui-iconfont aui-icon-left"></span>
+    </a>
+    <div class="aui-title">Actividad de pico</div>
+     <a class="aui-btn aui-pull-right" tapmode id="cart" style="margin-right:1rem;">
+        <div class="aui-badge"  v-if="total_goods_sum > 0">{{ total_goods_sum }}</div>
+        <span class="aui-iconfont aui-icon-cart"></span>
+      </a>
+
+
+  </header> -->
+  <footer class="aui-bar aui-bar-tab  " id="footer" >
+
+
+
+
+
+		  <div class="aui-content">
+
+
+			  <div class="aui-card-list">
+	   <div class="aui-col-xs-8">
+
+
+		<div class="aui-card-list-header  " >
+
+
+		 <div class=" aui-col-xs-12  ">
+               <div class="op-btn minus  aui-col-xs-3  "  >
+                   <i class="aui-iconfont aui-icon-minus aui-bg-success" tapmode v-on:click="change_goods_num(0)" style=" line-height: 1.8rem; height: 1.8rem;" ></i>
+               </div>
+            <div class="aui-item-input aui-col-xs-6 aui-ellipsis-1  aui-btn-outlined aui-btn-success  " style=" line-height: 1.8rem; height: 1.8rem;">
+
+              <div style=" text-align: center; line-height: 1.8rem; height: 1.8rem; "   v-if="has_unit_num!=null">{{has_unit_num}}</div>
+              <input class="aui-counter-input" type="number" v-model="goods_sum" style=" text-align: center; line-height: 1.8rem; height: 1.8rem; " v-else>
+            </div>
+
+            <div class="op-btn plus  aui-col-xs-3  "   >
+                <i class="aui-iconfont aui-icon-plus aui-bg-success" tapmode v-on:click="change_goods_num(1)" style=" line-height: 1.8rem; height: 1.8rem;" v-if="can_plus==1"></i>
+                 <i class="aui-iconfont aui-icon-plus aui-bg-default" tapmode   style=" line-height: 1.8rem; height: 1.8rem;" v-else></i>
+           </div>
+            </div>
+		</div>
+      </div>
+	  <div class="aui-col-xs-4">
+	  <div class="aui-card-list-header  ">
+    <div class="aui-btn  aui-btn-success aui-btn-sm " style=" line-height: 1.8rem; height: 1.8rem;padding:0 1rem;" tapmode v-on:click="add_to_cart()" v-if="is_ok">Agregar</div>
+	   <div class="aui-btn  aui-btn-default aui-btn-sm " style=" line-height: 1.8rem; height: 1.8rem;padding:0 1rem;" tapmode v-else>Agregar</div>
+      </div>
+      </div>
+      </div>
+
+          </div>
+   </footer>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+
+
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#footer',
+        data: {
+            is_ok:1,
+            goods_id:0,
+            goods_sku_id:0,
+            goods_sum:0,
+            is_has: 1,
+            per_uint:1,
+            has_unit_num:0,
+
+            units_info:[],
+            unit:'',
+            total_goods_sum:0,
+            cart_num:0,
+            can_plus:1,
+            has_open_coupon:0,
+        },
+        methods: {
+            get_goods_info: function (goods_id) {
+              console.log(api.getPrefs({sync: true,key:'login_id'}));
+              console.log(goods_id)
+              api.ajax({
+                  url: goods_info_url,
+                  method: 'post',
+                  timeout: 30,
+                  dataType: 'json',
+                  returnAll: false,
+                  data: {
+                      values: {
+                          goods_id: goods_id,
+                          token: api.getPrefs({sync: true,key:'login_id'}),
+                      }
+                  }
+              }, function (ret, err) {
+                  //  console.log(JSON.stringify(ret))
+                  //   console.log(JSON.stringify(err))
+                  if (ret) {
+                      if(ret.code == 0){
+                          api.toast({
+                              msg: ret.msg,
+                              duration: 2000,
+                              location: 'bottom'
+                          });
+                          api.closeWin();
+                          return false;
+                      }else{
+
+                          vm.is_has = 1;
+                          vm.goods_sum=1;
+                          vm.goods_info = ret.data.detail;
+
+                          vm.per_unit=ret.data.detail.per_unit;
+                          vm.cart_num=ret.data.detail.cart_num;
+
+                          if(ret.data.detail.cart_num<ret.data.detail['stock_num']){
+                            vm.can_plus=1;
+                          }else{
+                              vm.can_plus=0;
+                          }
+
+                          if(vm.per_unit!='0.00'){
+                            vm.has_unit_num=vm.goods_sum*vm.goods_info.per_unit+vm.goods_info.unit_name
+                          }else{
+                              vm.has_unit_num=vm.goods_sum;
+                          }
+
+
+                      }
+
+                  } else {
+                      api.alert(JSON.stringify(err));
+                  }
+              });
+            },
+
+
+            add_to_cart: function () {
+              vm.is_ok=0;
+
+                check_login();
+
+                if(vm.goods_sum==0){
+                  alert('购物车数量不能为0');
+                      vm.is_ok=1;
+                  return false;
+                }
+                api.ajax({
+                    url: add_to_cart_url,
+                    method: 'post',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                    data: {
+                        values: {
+                            goods_id: vm.goods_id,
+                            goods_num: vm.goods_sum,
+                            token: api.getPrefs({sync: true,key:'login_id'}),
+
+                        }
+                    }
+                }, function (ret, err) {
+
+                    if (ret) {
+                       vm.is_ok=1;
+                        if(ret.code == 1){
+
+
+                            api.toast({
+                                msg: '添加成功',
+                                duration: 2000,
+                                location: 'bottom'
+                            });
+                            vm.has_unit_num=0;
+                            vm.goods_sum=0;
+                            //更新全局购物车数量显示function
+                            api.sendEvent({
+                                name: 'tatal_goods_sum',
+                            });
+                            api.sendEvent({
+                                name: 'update_cart_list',//更新购物车列表
+                            });
+                        }else{
+                          api.toast({
+                              msg: ret.msg,
+                              duration: 2000,
+                              location: 'bottom'
+                          });
+                        }
+                    } else {
+                        console.log(JSON.stringify(err));
+                    }
+                });
+            },
+            update_tatal_goods_sum: function () {
+                  api.ajax({
+                      url: total_goods_sum_url,
+                      method: 'post',
+                      timeout: 30,
+                      dataType: 'json',
+                      returnAll: false,
+                      data: {
+                          values: {
+                              token: $api.getStorage('token'),
+                              deviceid: api.deviceId,
+                          }
+                      }
+                  }, function (ret, err) {
+                      if (ret) {
+                          if(ret.code == 1){
+                              vm.total_goods_sum = ret.data.data.total_goods_sum;
+                          }else{
+                              vm.total_goods_sum = 0;
+                          }
+
+                      } else {
+                          api.alert(JSON.stringify(err));
+                      }
+                  });
+              },
+            add_goods_collect: function () {
+
+                check_login();
+                api.ajax({
+                    url: add_goods_collect_url,
+                    method: 'post',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                    data: {
+                        values: {
+                            token: $api.getStorage('token'),
+                            deviceid: api.deviceId,
+                            goods_id: vm.goods_id,
+
+                        }
+                    }
+                }, function (ret, err) {
+                    if (ret) {
+                        api.toast({
+                            msg: ret.msg,
+                            duration: 2000,
+                            location: 'bottom'
+                        });
+                    } else {
+                        api.alert(JSON.stringify(err));
+                    }
+                });
+            },
+            order_confirm:function () {
+                check_login();
+                api.ajax({
+                    url: add_to_cart_url,
+                    method: 'post',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                    data: {
+                        values: {
+                            goods_id: vm.goods_id,
+
+                            goods_sum: !vm.goods_sum ? 1 : vm.goods_sum,
+                            token: $api.getStorage('token'),
+                            deviceid: api.deviceId,
+                        }
+                    }
+                }, function (ret, err) {
+                    if (ret) {
+                        if(ret.code == 1){
+                            //更新全局购物车数量显示function
+                            api.sendEvent({
+                                name: 'tatal_goods_sum',
+                            });
+                            api.openWin({
+                                name: 'cart_order_confirm',
+                                url: 'widget://html/cart/order_confirm.html',
+                            });
+                        }else{
+                            go_login();
+                        }
+                    } else {
+                        console.log(JSON.stringify(err));
+                    }
+                });
+            },
+            open_meiQia:function () {
+                var mq = api.require('meiQia');//配置初始化美洽需要的appkey
+                var param = {
+                    appkey: "e78a9ab4b44c85c58856f99acb02c118"//初始化美洽
+                };
+                mq.initMeiQia(param, function(ret, err) {
+                    if (ret) {
+
+                        //初始化成功
+                        var titleColor = {
+                            color: "#ffffff"//设置title以及按钮颜色
+                        };
+                        mq.setTitleColor(titleColor);
+                        var titleBarColor = {
+                            color: "#ffffff"//设置标题栏背景颜色
+                        };
+                        mq.setTitleBarColor(titleBarColor);
+                        mq.show();
+                    } else {
+
+                        alert(JSON.stringify(err));//初始化失败
+                    }
+                })
+            },
+            change_goods_num:function (index) {
+                 var goods_sum = vm.goods_sum;
+                 if(index == 1){
+                     vm.goods_sum = goods_sum + 1;
+
+                 }else{
+                     if(vm.goods_sum <2){
+
+                         api.toast({
+                             msg: '最少订购不能为0 ',
+                             duration: 2000,
+                             location: 'bottom'
+                         });
+                         return false;
+                     }
+                     vm.goods_sum = goods_sum - 1;
+                 }
+                 var cart_plus_num=vm.goods_sum+vm.cart_num;
+                 if(cart_plus_num<vm.goods_info['stock_num']){
+                   vm.can_plus=1;
+                 }else{
+                   vm.can_plus=0;
+                 }
+                 var unit=vm.unit,per_unit=vm.per_unit,goods_sum=vm.goods_sum,has_unit_num='';
+                 has_unit_num=String(per_unit*goods_sum)+unit;
+                 vm.has_unit_num=has_unit_num;
+             },
+        }
+    });
+    apiready = function () {
+        $api.fixIos7Bar(document.querySelector('header'));
+        var goods_id = api.pageParam.goods_id;
+        vm.goods_id = goods_id;
+        vm.get_goods_info(vm.goods_id);
+        api.parseTapmode();
+        var header = $api.byId('aui-header');
+
+        $api.fixStatusBar(header);
+        var headerPos = $api.offset(header);
+
+        var footer = $api.byId('footer');
+        var footerPos = $api.offset(footer);
+        var body_h = $api.offset($api.dom('body')).h;
+        var search = $api.byId('search');
+        var searchPos = $api.offset(search);
+        var frameHeight = api.frameHeight || '';
+
+
+
+
+        api.openFrame({
+            name: 'detail_frm',
+            url: './detail_frm.html',
+            bounces: false,
+            rect: {
+                x: 0,
+                y: 0,
+                w: 'auto',
+                h: api.winHeight-footerPos.h
+            },
+            bounces: false,
+            pageParam:{
+                goods_id: vm.goods_id
+            }
+        });
+        api.openFrame({
+            name: 'detail_top',
+            url: './detail_top.html',
+            bounces: false,
+            rect: {
+                x: 0,
+                y: 0,
+                w: 'auto',
+                h: 70
+            }
+        });
+       api.bringFrameToFront({
+           from: 'detail_top',
+           to: 'detail_frm'
+           });
+           api.bringFrameToFront({
+           from: 'fly_frm',
+           to: 'detail_top'
+           });
+
+
+        // 加载飞入窗口
+        api.openFrame({
+            name: 'fly_frm',
+            url: '../common/fly_frm.html',
+            bounces: false,
+            rect: {
+                x: 0,
+                y: 0,
+                w: 0,
+                h: 0
+            }
+         });
+
+
+
+       //监听更新购物车命令
+       api.addEventListener({
+           name: 'update_cart_num'
+       }, function(ret, err) {
+           vm.update_tatal_goods_sum();
+       });
+
+
+
+        //监听网络连接事件
+         api.addEventListener({
+            name: 'tatal_goods_sum'//添加购物车信息赋值
+         }, function(ret, err) {
+            vm.update_tatal_goods_sum();
+         });
+        vm.update_tatal_goods_sum();
+            //监听网络连接事件
+        api.addEventListener({
+            name: 'assin_cartinfo'//添加购物车信息赋值
+        }, function(ret, err) {
+
+
+            vm.goods_id = ret.value.goods_id;
+            vm.goods_sum = ret.value.goods_sum;
+            vm.is_has = ret.value.is_has;
+
+
+
+
+            if(Number(vm.goods_info.per_unit)>0){
+              vm.per_unit=vm.goods_info.per_unit;
+            }
+
+
+
+            var uint=vm.goods_info.uint_name,per_unit=vm.per_unit,goods_sum=vm.goods_sum,has_unit_num='';
+            has_unit_num=String(per_unit*goods_sum)+uint;
+            vm.has_unit_num=has_unit_num;
+
+        });
+
+
+    };
+    function GoTocartList() {
+
+      api.openWin({
+          name: 'cart_index',
+          url: 'widget://index.html',
+          pageParam: {
+              page: 2
+          },
+          delay: 300,
+      });
+}
+
+
+
+    function closeWin(){
+        api.closeWin({
+        });
+    }
+</script>
+</html>

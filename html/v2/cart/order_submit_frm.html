@@ -1,0 +1,831 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>订单结算</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="../../../css/aui-new.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/test.css" /> -->
+    <link rel="stylesheet" type="text/css" href="../../../css/iconfont/iconfont.css" />
+
+	<style>
+	 .addres-detail{    font-size: 0.7rem !important;}
+	 .addres-contract{    font-size: 0.7rem !important;}
+	 .aui-list-item-input{max-width:100%;}
+	 .note{max-width:60%;}
+	 .note input{    text-indent: 0.5rem;}
+   	 .padding-tb-5{padding: 0.5rem 0;}
+	</style>
+</head>
+<body>
+   <div id="app" v-cloak>
+   <section class="aui-content aui-margin-b-15 aui-margin-t-15">
+        <ul class="aui-list aui-list-in aui-margin-b-15">
+
+
+            <li class="aui-list-item"  v-if="address_info">
+             <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-location aui-text-info"></i>
+                </div>
+                <div class="aui-list-item-inner  aui-list-item-arrow padding-tb-5" onclick="select_address()">
+				<div class="  aui-col-xs-12">
+				  <div class=" aui-col-xs-12 aui-list-item-title"><div class="aui-label aui-label-success" v-if="address_info.tag">{{ address_info.tag}}</div>{{ address_info.detail}},{{ address_info.merger_locality}}
+					<!-- <div class="aui-label aui-label-warning"  >Predeterminado</div> -->
+					</div>
+					<div class=" aui-col-xs-12 addres-contract aui-font-size-16"  >
+				      {{ address_info.name}}  {{ address_info.phone}}
+						</div>
+				</div>
+
+                </div>
+            </li>
+
+            <li class="aui-list-item" v-else>
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-location aui-text-info"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow" onclick="select_address()">
+                    <div class="aui-list-item-title">Seleccione la dirección de envío</div>
+                </div>
+            </li>
+
+		   	<li class="aui-list-item"   >
+                <div class="aui-list-item-inner">
+                          <div class="aui-list-item-right">
+						  <label><input class="aui-radio" type="radio" value="10" v-model="delivery_type"  tapmode> Entrega en Domicllio</label>
+						  </div>
+                          <div class="aui-list-item-right">
+						  <label><input class="aui-radio" type="radio" value="20" v-model="delivery_type" tapmode> Buscar en el lugar</label>
+						  </div>
+
+                </div>
+            </li>
+
+
+			<li class="aui-list-item" v-if="delivery_type==20">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        Selector
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="text" placeholder="" v-model="linkman">
+                    </div>
+                </div>
+            </li>
+			  <li class="aui-list-item"  v-if="delivery_type==20">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        Telefono
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="number" placeholder="" v-model="phone">
+                    </div>
+                </div>
+            </li>
+
+          </ul>
+
+<!--时间选择--->
+        <ul class="aui-list aui-list-in aui-margin-b-15">
+            <li class="aui-list-item">
+
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title "  >Tiempo de cita</div>
+                    <div class="aui-list-item-right " tapmode onclick="open_timer_select()" style="text-align:right;">{{select_date}}</div>
+                </div>
+            </li>
+            <!-- <li class="aui-list-item">
+                <div class="aui-list-item-inner  ">
+                    <div class="aui-list-item-title">
+				   <div class="aui-label aui-label-success">超时补偿</div>
+				超时10分钟
+					<i class="aui-iconfont aui-icon-question"></i></div>
+
+                </div>
+            </li> -->
+
+			<li class="aui-list-item">
+
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">Lista de productos</div>
+                    <div class="aui-list-item-right" tapmode onclick="to_cart_goods_list()">Hay {{goods_num}} Productos</div>
+                </div>
+            </li>
+        </ul>
+
+<!--信用卡列表-->
+		 <ul class="aui-list aui-collapse aui-border aui-list aui-margin-b-15">
+            <div class="aui-collapse-item">
+                <li class="aui-list-item aui-collapse-header " v-bind:class="{'aui-active':open_paymethod }"  tapmode v-on:click="select_paymethod()">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-title aui-col-xs-6">Medios de Pago</div>
+
+                        <div class="aui-list-item-right aui-col-xs-5" style="text-align: right;">
+                        {{pay_name}}
+                        </div>
+                        <div class="aui-list-item-right">
+					         <i class="aui-iconfont aui-icon-down aui-collapse-arrow  "></i>
+                        </div>
+                    </div>
+                </li>
+               <div class="aui-collapse-content"    v-bind:class="{'aui-show':open_paymethod }">
+                 <li class="aui-list-item">
+				            <div class="aui-list-item-label-icon">
+                     <i class="aui-iconfont aui-icon-location aui-text-info"></i>
+                     </div>
+                     <div class="aui-list-item-inner">
+                         <div class="aui-list-item-title aui-font-size-12">
+                           Pago del saldo
+                         </div>
+                       <div class="aui-list-item-right"><input class="aui-radio" type="radio" value="-1" v-model="card_id"></div>
+                     </div>
+                 </li>
+                 <li class="aui-list-item">
+				    <div class="aui-list-item-label-icon">
+                         <i class="aui-iconfont aui-icon-location aui-text-info"   ></i>
+
+                       </div>
+                     <div class="aui-list-item-inner">
+
+                         <div class="aui-list-item-title aui-font-size-12">
+                         Pago en efectivo
+                     </div>
+                    <div class="aui-list-item-right"><input class="aui-radio" type="radio" value="-2" v-model="card_id"></div>
+                     </div>
+                 </li>
+                    <li class="aui-list-item"  v-for="(vo,index) in cardlist" v-bind:key="index">
+					   <div class="aui-list-item-label-icon">
+                         <i class="iconfont iconzhifupingtai-master aui-text-info" v-if="vo.payment_method.id=='visa'"></i>
+                         <i class="iconfont iconzhifupingtai-master aui-text-info" v-else></i>
+
+                       </div>
+                        <div class="aui-list-item-inner">
+
+                            <div class="aui-list-item-title aui-font-size-12">
+
+                              <!-- <div class="aui-col-xs-4 card-thumbnail">
+                               <img style="height:16px;margin-right:10px;margin-top:5px;margin-left:10px;width:40px;" align="left" :src="vo.payment_method.thumbnail">
+                              </div> -->
+                         <!-- <div class=" aui-col-xs-8  "  >
+                         <i class="aui-iconfont aui-icon-more" >  </i>
+                           <i class="aui-iconfont aui-icon-more" ></i>
+                         <i class="aui-iconfont aui-icon-more" ></i>
+                           {{vo.last_four_digits}}
+                         </div> -->
+                         <i class="aui-iconfont aui-icon-more" >  </i>
+                           <i class="aui-iconfont aui-icon-more" ></i>
+                         <i class="aui-iconfont aui-icon-more" ></i>
+                            <i class="aui-iconfont aui-icon-more" ></i>
+                          {{vo.last_four_digits}}
+                            </div>
+                            <div class="aui-list-item-right"><input class="aui-radio" type="radio" :value="vo.id" v-model="card_id"></div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item ">
+
+                        <div class="col-xs-4">
+						</div>
+                        <div class="col-xs-4" style=" line-height: 2.2rem;">
+						<div class="aui-btn aui-btn-success aui-font-size-12" tapmode onclick="add_new_card()">Agregar tarjeta de credito</div>
+
+                        </div>
+						  <div class="col-xs-4">
+						</div>
+                    </li>
+                </div>
+            </div>
+           </ul>
+
+          <!--分期-->
+          <ul class="aui-list aui-collapse aui-border aui-list aui-margin-b-15" v-if="installments_list.length>0">
+            <div class="aui-collapse-item">
+                <li class="aui-list-item aui-collapse-header " v-bind:class="{'aui-active':open_installment }"  tapmode v-on:click="select_installment()">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-title aui-col-xs-4">Installments</div>
+
+                        <div class="aui-list-item-right aui-col-xs-7" style="text-align: right;">
+                        {{installments_select}}
+                        </div>
+                        <div class="aui-list-item-right">
+					         <i class="aui-iconfont aui-icon-down aui-collapse-arrow  "></i>
+                        </div>
+                    </div>
+                </li>
+               <div class="aui-collapse-content"    v-bind:class="{'aui-show':open_installment }">
+
+                 <li class="aui-list-item" v-for="(vo,index) in installments_list" v-bind:key="index">
+
+                     <div class="aui-list-item-inner">
+
+                         <div class="aui-list-item-title aui-font-size-12">
+                         {{vo.recommended_message}}
+                     </div>
+                    <div class="aui-list-item-right"><input class="aui-radio" type="radio" :value="index" v-model="installments_index"></div>
+                     </div>
+                 </li>
+
+
+                </div>
+            </div>
+           </ul>
+
+
+		   <ul class="aui-list aui-list-in aui-margin-b-15">
+            <li class="aui-list-item">
+
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">Cupon de descuento</div>
+                    <div class="aui-list-item-right"  v-if="coupon_list.length==0">Sin cupon</div>
+                    <div class="aui-list-item-right" tapmode onclick="open_couplist()" v-else>{{coupon_name}}</div>
+                </div>
+            </li>
+
+			 <li class="aui-list-item">
+                <div class="aui-list-item-inner  ">
+                  <div class=" aui-col-xs-12 aui-list-item-title" v-if="point>100">
+                    Utilizar {{point}} Deducible {{point_to_money}}	<i class="aui-iconfont aui-icon-question"></i>
+                  </div>
+
+                  <div class=" aui-col-xs-12 aui-list-item-title"    v-else>
+                    Puntos actuales{{point}},Mayor que {{point_to_money}} Disponible	<i class="aui-iconfont aui-icon-question"></i>
+                  </div>
+                  <!-- <div class="padding-tb-5  aui-col-xs-12">
+                    <div class=" aui-col-xs-12 aui-list-item-title">
+                      Puntos
+                    </div>
+                    <div class=" aui-col-xs-12 addres-contract aui-font-size-12"  >
+                      当前积分46，满100积分可用	<i class="aui-iconfont aui-icon-question"></i>
+                      </div> -->
+                  <!-- </div> -->
+               <div class="aui-list-item-right" v-if="point>100" ><input type="checkbox" class="aui-switch" v-model="use_point"></div>
+                </div>
+
+            </li>
+			   </ul>
+			  <ul class="aui-list aui-list-in aui-margin-b-15">
+          <li class="aui-list-item">
+              <div class="aui-list-item-inner">
+                  <div class="aui-list-item-label">
+                      Note de Pedido
+                  </div>
+                  <div class="aui-list-item-input note">
+                      <input type="text" placeholder=" "  v-model="remark">
+                  </div>
+              </div>
+          </li>
+
+        </ul>
+		  <ul class="aui-list aui-list-in aui-margin-b-15">
+			<li class="aui-list-item">
+                 <div class="aui-list-item-inner ">
+                    <div class="aui-list-item-title">Cantidad de productos</div>
+                    <div class="aui-list-item-right">$ {{order_total_price}}</div>
+                </div>
+            </li>
+
+            <!--运费-->
+			    <!-- <li class="aui-list-item">
+                 <div class="aui-list-item-inner  ">
+                    <div class="aui-list-item-title">Tarifa de envio</div>
+
+                    <div class="aui-list-item-right aui-text-primary">$ {{order_total}}</div>
+                </div>
+            </li> -->
+            <!--积分-->
+			<li class="aui-list-item" v-if="use_point">
+                 <div class="aui-list-item-inner "  >
+                    <div class="aui-list-item-title"  >Puntos de uso</div>
+                    <div class="aui-list-item-right aui-text-danger">$ {{point_to_money}}</div>
+                </div>
+            </li>
+      <!--活动促销-->
+			<li class="aui-list-item" v-if="prom_discount_price!=0.00">
+                 <div class="aui-list-item-inner "   >
+                    <div class="aui-list-item-title">Oferta de eventos</div>
+                    <div class="aui-list-item-right ">-$ {{prom_discount_price}}</div>
+                </div>
+            </li>
+
+       <!--优惠券抵扣-->
+			<li class="aui-list-item" v-if="orderCouponPrice!=0.00">
+                 <div class="aui-list-item-inner "   >
+                    <div class="aui-list-item-title">Deducción de cupón</div>
+                    <div class="aui-list-item-right ">-$ {{orderCouponPrice}}</div>
+                </div>
+            </li>
+
+            <!--会员价格-->
+      <li class="aui-list-item" v-if="vip_discount_price!=0.00">
+          <div class="aui-list-item-inner "   >
+              <div class="aui-list-item-title">Exclusivo para miembros.</div>
+                 <div class="aui-list-item-right ">-$ {{vip_discount_price}}</div>
+            </div>
+         </li>
+        </ul>
+    </section>
+
+  </div>
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+
+<script type="text/javascript" src="../../../script/common.js" ></script>
+<script type="text/javascript" src="../../../script/vue.js" ></script>
+<script type="text/javascript" src="../../../script/aui-dialog.js" ></script>
+<script type="text/javascript">
+var dialog = new auiDialog();
+var deviceid;
+var vm = new Vue({
+    el: '#app',
+    data: {
+	     cardlist:[],
+       default_card:[],
+       default_card_id:'',
+       card_id:-1,
+       customers_id:'',
+       payment_methods_info:'',
+       open_paymethod:0,
+       pay_name:'Elija el método de pago',
+       card_token:'',
+       installments_index:0,
+       installments:1,
+       installments_list:[],
+       installments_select:'',
+	     open_installment:0,
+
+       //配送信息
+       delivery_type: 10,
+       address_info: '',
+       linkman:'',
+       phone:'',
+
+       trans_price: '0.00',
+       order_total_price: '0.00',
+       vip_discount_price:'0',
+       prom_discount_price:'0',
+       orderCouponPrice:'0',
+       orderPointPrice:'0',
+       order_pay_price:'0',
+
+
+       point:'',
+       point_to_money:0,
+       can_use_point:0,
+       use_point:0,
+       point_remark:'',
+
+       content:'',
+       pay_type:10,
+       card_index:0,
+       card_list:[],
+       add_new_card_type:0,
+       new_card_no:'',
+       new_card_year:'',
+       new_card_month:'',
+       new_card_cvv:'',
+       goods_list: [],
+       goods_num: 0,
+
+       coupon_num:0,
+
+       coupon_name:'Por favor elige un cupón',
+       coupon_list:[],
+
+       send_coupon_flag:0,
+
+       remark:'',
+
+       book_time:'',
+       select_time:[],
+       select_date:'Por favor seleccione tiempo',
+
+       order_id:0,
+
+
+
+    },
+     methods: {
+	     init:function(){
+            // console.log(api.getPrefs({sync: true,key:'login_id'}));
+        //  to_loading();
+         vm.get_order_info();
+         vm.get_creditcard_list();
+
+        //  vm.get_token();
+	      },
+
+       get_order_info:function(){
+       console.log(api.getPrefs({sync: true,key:'login_id'}));
+         api.ajax({
+             url: order_cart_confirm,
+             method: 'get',
+             data: {
+               values:{token: api.getPrefs({sync: true,key:'login_id'}),coupon_id:vm.coupon_id,use_point:vm.use_point}
+             }
+         },function(ret, err){
+          //  console.log(JSON.stringify(ret));
+           vm.goods_list = ret.data.goods_list;
+           vm.goods_num=ret.data.goods_list.length;
+           vm.address_info = ret.data.address;
+
+
+
+          vm.coupon_list=ret.data.coupon_list;
+          vm.coupon_num=ret.data.coupon_list.length;
+
+           vm.card_list=ret.data.card_list;
+
+           //不可变价格
+           vm.vip_discount_price=ret.data.vip_discount_price;
+           vm.prom_discount_price=ret.data.prom_discount_price;
+           vm.order_total_price=ret.data.order_total_price;
+
+           vm.order_pay_price=ret.data.order_pay_price;
+
+           //跟进选择变化
+           vm.orderCouponPrice=ret.data.orderCouponPrice;
+
+           //运费
+           vm.orderCouponPrice=ret.data.express_price;
+
+           //0或者有
+           vm.orderPointPrice=ret.data.orderPointPrice;
+
+           vm.card_list = ret.data.card.list;
+           vm.card_index = ret.data.card.default_id;
+
+           vm.point= ret.data.point;
+           vm.point_to_money= (ret.data.point/100);
+           vm.can_use_point=  ret.data.can_use_point;
+           vm.point_remark=  ret.data.point_remark;
+          //  console.log( JSON.stringify(ret.data));
+
+          //  vm.get_installments();
+           vm.send_need_info();
+
+         })
+       },
+	     get_creditcard_list:function(){
+         console.log('get_creditcard_list')
+         vm.default_card=[];
+        //  var mcustomer_id=api.getPrefs({sync: true,key:'mcustomer_id_'+Is_debug});
+        //  console.log('信用卡id');
+        //  console.log(mcustomer_id);
+        //  if(!mcustomer_id){
+           api.ajax({
+               url: get_customerID_url,
+               method: 'get',
+               data: {
+                 values:{token: api.getPrefs({sync: true,key:'login_id'})}
+               }
+           },function(ret, err){
+
+             if(ret){
+
+            // console.log(JSON.stringify(ret));
+             if(ret.code==1){
+               api.setPrefs({ key: 'mcustomer_id_'+Is_debug,value: ret.data.customer_id });
+               vm.customer_id=ret.data.customer_id;
+               vm.search_coustom(ret.data.customer_id);
+             }
+             }else{
+             }
+           })
+        //  }else{
+        //    vm.customer_id=mcustomer_id;
+        //    vm.search_coustom(mcustomer_id);
+        //  }
+        //  this.active_token();
+       },
+       search_coustom:function(customer_id) {
+           console.log('信用卡加载中');
+            console.log(customer_id);
+          api.ajax({
+              url: customers_search_url,
+              method: 'get',
+              data: {
+                values:{id: customer_id,access_token:access_token}
+              }
+          },function(ret, err){
+            // console.log('22');
+            // api.sendEvent({
+            //       name: 'say_status_loading',
+            //       extra:{
+            //         status:'信用卡加载成功',
+            //         code:0,
+            //
+            //       }
+            //     });
+            if(ret){
+              console.log('信用卡加载好');
+            if(ret.results){
+             console.log(JSON.stringify(ret.results));
+            //  ret.results[0].cards
+              if(ret.results.length>0){
+
+                  vm.cardlist=ret.results[0].cards;
+              }
+
+            }
+            // vm.identification_list=ret;
+            }else{
+
+            }
+          })
+       },
+       select_paymethod:function(){
+        if(vm.open_paymethod==1){
+          vm.open_paymethod=0;
+        }else{
+          vm.open_paymethod=1;
+        }
+       },
+	     select_installment:function(){
+        if(vm.open_installment==1){
+          vm.open_installment=0;
+        }else{
+          vm.open_installment=1;
+        }
+       },
+       get_installments:function(){
+        console.log('分期加载');
+         if(vm.order_pay_price!=0){
+            console.log('get_installments');
+            var bin;
+            for(var i=0;i<vm.cardlist.length;i++){
+              if(vm.cardlist[i]['id']==vm.card_id){
+              bin=vm.cardlist[i].first_six_digits;
+               console.log(JSON.stringify(bin));
+              }
+            }
+
+           api.ajax({
+               url: get_installments_url,
+               method: 'get',
+               data: {
+                 values:{public_key: public_key,amount:vm.order_pay_price,bin:bin}
+               }
+           },function(ret, err){
+              console.log('分期加载');
+              console.log(JSON.stringify(err))
+             if(ret){
+               console.log(JSON.stringify(ret[0].payer_costs))
+               vm.installments_list=ret[0].payer_costs;
+
+			   if(ret[0].payer_costs.length>0){
+			   vm.installments=ret[0].payer_costs[0]['installments'];
+			   vm.installments_select=ret[0].payer_costs[0]['recommended_message'];
+			   }
+
+
+             }
+           });
+         }
+
+
+       },
+       send_need_info:function() {
+        api.sendEvent({
+            name: 'update_order_total',
+            extra: {
+              delivery_type: vm.delivery_type,
+              linkman:vm.linkman,
+              phone:vm.phone,
+              remark: vm.remark,
+              book_time: vm.book_time,
+              card_id: vm.card_id,
+              coupon_id:vm.coupon_id,
+              use_point:vm.use_point,
+			        installments:vm.installments,
+            }
+        });
+       },
+
+     },
+     watch: {
+
+       //影响结算界面的因素积分和优惠券，优惠券通过定时器来，
+         use_point:{
+           handler: function (val, oldVal) {
+             console.log(val);
+              //  vm.init();
+            vm.send_need_info();
+           },
+         },
+        //  coupon_id:{
+        //    handler: function (val, oldVal) {
+        //      console.log(val);
+        //       vm.get_order_info();
+        //       vm.send_need_info();
+        //    },
+        //  },
+         card_id:{
+           handler: function (val, oldVal) {
+              console.log(val);
+              //  vm.init();
+              vm.send_need_info();
+              vm.open_paymethod=0;
+              if(val==-1){
+                vm.pay_name='Pago del saldo';
+              }
+              else if(val==-2){
+                vm.pay_name='Pago en efectivo';
+              }else{
+                // var cvv=696;
+                // vm.active_token(cvv);
+                    console.log(vm.cardlist.length);
+                vm.get_installments();
+                for(var i=0;i<vm.cardlist.length;i++){
+                  console.log(vm.cardlist[i]['id']);
+                  if(vm.cardlist[i]['id']==val){
+                    vm.pay_name=vm.cardlist[i]['last_four_digits'];
+                  }
+                }
+              }
+
+           },
+         },
+         installments:{
+           handler: function (val, oldVal) {
+               console.log(val);
+                vm.send_need_info();
+             },
+         },
+         installments_index:{
+            handler: function (val, oldVal) {
+               console.log(val);
+
+			        vm.installments=vm.installments_list[val]['installments'];
+			        vm.installments_select=vm.installments_list[val]['recommended_message'];
+             },
+		     },
+         pay_type: {
+             handler: function (val, oldVal) {
+               console.log(val);
+                vm.send_need_info();
+             },
+             deep: true
+         },
+         //配送方式
+         delivery_type: {
+             handler: function (val, oldVal) {
+               console.log(val);
+                 vm.send_need_info();
+             },
+             deep: true
+         },
+         linkman:{
+           handler: function (val, oldVal) {
+             console.log(val);
+               vm.send_need_info();
+           },
+         },
+         phone:{
+           handler: function (val, oldVal) {
+             console.log(val);
+               vm.send_need_info();
+           },
+         },
+         remark:{
+           handler: function (val, oldVal) {
+             console.log(val);
+               vm.send_need_info();
+           },
+         },
+         book_time:{
+           handler: function (val, oldVal) {
+             console.log(val);
+               vm.send_need_info();
+           },
+         },
+         order_id:{
+           handler: function (val, oldVal) {
+             vm.cvv_input();
+           },
+         }
+     }
+  });
+
+    apiready = function(){
+
+        vm.init();
+
+        api.parseTapmode();
+
+        deviceid = api.deviceId;
+        api.addEventListener({
+              name: 'send_time'
+            }, function(ret, err) {
+              console.log(JSON.stringify(ret))
+              vm.book_time=ret.value.select_time.shottime;
+              vm.select_time=ret.value.select_time.show_time;
+              vm.select_date=ret.value.date_fulltime + ' '+ ret.value.select_time.show_time;
+
+            });
+            api.addEventListener({
+                name: 'update_order_confirm'
+            }, function(ret, err){
+                if( ret ){
+                    vm.init();
+                }
+            });
+
+            //监听订单状态，如果信用卡付款走到这边，下面要执行cvv的弹窗输入
+            // api.addEventListener({
+            //       name: 'send_order_info'
+            //     }, function(ret, err) {
+            //       vm.order_id=ret.value.order_id;
+            //     });
+            //与优惠券选择建立联系
+            api.addEventListener({
+                  name: 'need_coupon_requrie'
+                }, function(ret, err) {
+                  console.log('need_coupon_requrie');
+            api.sendEvent({
+                name: 'send_coupon_info',
+                extra: {
+                  coupon_list: vm.coupon_list,
+                  coupon_id:vm.coupon_id,
+                }
+            });
+              });
+
+              //获取优惠券选择
+              api.addEventListener({
+                    name: 'selected_coupon'
+                  }, function(ret, err) {
+                     vm.coupon_id=ret.value.coupon_id;
+                       console.log(vm.coupon_id);
+                       vm.get_order_info();
+                       vm.send_need_info();
+                     if(ret.value.coupon_index==-1){
+                        vm.coupon_name='Por favor elige un cupón';
+                     }else{
+                         vm.coupon_name=vm.coupon_list[ret.value.coupon_index].name;
+                     }
+
+                  });
+
+                 //信用卡添加
+                  api.addEventListener({
+                        name: 'cart_add_close'
+                      }, function(ret, err) {
+                        vm.get_creditcard_list();
+                    });
+    }
+
+
+    function to_cart_goods_list() {
+      api.openWin({
+        name: 'to_cart_goods_list',
+        url: 'common_win.html',
+        pageParam: {
+          id: 0,
+          title: "商品清单",
+          muban: "cart_goods_list"
+        }
+      });
+    }
+    function open_couplist() {
+        api.openFrame({
+          name: 'couplist',
+          url: 'couplist_win.html',
+          bounces: false,
+          hidden:true,
+          reload: true,
+          rect: {
+              x: 0,
+              y: 0,
+              w: 'auto',
+              h: 'auto',
+          }
+      })
+    }
+    function open_timer_select() {
+      api.openFrame({
+          name: 'timer',
+          url: 'timer_win.html',
+          bounces: false,
+          rect: {
+              x: 0,
+              y: 0,
+              w: 'auto',
+              h: 'auto',
+          }
+      })
+    }
+    function add_new_card(){
+
+      api.openWin({
+          name: 'to_add_creditcard',
+          url: '../card/add_card_win.html',
+          pageParam: {
+              // title:"我的订单",
+              title:"Añadir una nueva tarjeta de crédito",
+
+          }
+      });
+    }
+</script>
+</html>

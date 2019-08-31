@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../css/public.css"/>
+      <link rel="stylesheet" type="text/css" href="../../../css/iconfont/iconfont.css"/>
+    <style>
+        .aui-input-row:first-child:after{
+            border-top:none
+        }
+        .aui-input-row {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+  <div class="aui-content aui-margin-b-15">
+      <ul class="aui-list    aui-list-in">
+
+          <li class="aui-list-item">
+            <div class="aui-list-item-label-icon">
+                <i class="aui-iconfont aui-icon-my aui-text-info"></i>
+            </div>
+              <div class="aui-list-item-inner">
+
+                  <div class="aui-list-item-input">
+                      <input type="text" placeholder="Destinatario" v-model="name">
+                  </div>
+              </div>
+          </li>
+
+          <li class="aui-list-item">
+            <div class="aui-list-item-label-icon">
+                <i class="aui-iconfont aui-icon-mobile aui-text-info"></i>
+            </div>
+              <div class="aui-list-item-inner">
+                  <div class="aui-list-item-input">
+                      <input type="number" placeholder="Numero de telefono movil" v-model="phone">
+                  </div>
+              </div>
+          </li>
+
+          <li class="aui-list-item">
+              <div class="aui-list-item-inner">
+                  <div class="aui-list-item-label">
+
+                  </div>
+                  <div class="aui-list-item-input">
+                      <label><input class="aui-radio" type="radio" value='0'  v-model="sex"> Masculino</label>
+                      <label><input class="aui-radio"  value='1' type="radio" v-model="sex" > Femanino</label>
+                  </div>
+              </div>
+          </li>
+
+          <li class="aui-list-item "  >
+              <div class="aui-list-item-label-icon">
+                  <i class="aui-iconfont aui-icon-location aui-text-info"></i>
+              </div>
+              <div class="aui-list-item-inner aui-list-item-arrow" onclick="top_map()">
+                  <div class="aui-list-item-title aui-col-xs-10  " style="padding:10px 0;display:block;"  >
+                   <big class="aui-gird-lable aui-font-size-16    "> {{formatted_address.detail}}</big>
+                    <div class="aui-gird-lable aui-font-size-12   " style=" color: #999999;">{{formatted_address.ext}}</div>
+                  </div>
+              </div>
+          </li>
+          <li class="aui-list-item">
+              <div class="aui-list-item-label-icon">
+                  <i class="aui-iconfont aui-icon-home aui-text-warning"></i>
+              </div>
+              <div class="aui-list-item-inner ">
+
+                  <div class="aui-list-item-title"><input type="text" placeholder="Dirección detallada" v-model="add_detail"></div>
+              </div>
+          </li>
+          <li class="aui-list-item">
+              <div class="aui-list-item-label-icon">
+                  <i class="iconfont icontag aui-text-warning"></i>
+              </div>
+              <div class="aui-list-item-inner ">
+
+                  <div class="aui-list-item-title">{{tag}}</div>
+              </div>
+          </li>
+          <!-- <li class="aui-list-item">
+
+              <div class="aui-list-item-inner ">
+                <div class="aui-list-item-title">Establecer dirección por defecto</div>
+               <div class="aui-list-item-right"><input type="checkbox" class="aui-switch" checked=""></div>
+
+              </div>
+          </li> -->
+      </ul>
+
+  </div>
+
+    <div class="aui-content-padded">
+        <div class="aui-btn aui-btn-danger aui-btn-block aui-margin-t-10" @click="update_address()">提交</div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            address_id:0,
+            name: '',
+            phone: '',
+            detail: '',
+            add_detail: '',
+            sex:0,
+            lat: '',
+            lng: '',
+            tag: '',
+            is_default: 0,
+            placeid:'',
+            formatted_address:'',
+            address_components_format:'',
+
+            //token: $api.getStorage('token'),
+        },
+        methods: {
+            update_address: function () {
+                if(!vm.name){
+                    api.toast({
+                        msg: 'Por favor ingrese un contacto',
+                        duration: 2000,
+                        location: 'bottom'
+                    });
+                    return false;
+                }
+                if (!vm.phone) {
+                    api.toast({
+                        msg: 'Por favor ingrese su número de móvil',
+                        duration: 2000,
+                        location: 'bottom'
+                    });
+                    return false;
+                }
+                console.log(add_address_url);
+                console.log(api.getPrefs({sync: true,key:'login_id'}))
+
+                if ( !vm.placeid) {
+                    api.toast({
+                        msg: 'La dirección detallada no puede estar vacía',
+                        duration: 2000,
+                        location: 'bottom'
+                    });
+                    return false;
+                }else{
+                    api.ajax({
+                        url: update_address_url,
+                        method: 'post',
+                        timeout: 30,
+                        dataType: 'json',
+                        returnAll: false,
+                        data: {
+                            values: {
+                               address_id: vm.address_id,
+                                name: vm.name,
+                                phone: vm.phone,
+                                sex: vm.sex,
+                                add_detail: vm.add_detail,
+                                is_default: vm.is_default,
+
+                                placeid: vm.placeid,
+                                administrative_area_level_1: vm.address_components_format['administrative_area_level_1'],
+                                locality: vm.address_components_format['locality'],
+                                postal_code_suffix: vm.address_components_format['postal_code_suffix'],
+                                postal_code: vm.address_components_format['postal_code'],
+
+                                merger_locality: vm.formatted_address['ext'],
+                                detail: vm.formatted_address['detail'],
+
+
+                                lat: vm.lat,
+                                lng: vm.lng,
+                                tag: vm.tag,
+
+                                token: api.getPrefs({sync: true,key:'login_id'}),
+                                deviceid: vm.deviceid
+                            }
+                        }
+                    }, function (ret, err) {
+                          console.log(JSON.stringify(ret));
+                        console.log(JSON.stringify(err));
+                        api.toast({
+                            msg: ret.msg,
+                            duration: 2000,
+                            location: 'bottom'
+                        });
+                        if (ret.code == 1) {
+                            api.sendEvent({
+                                name: 'address_list_init'
+                            });
+                            setTimeout(function () {
+                              console.log('关闭')
+                                api.closeWin();
+                            },200);
+                        }
+                    });
+                }
+
+            },
+            get_local_address:function(){
+
+                     api.ajax({
+                        url: google_details_url,
+                        method: 'get',
+                        data: {
+                          values:{token: api.getPrefs({sync: true,key:'login_id'}),placeid:vm.placeid}
+                        }
+                     },function(ret, err){
+                         console.log(JSON.stringify(err));
+                         console.log(JSON.stringify(ret));
+                     if(ret){
+                     if(ret.status=='OK'){
+                       console.log(JSON.stringify(ret));
+                       vm.formatted_address=ret.result.coustom_formatted_address;
+                       vm.address_components_format=ret.result.address_components_format;
+
+                       vm.lat =  ret.result.geometry.location.lat,
+                       vm.lng =ret.result.geometry.location.lng;
+
+
+                      }
+                     }else{
+
+                    }
+                    });
+
+                   },
+            clc_xy_per:function(){
+
+            },
+            clc_x:function(){
+
+            },
+            clc_y:function(){
+
+            },
+        },watch:{
+          placeid:{
+            handler: function (val, oldVal) {
+              console.log(val);
+              vm.get_local_address();
+            }
+          },
+
+          }
+
+
+    });
+    apiready = function () {
+        var header = document.querySelector('header');
+        $api.fixIos7Bar(header);
+
+        var frameHeight = api.frameHeight || '';
+        var frameWidth = api.frameWidth || '';
+        console.log(JSON.stringify(api.pageParam.address_id))
+        api.ajax({
+            url: update_addres_before_url,
+            method: 'post',
+            timeout: 30,
+            dataType: 'json',
+            returnAll: false,
+            data: {
+                values: {
+                    address_id: api.pageParam.address_id,
+
+                    token: api.getPrefs({sync: true,key:'login_id'})
+                }
+            }
+        }, function (ret, err) {
+console.log(JSON.stringify(ret))
+console.log(JSON.stringify(err))
+            if (ret) {
+
+
+                vm.address_id = ret.data.address_id;
+                vm.name = ret.data.name;
+                vm.phone = ret.data.phone;
+                vm.detail = ret.data.detail;
+                vm.add_detail = ret.data.add_detail;
+                vm.sex = ret.data.sex;
+                vm.tag = ret.data.tag;
+                vm.placeid= ret.data.placeid;
+            } else {
+                api.alert(JSON.stringify(err));
+            }
+        });
+
+        api.addEventListener({
+            name: 'confirm_pos'
+        }, function(ret, err){
+            if( ret ){
+                 console.log(JSON.stringify( ret ));
+                 vm.placeid=ret.value.placeid;
+                  vm.tag=ret.value.tag;
+                  vm.get_local_address();
+            }else{
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+
+        // setInterval(function () {
+        //     if(vm.x ==frameWidth){
+        //       console.log('ok')
+        //
+        //     }else{
+        //         vm.x += 1;
+        //         vm.y += 1;
+        //           console.log(vm.x)
+        //         api.setFrameAttr({
+        //             name: 'black',
+        //             rect: {
+        //               x:vm.x,
+        //               y: vm.y,
+        //               w: 100,
+        //               h: 100
+        //             },
+        //             bounces: true,
+        //             bgColor: '#fff',
+        //             vScrollBarEnabled: true,
+        //             hScrollBarEnabled: true
+        //         });
+        //
+        //     }
+        // },'10');
+
+
+    };
+
+  function to_cart(){
+
+    api.openFrame ({
+        name: 'black',
+        url: './black.html',
+        rect:{
+            x:10,
+            y: 10,
+            w: 100,
+            h: 100
+        },
+        bounces:true
+    });
+
+  }
+
+    //打开城市列表插件
+    function top_map(){
+      api.openWin({
+          name: 'to_map',
+          url: '../google/map_win.html',
+          pageParam: {
+              id:0,
+              title:"Seleccionar direccion",
+              muban:"map"
+          }
+      });
+    }
+</script>

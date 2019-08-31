@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css"/>
+
+</head>
+<body>
+
+
+<header class="aui-bar aui-bar-nav" id="aui-header">
+     <a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
+         <span class="aui-iconfont aui-icon-left"></span>
+     </a>
+     <div class="aui-title">我的优惠券</div>
+ </header>
+  <div class="aui-tab" id="tab">
+     <div class="aui-tab-item aui-active" onclick="groupindex(0)">未使用</div>
+     <div class="aui-tab-item" onclick="groupindex(1)"><div></div>已使用</div>
+     <div class="aui-tab-item" onclick="groupindex(2)">已过期</div>
+
+ </div>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script>
+
+    apiready = function () {
+        var header = document.querySelector('header');
+        $api.fixIos7Bar(header);
+        var k = api.pageParam.index ? api.pageParam.index : 0;
+        openFrameGroup(k);
+    };
+    function openFrameGroup(k) {
+        api.openFrameGroup({
+            name: 'member_coupon_list',
+            background: '#f4f4f4',
+            scrollEnabled: true,
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight + $api.byId('tab').offsetHeight,
+                w: 'auto',
+                h: 'auto'
+            },
+            index: k,
+            frames: [
+              {
+                  name: 'list_0',
+                  url: 'list_0.html',
+                  bounces: true,
+                  bgColor: '#f4f4f4'
+              },
+                {
+                    name: 'list_1',
+                    url: 'list_1.html',
+                    bounces: true,
+                    bgColor: '#f4f4f4'
+                },
+                {
+                    name: 'list_2',
+                    url: 'list_2.html',
+                    bounces: true,
+                    bgColor: '#f4f4f4'
+                }
+
+            ]
+        }, function (ret, err) {
+            var index = ret.index;
+            setFrameGroupStatus(index)
+        });
+    }
+    function groupindex(index) {
+        api.setFrameGroupIndex({
+            name: 'member_coupon_list',
+            index: index,
+            scroll: true
+        });
+        setFrameGroupStatus(index)
+    }
+    function setFrameGroupStatus(index) {
+        var tab = document.getElementById('tab');
+        var tablist = tab.getElementsByClassName("aui-tab-item");
+        for (var i = 0; i < tablist.length; i++) {
+            $api.removeCls(tablist[i], 'aui-active');
+        }
+        $api.addCls(tablist[index], 'aui-active');
+    }
+</script>
+</body>
+</html>

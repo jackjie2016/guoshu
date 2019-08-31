@@ -1,0 +1,412 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/zhu.css" />
+    <style>
+        header {
+            background-color: #FCFCFC;
+            line-height: 42px;
+            height: 42px;
+            position: relative;
+        }
+
+        header b {
+            width: 42px;
+            height: 100%;
+            display: inline-block;
+            position: relative;
+            z-index: 1;
+            background: url() no-repeat center;
+            background-size: 70% auto;
+        }
+
+        header b.ic-back {
+            background-image: url(../../image/ic-back.png);
+        }
+
+        header b.ic-check {
+            background-image: url(../../image/ic-check.png);
+            float: right;
+        }
+
+        header .title {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .logo {
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .shuru {
+            height: 42px;
+            width: 100%;
+            border: 0px solid rgba(241, 241, 241, 0.56);
+            box-sizing: border-box;
+            padding: 5px 10px 5px 10px;
+            background-color: rgba(0, 0, 0, 0.15);
+            font-size: 14px;
+            caret-color: #fff;
+            color: #fff;
+            color: #000;
+            border-radius: 0px;
+        }
+
+        input::-webkit-input-placeholder {
+            color: #eee;
+        }
+
+        input::-moz-placeholder {
+            /* Mozilla Firefox 19+ */
+            color: #eee;
+        }
+
+        input:-moz-placeholder {
+            /* Mozilla Firefox 4 to 18 */
+            color: #eee;
+        }
+
+        input:-ms-input-placeholder {
+            /* Internet Explorer 10-11 */
+            color: #eee;
+        }
+
+        .xuanze {
+            background: url(../../image/x2.png) center center no-repeat;
+            background-size: 100%;
+            display: inline-block;
+            height: 14px;
+            width: 14px;
+            margin-right: 5px;
+            float: left;
+            margin-top: 3px
+        }
+
+        .xuanze.on {
+            background: url(../../image/x1.png) center center no-repeat;
+            background-size: 100%;
+            display: inline-block;
+            height: 14px;
+            width: 14px;
+            margin-right: 5px;
+            float: left;
+            margin-top: 3px
+        }
+
+        .kuaijie {
+            width: 42px;
+            height: 42px;
+            margin: 5px;
+        }
+
+        #yanzhengma {
+            height: 34px;
+            line-height: 34px;
+            padding: 0px 20px;
+            color: #fff;
+            background-color: #18bf2c;
+            border-radius: 4px;
+            position: absolute;
+            right: 21px;
+            top: 15px;
+        }
+.weizhi{position: relative;}
+.code{position: absolute;right: 14px;top:14px;}
+
+    </style>
+
+</head>
+
+<body>
+  <div id="wrap" class="flex-wrap flex-vertical">
+
+      <div id="main" class="flex-con" style="background:url(../../image/bg.jpg);background-size: cover;">
+          <div class="pad40">
+
+            <div style="padding: 20px; color: #000;font-size: 24px;text-align: center;">注册</div>
+            <div class="pad10">
+                <input type="text" id="shouji" class="shuru" placeholder="您的手机">
+            </div>
+            <div class="pad10 weizhi">
+                <input type="text" id="code" class="shuru" placeholder="手机验证码">
+                <a id="yanzhengma" onclick="fayanzhengma()" class="btn btn-success code">发送验证码</a>
+            </div>
+            <div class="pad10">
+                <input type="password" id="mima" class="shuru" placeholder="密码">
+            </div>
+            <div class="pad10">
+                <input type="password" id="mima2" class="shuru" placeholder="确认密码">
+            </div>
+            <div class="pad10 yanse0"><span class="xuanze on"></span>我已阅读并同意<a style="color:#09f" onclick="">用户协议</a>和<a style="color:#09f"  onclick="">隐私政策</a></div>
+            <div class="pad10" id="aa">
+                <a onclick="zhuce()" class="btn btn-success btn-block">提交注册</a>
+            </div>
+
+
+
+
+            <div style="color: #333;font-size: 14px;padding: 10px 15px;">
+                <span style="float: right" onclick="fanhui()">返回登录</span>
+            </div>
+
+          </div>
+      </div>
+  </div>
+
+  
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../../script/zhu.js"></script>
+<script type="text/javascript">
+    var shijian = 180;
+    var code = 0,
+        kg = 1;
+    apiready = function() {
+
+        //极光推送
+        /*
+            ajpush = api.require('ajpush');
+            shebei=api.systemType;
+            if(shebei=='android'){
+            ajpush.init(function(ret) {if (ret && ret.status){}});//初始化
+            }
+            */
+        $(function() {
+            $(".xuanze").click(function() {
+                $(".xuanze").toggleClass("on");
+            });
+
+        })
+
+    };
+
+    function zhuce() {
+
+        if (!isshouji($("#shouji").val())) {
+            api.toast({
+                msg: '请输入正确的手机号',
+                location: 'bottom'
+            });
+            return false;
+        }
+        if ($("#code").val() == "") {
+            api.toast({
+                msg: '请输入短信验证码',
+                location: 'bottom'
+            });
+            return false;
+        }
+
+        if ($("#mima").val() == "") {
+            api.toast({
+                msg: '请输入密码',
+                location: 'bottom'
+            });
+            return false;
+        }
+        if ($("#mima").val().length < 6) {
+            api.toast({
+                msg: '密码不能小于6位',
+                location: 'bottom'
+            });
+            return false;
+        }
+        if ($("#mima2").val() == "") {
+            api.toast({
+                msg: '请再次输入密码',
+                location: 'bottom'
+            });
+            return false;
+        }
+        if ($("#mima").val() != $("#mima2").val()) {
+            api.toast({
+                msg: '两次密码输入不一致',
+                location: 'bottom'
+            });
+            return false;
+        }
+
+        if (!$(".xuanze").hasClass("on")) {
+            api.toast({
+                msg: '请阅读并同意用户协议和隐私政策',
+                location: 'bottom'
+            });
+            return false;
+        }
+
+        api.showProgress({
+            title: '正在注册...',
+            text: '......',
+            modal: false
+        });
+
+
+        api.ajax({
+            url: register_url,
+            method: 'post',
+            data: {
+                values: {
+                    mobile: $("#shouji").val(),
+                    password: $("#mima").val(),
+                    smscode: $("#code").val(),
+                    deviceid:api.deviceId
+                }
+            }
+        }, function(ret, err) {
+            api.hideProgress();
+            if (ret) {
+                //api.alert({ msg: JSON.stringify(ret) });
+                api.toast({
+                    msg: ret.msg,
+                    location: 'bottom'
+                });
+                if (ret.code == 1) {
+                        api.setPrefs({
+                            key: 'login_id',
+                            value: ret.data.token
+                        })
+                        api.setPrefs({
+                            key: 'user',
+                            value: ret.data
+                        })
+
+                        setTimeout(function () {
+                          api.closeToWin({
+                              name: 'root'
+                          });
+                        },500)
+                    }
+
+            } else {
+                //api.alert({ msg: JSON.stringify(err) });
+                api.toast({
+                    msg: err.msg,
+                    location: 'bottom'
+                });
+            }
+        });
+
+
+    }
+
+    function fayanzhengma() {
+        if (kg == 0) {
+            return false;
+        }
+        if (!isshouji($("#shouji").val())) {
+            api.toast({
+                msg: '请输入正确的手机号',
+                location: 'top'
+            });
+            return false;
+        }
+        api.showProgress({
+            title: '正在发送...',
+            text: '......',
+            modal: false
+        });
+
+        api.ajax({
+            url: check_mobile_url,
+            method: 'post',
+            dataType: 'json',
+            data: {
+                values: {
+                    mobile: $("#shouji").val()
+                }
+            }
+        }, function(ret, err) {
+            api.hideProgress();
+            if (ret) {
+              if (ret.code == 1) {
+
+
+
+                          api.ajax({
+                              url: sendsms_url,
+                              method: 'post',
+                              timeout: 30,
+                              data: {
+                                  values: {
+                                      msg_type:'reg',
+                                      mobile:$("#shouji").val()
+                                  }
+                              }
+                          }, function (ret2, err2) {
+                            kg = 0;
+                            api.toast({
+                                msg: ret2.msg,
+                                location: 'bottom'
+                            });
+                            daojishi();
+
+
+                          });
+
+                      }else{
+                          api.toast({
+                              msg: ret.msg,
+                              duration: 2000,
+                              location: 'bottom'
+                          });
+                      }
+                /*kg = 0;
+                api.toast({
+                    msg: ret.msg,
+                    location: 'bottom'
+                });
+                code = ret.code;
+                daojishi();*/
+
+            } else {
+                api.toast({
+                    msg: err.msg,
+                    location: 'bottom'
+                });
+            }
+        });
+
+
+
+
+    }
+
+
+
+    function daojishi() {
+
+        if (shijian <= 0) {
+            $('#yanzhengma').html('获取验证码');
+            kg = 1;
+            return false;
+        }
+        $('#yanzhengma').html(shijian);
+        shijian--;
+        setTimeout(function() {
+            daojishi()
+        }, 1000)
+    }
+
+    function denglu() {
+        api.openWin({
+            name: 'login',
+            url: 'widget://html/login.html'
+        });
+    }
+</script>

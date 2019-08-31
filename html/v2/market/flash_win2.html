@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css"/>
+
+</head>
+<body>
+
+
+<header class="aui-bar aui-bar-nav" id="aui-header">
+     <a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
+         <span class="aui-iconfont aui-icon-left"></span>
+     </a>
+     <div class="aui-title">我的优惠券</div>
+ </header>
+  <div class="aui-tab" id="tab" style="height:2.2rem;">
+     <div class="aui-tab-item" :class="{'aui-active':index==cun_index}" @click="changemenu(index)" v-for="(vo,index) in list" tapmode>{{vo.name}}</div>
+     <!-- <div class="aui-tab-item" onclick="groupindex(1)"><div></div>已使用</div>
+     <div class="aui-tab-item" onclick="groupindex(2)">已过期</div> -->
+
+ </div>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script>
+var vm = new Vue({
+    el: '#tab',
+    data: {
+        cun_index:0,
+        list: [],
+
+    },
+    methods: {
+
+
+        getflashList:function(){
+
+              api.ajax({
+                  url: flashpage_url,
+                  method: 'get',
+                  timeout: 30,
+                  dataType: 'json',
+                  returnAll: false,
+                  data: {
+                      values: {
+                          token: api.getPrefs({sync: true,key:'login_id'}),
+                      }
+                  }
+              }, function (ret, err) {
+
+                  if (ret) {
+                    if(ret.code==1){
+                      vm.list=ret.data.prom_list;
+                      var frames=[];
+                      for(var i=0;i<ret.data.prom_list.length;i++){
+                        console.log(i);
+                        frames.push({
+                                  name: 'flash'+i,
+                                  url: './flash_frm.html',
+                                  bgColor : 'rgba(0,0,0,.2)',
+                                  bounces:true,
+                                  reload: true,
+                                  pageParam:{
+                                        'prom_id':ret.data.prom_list[0].prom_id
+                                            },
+                              });
+
+                      }
+
+                      openFrameGroup(0,frames);
+                      console.log(frames.length)
+                    }
+                  } else {
+                      api.alert(JSON.stringify(err));
+                  }
+              });
+        },
+        changemenu:function(index){
+
+           groupindex(index);
+        }
+    }
+});
+    apiready = function () {
+        var header = document.querySelector('header');
+        $api.fixIos7Bar(header);
+        var k = api.pageParam.index ? api.pageParam.index : 0;
+        // openFrameGroup(k);
+        vm.init();
+
+    };
+    function openFrameGroup(k,frames) {
+      console.log($api.byId('tab').offsetHeight)
+        api.openFrameGroup({
+            name: 'flash_list',
+            background: '#f4f4f4',
+            scrollEnabled: true,
+            preload: true,
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight + $api.byId('tab').offsetHeight,
+                w: 'auto',
+                h: 'auto'
+            },
+            index: k,
+            frames: frames
+        }, function (ret, err) {
+            var index = ret.index;
+            setFrameGroupStatus(index)
+        });
+    }
+    function groupindex(index) {
+        api.setFrameGroupIndex({
+            name: 'flash_list',
+            index: index,
+            scroll: true
+        });
+        setFrameGroupStatus(index)
+    }
+    function setFrameGroupStatus(index) {
+        var tab = document.getElementById('tab');
+        var tablist = tab.getElementsByClassName("aui-tab-item");
+        for (var i = 0; i < tablist.length; i++) {
+            $api.removeCls(tablist[i], 'aui-active');
+        }
+        $api.addCls(tablist[index], 'aui-active');
+    }
+</script>
+</body>
+</html>

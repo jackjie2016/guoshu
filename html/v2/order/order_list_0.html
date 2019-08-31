@@ -1,0 +1,293 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>待收货</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+    <style type="text/css">
+        .aui-list .aui-list-item-media {
+            width: 3rem;
+        }
+				.aui-btn{    border: 1px solid #eee !important; }
+		.images img{width:22% !important;height:3rem;float:left;}
+		.aui-list{background: #ddd;}
+		.aui-list-item{background: #fff;}
+    </style>
+</head>
+<body>
+  <div id="app" v-cloak>
+    <section class="aui-content"  >
+	    <div class="aui-info  aui-padded-l-10 aui-padded-r-10" style=" background: #fff; " v-if="list.length>0">
+            <div class="aui-info-item">最近经常购买的商品</div>
+            <div class="aui-info-item">
+			  <div class="aui-btn  aui-font-size-12 aui-btn-success  aui-margin-r-10" onclick="open_hotbuygoods()" style="color:white">常购清单</div>
+			</div>
+        </div>
+        <ul class="aui-list aui-media-list aui-margin-t-10"  >
+            <li class="aui-list-item aui-margin-b-10"  v-for="(vo,index) in list">
+                    <div class="aui-list-item-inner" @click="open_order(index)">
+                        <div class="aui-info aui-font-size-12  ">
+                            <div class="aui-info-item">{{vo.create_time}}</div>
+                            <div class="aui-info-item">
+                                {{vo.state_text}}
+                            </div>
+                        </div>
+                        <div class="aui-list-item-text">
+                            <div class="aui-row aui-ellipsis-1   aui-padded-10 " style="background:#eee;width:100%;    border-radius: 0.2rem;">
+                             <div class="aui-col-xs-10">
+                                <div class="images"  v-for="(good,index) in vo.goods" v-if="index<4">
+
+                                    <img :src="good.image.file_path" class="aui-margin-r-5"/>
+
+                                  </div>
+							  </div>
+                            <div class="aui-col-xs-2">
+                            <div style=" height: 3rem; line-height: 3rem; " v-if="vo.goods.length>3">
+                              <i class="aui-iconfont aui-icon-more"></i>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="aui-info aui-font-size-12  ">
+                            <div class="aui-info-item"> </div>
+                            <div class="aui-info-item">
+                                共{{vo.goods.length}}份商品 实付 <b class="aui-padded-l-5"> ${{vo.pay_price}}</b>
+                            </div>
+                        </div>
+
+                    </div>
+                   	 <div class="aui-hr aui-bg-default"></div>
+                     <!-- 进行中的订单处理 -->
+					         <div class="aui-info aui-font-size-12" v-if="vo.order_status.value==10">
+                             <div class="aui-info-item"> </div>
+                            <!-- 已经支付的:拣货中,待配送,配送中-->
+                            <div class="aui-info-item" v-if="vo.pay_status.value==20">
+
+						              	   <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default aui-margin-r-10" @click="cancel_order(index)" v-if="vo.peihuo_status.value==10">取消订单</div>
+                               <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-success aui-margin-r-10" @click="readd_to_cart(index)">再次购买</div>
+                               <!--这个后期考虑  -->
+                               <!-- <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-success aui-margin-r-10" @click="comment_order()" v-if="vo.peihuo_status.value==10">修改配送时间</div> -->
+                            </div>
+                            <!--未支付的 -->
+                            <div class="aui-info-item" v-else>
+                              <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default aui-margin-r-10" @click="delete_order(index)" >删除订单</div>
+                              <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default aui-margin-r-10" @click="cancel_order(index)">取消订单</div>
+                              <!--立即支付信用卡的比较复杂,后面考虑 -->
+                              <!-- <div class="aui-btn   aui-font-size-12 aui-btn-success aui-margin-r-10" @click="paynow(index)">立即支付</div> -->
+                            </div>
+                    </div>
+                    <!-- 已完成的订单:删除订单,再次购买,评价:未评价和已评价 -->
+                    <div class="aui-info aui-font-size-12" v-if="vo.order_status.value==30">
+                      <div class="aui-info-item"> </div>
+                      <div class="aui-info-item">
+                       <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default aui-margin-r-10" @click="delete_order(index)" >删除订单</div>
+                       <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-success aui-margin-r-10" @click="readd_to_cart(index)">再次购买</div>
+                       <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-success aui-margin-r-10" @click="comment_order(index)" v-if="vo.is_comment==0">评价一下</div>
+                       <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-success aui-margin-r-10" @click="comment_detail(index)" v-else>查看评价</div>
+                      </div>
+                    </div>
+                    <!-- 取消的订单 -->
+                    <div class="aui-info aui-font-size-12" v-if="vo.order_status.value==20">
+                    <div class="aui-info-item"> </div>
+                      <div class="aui-info-item">
+                      <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default aui-margin-r-10" @click="delete_order(index)" >删除订单</div>
+                      <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-success aui-margin-r-10" @click="readd_to_cart(index)">再次购买</div>
+                      </div>
+                    </div>
+                    <!-- 取消申请中  -->
+                    <div class="aui-info aui-font-size-12" v-if="vo.order_status.value==21">
+                      <div class="aui-info-item"> </div>
+                      <!-- <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-default aui-margin-r-10" @click="delete_order(index)" v-if="vo.peihuo_status.value==10">删除订单</div> -->
+                      <div class="aui-btn aui-btn-outlined aui-font-size-12 aui-text-success aui-margin-r-10" @click="readd_to_cart(index)">再次购买</div>
+
+                    </div>
+            </li>
+		</ul>
+    </section>
+
+</div>
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<!-- 待收货包含 已付款的所有订单，（配合中-分拣，配送中），分拣中的：可以取消订单，再次购买，修改送达时间，待配送：再次购买，配送中的：再次购买   -->
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#app',
+    data: {
+        stauts: 0,
+        page: 1,
+        list: []
+    },
+    methods: {
+        init: function () {
+          console.log(api.getPrefs({sync: true,key:'login_id'}));
+            api.ajax({
+                url: order_list_url,
+                method: 'post',
+                timeout: 30,
+                dataType: 'json',
+                returnAll: false,
+                data: {
+                    values: {
+                        token: api.getPrefs({sync: true,key:'login_id'}),
+                        page: vm.page,
+                        dataType:'all',//待收货的
+                        status: 0 //待付款
+                    }
+                }
+            }, function (ret, err) {
+                if (ret) {
+                    if (ret.code == 1) {
+                        if(vm.page == 1){
+                            vm.list = ret.data.list.data;
+                            vm.page += 1;
+                        }else{
+                            for (var i=0;i<ret.data.list.data.length;i++){
+                                vm.list.push(ret.data.list.data[i]);
+                            }
+                        }
+                    }
+                    console.log(JSON.stringify(ret));
+                } else {
+                    console.log(JSON.stringify(err));
+                }
+            });
+        },
+        cancel_order:function (index) {
+            var order_id = vm.list[index].order_id;
+            api.ajax({
+                url: order_cancel_url,
+                method: 'post',
+                timeout: 30,
+                dataType: 'json',
+                returnAll: false,
+                data: {
+                    values: {
+                        token: api.getPrefs({sync: true,key:'login_id'}),
+                        order_id: order_id
+                    }
+                }
+            }, function (ret, err) {
+                if (ret) {
+                    api.toast({
+                        msg: ret.msg,
+                        duration: 2000,
+                        location: 'bottom'
+                    });
+                    if (ret.code == 1) {
+                        setTimeout(function () {
+                            vm.list.splice(index, 1)
+                        },500);
+                    }
+                    console.log(JSON.stringify(ret));
+                } else {
+                    console.log(JSON.stringify(err));
+                }
+            });
+        },
+        // 再次加入购物车,只负责加入购物车,不管购物车的数量
+
+        readd_to_cart:function(index){
+          var order_id = vm.list[index].order_id;
+          api.ajax({
+              url: readd_to_cart_url,
+              method: 'post',
+              data: {
+                  values: {
+                      token: api.getPrefs({sync: true,key:'login_id'}),
+                      order_id:order_id
+                  }
+              }
+          },function(ret, err){
+              if (ret) {
+                    open_cart();
+               } else {
+
+              }
+          });
+        },
+
+        // 删除订单
+        delete_order:function(index){
+            var order_id = vm.list[index].order_id;
+
+              api.ajax({
+                  url: delete_url,
+                  method: 'post',
+                  timeout: 30,
+                  dataType: 'json',
+                  returnAll: false,
+                  data: {
+                      values: {
+                          token:api.getPrefs({sync: true,key:'login_id'}),
+                          order_id: order_id
+                      }
+                  }
+              }, function (ret, err) {
+                  if (ret) {
+                      api.toast({
+                          msg: ret.msg,
+                          duration: 2000,
+                          location: 'bottom'
+                      });
+                      if (ret.code == 1) {
+                          setTimeout(function () {
+                            console.log();
+                             closeWin();
+                          },500);
+                      }
+                      // console.log(JSON.stringify(ret));
+                  } else {
+                      console.log(JSON.stringify(err));
+                  }
+              });
+        },
+
+        //打开订单详情
+        open_order:function(index){
+          var order_id = vm.list[index].order_id;
+          open_order_detail(order_id);
+        },
+        // 评价
+        comment_order:function(index){
+           var order_id = vm.list[index].order_id;
+           open_comment_order(order_id);
+        },
+        comment_detail:function(index){
+          var order_id = vm.list[index].order_id;
+          open_comment_detail(vm.order_id);
+        },
+
+    }
+});
+
+apiready = function () {
+    vm.init();
+    api.setRefreshHeaderInfo({
+        visible: true,
+        loadingImg: 'widget://image/refresh.png',
+        bgColor: '#f4f4f4',
+        textColor: '#333333',
+        textDown: '下拉刷新...',
+        textUp: '松开刷新...',
+        showTime: true
+    }, function (ret, err) {
+        vm.page = 1;
+        vm.init();
+        setTimeout("api.refreshHeaderLoadDone()", '500');
+    });
+    api.addEventListener({
+        name: 'scrolltobottom',
+        extra: {
+            threshold: 0            //设置距离底部多少距离时触发，默认值为0，数字类型
+        }
+    }, function (ret, err) {
+        vm.init();
+    });
+
+};
+</script>
+</html>

@@ -1,0 +1,39 @@
+.aui-bar-nav{
+	background: #1bbc9b;
+}
+.aui-title{
+	position: relative;
+}
+.aui-title img{
+	position: absolute;
+	display: block;
+	width: 3.4rem;
+	height: 0.8rem;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
+}
+.aui-bar-nav .iconfont{
+	font-size: 1.4rem;
+}
+/*搜索框*/
+.search_wrap{
+	background: #1bbc9b;
+	padding-bottom: 0.5rem;
+}
+.search_box{
+	width: 17.25rem;
+	margin: 0 auto;
+}
+.aui-searchbar{
+	background: #fff;
+	height: 1.75rem;
+	border-radius: 0.5rem;
+}
+.address{
+	font-size: 0.7rem;
+	color: #fff;
+	margin-top: 0.25rem;
+}
+
+

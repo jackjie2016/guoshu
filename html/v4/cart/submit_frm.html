@@ -1,0 +1,1094 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/icons/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/public.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/T.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/aui-slide.css" />
+	<style>
+
+      .cate-list .cate-item{
+
+	  }
+    .icon{
+      font-size: 1rem !important;
+    }
+
+	  .aui-radio{
+		  width: 0.75rem;
+	 	  height: 0.75rem;
+
+	  }
+
+
+	</style>
+</head>
+<body>
+ <div id="app">
+
+      <section class="aui-content   aui-padded-t-0 aui-padded-b-0 aui-margin-b-15 aui-margin-t-15"  >
+
+
+	   <div class="aui-margin-t-15 aui-margin-b-15 aui-padded-l-15 aui-padded-r-15  "  >
+                <div class="  aui-row goods_list_row">
+
+                    <div class="goods_col_item" >
+					 <div class="goods-content aui-padded-15  aui-padded-t-5 aui-padded-b-5 aui-row">
+
+					 <div class="aui-col-xs-4 ">
+					   <div class="  aui-padded-t-5  aui-padded-l-5  ">
+                        <div class=" cart-title aui-ellipsis-1 aui-font-size-16 font-black ">
+                           Dirección
+                        </div>
+
+                        </div>
+					 </div>
+					 <div class="aui-col-xs-7   ">
+
+					 	  <div class=" aui-padded-l-10 " onclick="select_address()" v-if="address_info">
+                        <div class=" cart-title aui-ellipsis-1 aui-font-size-12 font-bold  ">
+                            <!-- 10 a 11 hs -->
+                            {{ address_info.detail}}
+                        </div>
+                        <div class="cart-weight  aui-font-size-12 font-bold  aui-ellipsis-1 ">
+                        {{ address_info.merger_locality}}
+                        </div>
+                        </div>
+
+						<div class=" aui-padded-l-10 aui-padded-t-10" onclick="select_address()" v-else>
+					        	<div class=" cart-title aui-ellipsis-2 aui-font-size-14 font-bold  ">
+                         AGREGAG DIRECCION
+                        </div>
+					   </div>
+
+
+					  </div>
+					  <div class="aui-col-xs-1  ">
+					     <div class="  aui-padded-t-5  aui-padded-l-5  ">
+                        <div class="  text-center">
+                           <span class="icon iconfont aui-font-size-20" style=" transform: rotate(-90deg); "></span>
+                        </div>
+                        </div>
+					  </div>
+                    </div>
+                    </div>
+				    <div class="goods_col_item" >
+					 <div class="goods-content aui-padded-15  aui-padded-t-5 aui-padded-b-5 aui-row">
+
+					 <div class="aui-col-xs-4 ">
+					   <div class="  aui-padded-t-5  aui-padded-l-5  ">
+                        <div class=" cart-title aui-ellipsis-1 aui-font-size-16 font-black">
+                           Entrega
+                        </div>
+
+                        </div>
+					 </div>
+					 <div class="aui-col-xs-7   ">
+					 	  <div class=" aui-padded-l-10 ">
+                        <div class=" cart-title aui-ellipsis-2 aui-font-size-12 font-bold  ">
+                            <!-- Miercoles 18 de marzo En la franja horaria de 11 a 12 hs -->
+                            {{select_time_text}}
+                        </div>
+                        </div>
+					  </div>
+					   <div class="aui-col-xs-1   ">
+					     </div>
+
+                    </div>
+                    </div>
+
+				    <div class="goods_col_item" >
+					 <div class="goods-content aui-padded-15  aui-padded-t-5 aui-padded-b-5  ">
+
+					 <div class="aui-row aui-padded-b-5">
+					 <div class="aui-col-xs-6 ">
+					   <div class="  aui-padded-t-5  aui-padded-l-5  ">
+                        <div class=" cart-title aui-ellipsis-1 aui-font-size-16 font-black ">
+                           Metodo de Pago
+                        </div>
+
+                        </div>
+					 </div>
+					 <div class="aui-col-xs-5  ">
+					 	  <div class=" aui-padded-l-10 aui-padded-t-10">
+                        <div class=" cart-title aui-ellipsis-2 aui-font-size-14 font-bold  ">
+                         <!-- VISA  ••••  9031 -->
+                         {{pay_name}}
+                        </div>
+                        </div>
+					  </div>
+					 <div class="aui-col-xs-1  ">
+					     <div class="  aui-padded-t-5  aui-padded-l-5  " @click="select_paymethod()">
+                        <div class="  text-center">
+                           <span class="icon iconfont aui-font-size-20"  ></span>
+                        </div>
+                        </div>
+
+					  </div>
+					  </div>
+
+					  <div class="m-list" v-bind:class="{ 'aui-hide': open_paymethod==0 }">
+					 	  <div   class="m-t method-item">
+
+						  <div class="aui-info aui-padded-5  aui-padded-l-0 aui-padded-r-10" v-for="(vo,index) in cardlist">
+				     <div class="aui-info-item">
+
+              <span class="icon iconfont lv-font aui-font-size-20 aui-margin-r-15" v-if="card_index==index"></span>
+				     <span class="icon iconfont iconoutline-radio_button_px aui-font-size-20 aui-margin-r-15"  @click="selectPay(index)" v-else></span>
+				     <span   class="icon iconfont iconround-credit_card-px aui-font-size-20 aui-margin-l-15 aui-margin-r-15"></span>
+					   <span class="aui-margin-l-15 font-bold aui-font-size-14">{{vo.payment_method.name}}  ••••      {{vo.last_four_digits}}</span>
+				     </div>
+        			</div>
+
+
+						  <!-- <div class="aui-info aui-padded-5  aui-padded-l-0 aui-padded-r-10">
+				     <div class="aui-info-item">
+				     <span class="icon iconfont lv-font aui-font-size-20 aui-margin-r-15"></span>
+				     <span   class="icon iconfont iconround-credit_card-px aui-font-size-20 aui-margin-l-15 aui-margin-r-15"></span>
+					 <span class="aui-margin-l-15 font-bold aui-font-size-14">AMEX  ••••  1005</span>
+				     </div>
+        			</div> -->
+
+						  </div>
+					 	  <div   class="m-t method-item">
+					 	  <div class="aui-padded-5  aui-padded-l-0 aui-padded-r-10">
+
+           				     <div class="aui-btn font-bold black-font text-center w-100" style=" background: white;    " tapmode onclick="add_new_card()">+ Añadir nueva tarjeta</div>
+        			</div>
+
+                     </div>
+
+					  <div   class="m-t method-item">
+					 	<div class="aui-info aui-padded-5  aui-padded-l-0 aui-padded-r-10">
+				     <div class="aui-info-item">
+				     <!-- <span class="icon iconfont lv-font aui-font-size-20 aui-margin-r-15"></span> -->
+             <span class="icon iconfont lv-font aui-font-size-20 aui-margin-r-15" v-if="card_index==-1"></span>
+             <span class="icon iconfont iconoutline-radio_button_px aui-font-size-20 aui-margin-r-15"  @click="selectPay(-1)" v-else></span>
+					 <span class="aui-margin-l-15 font-bold aui-font-size-14">Mi Saldo ($500)</span>
+				     </div>
+
+        			</div>
+
+                     </div>
+
+					  <div   class="m-t method-item">
+					 	<div class="aui-info aui-padded-5  aui-padded-l-0 aui-padded-r-10">
+				     <div class="aui-info-item">
+				     <!-- <span class="icon iconfont lv-font aui-font-size-20 aui-margin-r-15"></span> -->
+             <span class="icon iconfont lv-font aui-font-size-20 aui-margin-r-15" v-if="card_index==-2"></span>
+             <span class="icon iconfont iconoutline-radio_button_px aui-font-size-20 aui-margin-r-15"  @click="selectPay(-2)" v-else></span>
+					 <span class="aui-margin-l-15 font-bold aui-font-size-14">Efectivo</span>
+				     </div>
+
+        			</div>
+
+                     </div>
+                     </div>
+                     </div>
+
+                    </div>
+				     <div class="goods_col_item" >
+						<div class="aui-btn btn-fen w-100 aui-font-size-16 font-extraBold"  tapmode onclick="open_couplist()">Ingresar Cupón</div>
+					 </div>
+
+					 <div class="goods_col_item" >
+					 <div class="goods-content aui-padded-15  aui-padded-t-5 aui-padded-b-5 aui-row">
+					  <div class=" aui-row">
+					 <div class="aui-col-xs-6 ">
+					   <div class="  aui-padded-t-5  aui-padded-l-5  ">
+                        <div class=" cart-title aui-ellipsis-1 aui-font-size-12 font-black">
+                          Costo de productos
+                        </div>
+
+                        </div>
+					 </div>
+					 <div class="aui-col-xs-6  ">
+					 	  <div class=" aui-padded-l-10 ">
+                        <div class=" cart-title aui-ellipsis-2 aui-font-size-12 font-bold  aui-padded-t-5" style="    text-align: right;">
+                           ${{order_pay_price}}
+                        </div>
+                        </div>
+					  </div>
+
+
+                    </div>
+
+					 <div class=" aui-row">
+
+					 <div class="aui-col-xs-6 ">
+					   <div class="  aui-padded-t-5  aui-padded-l-5  ">
+                        <div class=" cart-title aui-ellipsis-1 aui-font-size-12 font-black">
+                          Costo de envío
+                        </div>
+
+                        </div>
+					 </div>
+					 <div class="aui-col-xs-6  ">
+					 	  <div class=" aui-padded-l-10 ">
+                        <div class=" cart-title aui-ellipsis-2 aui-font-size-12 font-bold  aui-padded-t-5" style="    text-align: right;">
+                           ${{expressPricePrice}}
+                        </div>
+                        </div>
+					  </div>
+
+
+                    </div>
+
+					 <div class=" aui-row">
+
+					 <div class="aui-col-xs-6 ">
+					   <div class="  aui-padded-t-5  aui-padded-l-5  ">
+                        <div class=" cart-title aui-ellipsis-1 aui-font-size-12 font-black">
+                          Cupón de descuento
+                        </div>
+
+                        </div>
+					 </div>
+					 <div class="aui-col-xs-6  ">
+					 	  <div class=" aui-padded-l-10 ">
+                        <div class=" cart-title aui-ellipsis-2 aui-font-size-12 font-bold  aui-padded-t-5" style="    text-align: right;">
+                           ${{orderCouponPrice}}
+                        </div>
+                        </div>
+					  </div>
+
+
+                    </div>
+
+
+					 <div class=" aui-row">
+
+					  <div class="aui-col-xs-6 ">
+					    <div class="  aui-padded-t-5  aui-padded-l-5  ">
+                        <div class=" cart-title aui-ellipsis-1 aui-font-size-20 font-extraBold">
+                         Total a pagar
+                        </div>
+
+                        </div>
+					  </div>
+					  <div class="aui-col-xs-6  ">
+					 	   <div class=" aui-padded-l-10 ">
+                        <div class=" cart-title aui-ellipsis-2 aui-font-size-20 font-extraBold  aui-padded-t-5" style="    text-align: right;">
+                           ${{order_pay_price}}
+                        </div>
+                        </div>
+					   </div>
+
+
+                    </div>
+
+
+                    </div>
+                    </div>
+
+                </div>
+        </div>
+
+	</section>
+
+
+	 <div style="height:3.7rem;">
+	 </div >
+   <footer class="aui-bar aui-bar-tab  " id="footer" style="border-bottom:1px solid #eee;border-top:1px solid #eee;border-radius: 1.5rem 1.5rem 0 0;">
+     <section class="aui-content aui-margin-b-10 aui-padded-15 ">
+
+            <div class="aui-row  " >
+                <div class="aui-col-xs-2 aui-invisible">2 </div>
+
+
+                <div class="aui-col-xs-8">
+               <div class="aui-btn  lv-bg aui-btn-sm font-bold black-font aui-font-size-16 " style=" line-height:2.2rem; height:2.2rem;padding:0 1rem; border-radius:2rem;width:100%;"  tapmode v-on:click="order_create()" v-if="is_lock==0">Realizar Pedido</div>
+               <div class="aui-btn   aui-btn-sm font-bold black-font aui-font-size-16 " style=" line-height:2.2rem; height:2.2rem;padding:0 1rem; border-radius:2rem;width:100%;"  tapmode  v-else>Realizar Pedido</div>
+                </div>
+              <div class="aui-col-xs-2 aui-invisible">2 </div>
+
+
+            </div>
+
+    </section>
+     </footer>
+
+   </div>
+
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/common.js" ></script>
+<script type="text/javascript" src="../../../script/T.js"></script>
+<script type="text/javascript" src="../../../script/iScroll-lite.js"></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript">
+
+var deviceid;
+var vm = new Vue({
+    el: '#app',
+     data: {
+       otherpay:['Mi Saldo ($500)','Efectivo'],
+       cardlist:[],
+       default_card:[],
+       default_card_id:'',
+       card_id:-1,
+       card_index:-1,
+       customers_id:'',
+       payment_methods_info:'',
+       open_paymethod:0,
+       pay_name:'Mi Saldo',
+       card_token:'',
+       installments_index:0,
+       installments:1,
+       installments_list:[],
+       installments_select:'',
+       open_installment:0,
+
+       //配送信息
+       delivery_type: 10,
+       address_info: '',
+       linkman:'',
+       phone:'',
+
+
+       order_total_price: '0.00',
+       vip_discount_price:'0',
+       prom_discount_price:'0',
+       orderCouponPrice:'0',
+       orderPointPrice:'0',
+       order_pay_price:'0',
+       expressPricePrice:0,
+
+
+       point:'',
+       point_to_money:0,
+       can_use_point:0,
+       use_point:0,
+       point_remark:'',
+
+       content:'',
+       pay_type:10,
+
+
+
+       goods_list: [],
+       goods_num: 0,
+
+       coupon_num:0,
+       coupon_name:'Por favor elige un cupón',
+       coupon_list:[],
+
+       send_coupon_flag:0,
+
+       remark:'',
+
+       book_time:'',
+       select_time:0,
+       select_time_text:'',
+
+       order_id:0,
+       is_lock:0,
+
+    },
+     methods: {
+      init:function(){
+        //  to_loading();
+         vm.get_order_info();
+         vm.get_creditcard_list();
+        //  vm.get_token();
+       },
+      selectPay:function(index){
+        //  -1 余额支付 -2 现金支付
+         vm.card_index=index;
+         vm.open_paymethod=0;
+         if(index<0){
+           vm.card_id=index;
+         }else{
+           vm.card_id=vm.cardlist[index].id;
+         }
+       },
+      get_order_info:function(){
+         console.log(api.getPrefs({sync: true,key:'login_id'}));
+         api.ajax({
+             url: order_cart_confirm,
+             method: 'get',
+             data: {
+               values:{token: api.getPrefs({sync: true,key:'login_id'}),coupon_id:vm.coupon_id,use_point:vm.use_point}
+             }
+         },function(ret, err){
+           console.log(JSON.stringify(ret));
+          //  vm.goods_list = ret.data.goods_list;
+          //  vm.goods_num=ret.data.goods_list.length;
+           vm.address_info = ret.data.address;
+           vm.coupon_list=ret.data.coupon_list;
+           vm.coupon_num=ret.data.coupon_list.length;
+
+
+
+           //不可变价格
+           vm.vip_discount_price=ret.data.vip_discount_price;
+           vm.prom_discount_price=ret.data.prom_discount_price;
+           vm.order_total_price=ret.data.order_total_price;
+
+           vm.order_pay_price=ret.data.order_pay_price;
+
+           //跟进选择变化
+           vm.orderCouponPrice=ret.data.orderCouponPrice;
+
+           //运费
+           vm.expressPricePrice=ret.data.express_price;
+
+           //0或者有
+           vm.orderPointPrice=ret.data.orderPointPrice;
+
+
+
+           vm.point= ret.data.point;
+           vm.point_to_money= (ret.data.point/100);
+           vm.can_use_point=  ret.data.can_use_point;
+           vm.point_remark=  ret.data.point_remark;
+          //  console.log( JSON.stringify(ret.data));
+
+          //  vm.get_installments();
+          //  vm.send_need_info();
+
+         })
+       },
+      get_creditcard_list:function(){
+         console.log('get_creditcard_list')
+         vm.default_card=[];
+
+           api.ajax({
+               url: get_customerID_url,
+               method: 'get',
+               data: {
+                 values:{token: api.getPrefs({sync: true,key:'login_id'})}
+               }
+           },function(ret, err){
+
+             if(ret){
+
+            // console.log(JSON.stringify(ret));
+             if(ret.code==1){
+               api.setPrefs({ key: 'mcustomer_id_'+Is_debug,value: ret.data.customer_id });
+               vm.customer_id=ret.data.customer_id;
+               console.log(ret.data.customer_id);
+               vm.search_coustom(ret.data.customer_id);
+             }
+             }else{
+             }
+           })
+
+       },
+       search_coustom:function(customer_id) {
+           console.log('信用卡加载中');
+            console.log(customer_id);
+          api.ajax({
+              url: customers_search_url,
+              method: 'get',
+              data: {
+                values:{id: customer_id,access_token:access_token}
+              }
+          },function(ret, err){
+
+            if(ret){
+              console.log('信用卡加载好');
+            if(ret.results){
+
+            //  ret.results[0].cards
+              if(ret.results.length>0){
+
+                  vm.cardlist=ret.results[0].cards;
+                  console.log(JSON.stringify(vm.cardlist));
+              }
+
+            }
+            // vm.identification_list=ret;
+            }else{
+
+            }
+          })
+       },
+       select_paymethod:function(){
+        if(vm.open_paymethod==1){
+          vm.open_paymethod=0;
+        }else{
+          vm.open_paymethod=1;
+        }
+       },
+      select_installment:function(){
+        if(vm.open_installment==1){
+          vm.open_installment=0;
+        }else{
+          vm.open_installment=1;
+        }
+       },
+      get_installments:function(){
+        console.log('分期加载');
+         if(vm.order_pay_price!=0){
+            console.log('get_installments');
+            var bin;
+            for(var i=0;i<vm.cardlist.length;i++){
+              if(vm.cardlist[i]['id']==vm.card_id){
+              bin=vm.cardlist[i].first_six_digits;
+               console.log(JSON.stringify(bin));
+              }
+            }
+
+           api.ajax({
+               url: get_installments_url,
+               method: 'get',
+               data: {
+                 values:{public_key: public_key,amount:vm.order_pay_price,bin:bin}
+               }
+           },function(ret, err){
+              console.log('分期加载');
+              console.log(JSON.stringify(err))
+             if(ret){
+               console.log(JSON.stringify(ret[0].payer_costs))
+               vm.installments_list=ret[0].payer_costs;
+
+        if(ret[0].payer_costs.length>0){
+        vm.installments=ret[0].payer_costs[0]['installments'];
+        vm.installments_select=ret[0].payer_costs[0]['recommended_message'];
+        }
+
+
+             }
+           });
+         }
+
+
+       },
+      send_need_info:function() {
+        api.sendEvent({
+            name: 'update_order_total',
+            extra: {
+              delivery_type: vm.delivery_type,
+              linkman:vm.linkman,
+              phone:vm.phone,
+              remark: vm.remark,
+              book_time: vm.book_time,
+              card_id: vm.card_id,
+              coupon_id:vm.coupon_id,
+              use_point:vm.use_point,
+             installments:vm.installments,
+            }
+        });
+       },
+      order_create: function () {
+                 vm.is_lock=1
+              if(!vm.address_info){
+                  api.alert({
+                      title: '下单操作',
+                      msg: '请添加收货地址',
+                  }, function(ret, err) {
+                  vm.is_lock=0;
+                  });
+                  return false;
+              };
+              if(vm.delivery_type==20){
+                if(vm.linkman==''){
+                  api.alert({
+                      title: '下单操作',
+                      msg: '请添加取件人姓名',
+                  }, function(ret, err) {
+                  vm.is_lock=0;
+                  });
+                  return false;
+                }
+                if(vm.phone==''){
+                  api.alert({
+                      title: '下单操作',
+                      msg: '请添加取件人手机号',
+                  }, function(ret, err) {
+                    vm.is_lock=0;
+                  });
+                  return false;
+                }
+              };
+
+
+              api.ajax({
+                  url: order_create_url,
+                  method: 'post',
+                  timeout: 30,
+                  dataType: 'json',
+                  returnAll: false,
+                  data: {
+                      values: {
+                          token: api.getPrefs({sync: true,key:'login_id'}),
+                          // pay_type: vm.pay_type,
+                          card_id: vm.card_id,
+                          remark: vm.remark,
+                          delivery:vm.delivery_type,
+                          linkman:vm.linkman,
+                          phone:vm.phone,
+                          book_time:vm.book_time,
+                          coupon_id:vm.coupon_id,
+                          use_point:vm.use_point
+                      }
+                  }
+              }, function (ret, err) {
+                           console.log(JSON.stringify(err));
+                  if (ret) {
+                   console.log(JSON.stringify(ret));
+                      if(ret.code == 1){
+                         vm.order_id=ret.data.order_id;
+                        //刷新主界面
+                        api.sendEvent({
+                            name: 'flush_main_frame',//创建订单成功，更新购物车列表
+                        });
+
+
+                          api.sendEvent({
+                              name: 'update_cart_list',//创建订单成功，更新购物车列表
+                          });
+                          api.sendEvent({
+                              name: 'tatal_goods_sum'//更新全局购物车数量显示function
+                          });
+
+
+                           if(vm.card_id>0){
+
+                             input_cvv();
+                            //  api.sendEvent({
+                            //      name: 'send_order_info',
+                            //      extra:{
+                            //        'order_id':ret.data.order_id
+                             //
+                            //      }
+                            //  });
+                           }else{
+                                open_order_detail(ret.data.order_id);
+                           }
+
+                      }else{
+                        api.alert({
+                            title: 'Warning',
+                            msg: ret.msg,
+                            buttons:'Confirmar'
+                        })
+                      }
+                  } else {
+                      api.alert(JSON.stringify(err));
+                  }
+              });
+          },
+          go_Pay:function() {
+              console.log(cvv);
+              to_loading();
+            console.log(vm.card_token);
+              if(vm.card_token!=''){
+              console.log(api.getPrefs({sync: true,key:'login_id'}));
+                api.ajax({
+                  url: pay_url,
+                  method: 'post',
+                  data: {
+                    values:{
+                      token:api.getPrefs({sync: true,key:'login_id'}),
+                      device_id:deviceid,
+                      card_token:vm.card_token,
+                      card_id:vm.card_id,
+                      installments:vm.installments,
+                      security_code:cvv,
+                      order_id:vm.order_id
+
+                    }
+                  }
+              },function(ret, err){
+                console.log(JSON.stringify(err));
+                if(ret){
+                console.log(JSON.stringify(ret));
+
+                vm.search_Pay(ret.data);
+                api.sendEvent({
+                      name: 'say_status_loading',
+                      extra:{
+                        status:'提交成功',
+                        code:1,
+                        flag:0,
+                      }
+                    });
+
+
+                }else{
+                  // closeWin();
+                  open_order_detail(vm.order_id);
+
+                }
+              })
+            }else {
+              vm.get_token(1);
+            }
+
+
+          },
+          search_Pay:function(mergo_order_id) {
+            console.log('search_Pay');
+            api.sendEvent({
+                  name: 'say_status_loading',
+                  extra:{
+                    status:'search_Pay',
+                    code:1,
+                    flag:0,
+                  }
+                });
+
+            api.ajax({
+                url: searchPaystatus_url,
+                method: 'post',
+                data: {
+                  values:{
+                    id:mergo_order_id,
+                  }
+                }
+            },function(ret, err){
+              console.log(JSON.stringify(ret));
+              if(ret){
+                api.sendEvent({
+                      name: 'say_status_loading',
+                      extra:{
+                        status:'¡Pedido Realizado!',
+                        code:1,
+                        flag:1,
+                      }
+                    });
+            }else{
+              api.sendEvent({
+                    name: 'say_status_loading',
+                    extra:{
+                      status:'Orden fallida!',
+                      code:1,
+                      flag:1,
+                    }
+                  });
+                  //  api.sendEvent({
+                  //         name: 'closeloading',
+                  //       });
+              }
+              setTimeout(function(){
+                open_order_detail(vm.order_id);
+              }, 2000);
+
+              // closeWin();
+
+            })
+
+          },
+          // 获取支付口令
+          get_token:function(flag){
+                console.log('get_token');
+                   api.ajax({
+                       url: card_tokens_url+'?public_key='+public_key,
+                       method: 'post',
+                       data: {
+                        //  values:{public_key: public_key}
+                       }
+                   },function(ret, err){
+
+                     if(ret){
+                     console.log(JSON.stringify(ret));
+                     vm.card_token=ret.id;
+                     if(flag==1){
+                       console.log(flag);
+                       api.sendEvent({
+                             name: 'say_status_loading',
+                             extra:{
+                               status:'发起支付请求',
+                               code:1,
+                               flag:0,
+                             }
+                           });
+                       vm.go_Pay();
+                     }
+
+                     }else{
+
+                     }
+                   })
+          },
+
+     },
+     watch: {
+
+       //影响结算界面的因素积分和优惠券，优惠券通过定时器来，
+         use_point:{
+           handler: function (val, oldVal) {
+             console.log(val);
+              //  vm.init();
+            vm.send_need_info();
+           },
+         },
+
+         card_id:{
+           handler: function (val, oldVal) {
+              console.log(val);
+              //  vm.init();
+              vm.send_need_info();
+              vm.open_paymethod=0;
+              if(val==-1){
+                vm.pay_name='Mi Saldo';
+              }
+              else if(val==-2){
+                vm.pay_name='Efectivo';
+              }else{
+                vm.get_installments();
+                for(var i=0;i<vm.cardlist.length;i++){
+                  console.log(vm.cardlist[i]['id']);
+                  if(vm.cardlist[i]['id']==val){
+                    vm.pay_name=vm.cardlist[i]['payment_method'].name+' •••• '+vm.cardlist[i]['last_four_digits'];
+                  }
+                }
+              }
+
+           },
+         },
+         installments:{
+           handler: function (val, oldVal) {
+               console.log(val);
+                vm.send_need_info();
+             },
+         },
+         installments_index:{
+            handler: function (val, oldVal) {
+               console.log(val);
+
+             vm.installments=vm.installments_list[val]['installments'];
+             vm.installments_select=vm.installments_list[val]['recommended_message'];
+             },
+        },
+         pay_type: {
+             handler: function (val, oldVal) {
+               console.log(val);
+                vm.send_need_info();
+             },
+             deep: true
+         },
+         //配送方式
+         delivery_type: {
+             handler: function (val, oldVal) {
+               console.log(val);
+                 vm.send_need_info();
+             },
+             deep: true
+         },
+         linkman:{
+           handler: function (val, oldVal) {
+             console.log(val);
+               vm.send_need_info();
+           },
+         },
+         phone:{
+           handler: function (val, oldVal) {
+             console.log(val);
+               vm.send_need_info();
+           },
+         },
+         remark:{
+           handler: function (val, oldVal) {
+             console.log(val);
+               vm.send_need_info();
+           },
+         },
+         book_time:{
+           handler: function (val, oldVal) {
+             console.log(val);
+               vm.send_need_info();
+           },
+         },
+
+     }
+  });
+
+    var dialogBox;
+    apiready = function(){
+
+        vm.init();
+        get_time_info();
+        api.pageParam.select_time=1566813600;
+        vm.book_time=api.pageParam.select_time;
+        dialogBox = api.require('dialogBox');
+        api.parseTapmode();
+
+        deviceid = api.deviceId;
+
+            api.addEventListener({
+                name: 'update_order_confirm'
+            }, function(ret, err){
+                if( ret ){
+                    vm.init();
+                }
+            });
+
+
+            //与优惠券选择建立联系
+            api.addEventListener({
+                  name: 'need_coupon_requrie'
+                }, function(ret, err) {
+                  console.log('need_coupon_requrie');
+            api.sendEvent({
+                name: 'send_coupon_info',
+                extra: {
+                  coupon_list: vm.coupon_list,
+                  coupon_id:vm.coupon_id,
+                }
+            });
+              });
+
+              //获取优惠券选择
+              api.addEventListener({
+                    name: 'selected_coupon'
+                  }, function(ret, err) {
+                     vm.coupon_id=ret.value.coupon_id;
+                       console.log(vm.coupon_id);
+                       vm.get_order_info();
+                       vm.send_need_info();
+                     if(ret.value.coupon_index==-1){
+                        vm.coupon_name='Por favor elige un cupón';
+                     }else{
+                         vm.coupon_name=vm.coupon_list[ret.value.coupon_index].name;
+                     }
+
+                  });
+
+                 //信用卡添加
+                  api.addEventListener({
+                        name: 'cart_add_close'
+                      }, function(ret, err) {
+                        vm.get_creditcard_list();
+               });
+    }
+
+
+
+    function open_couplist() {
+      // 打开优惠券选择
+        api.openFrame({
+          name: 'couplist',
+          url: 'couplist_win.html',
+          bounces: false,
+          hidden:true,
+          reload: true,
+          rect: {
+              x: 0,
+              y: 0,
+              w: 'auto',
+              h: 'auto',
+          }
+      })
+    }
+    function open_timer_select() {
+      api.openFrame({
+          name: 'timer',
+          url: 'timer_win.html',
+          bounces: false,
+          rect: {
+              x: 0,
+              y: 0,
+              w: 'auto',
+              h: 'auto',
+          }
+      })
+    }
+    function add_new_card(){
+
+      api.openWin({
+          name: 'to_add_creditcard',
+          url: '../card/add_card_win.html',
+          pageParam: {
+              // title:"我的订单",
+              title:"Añadir una nueva tarjeta de crédito",
+
+          }
+      });
+    }
+    //  加载时间
+    function get_time_info() {
+      console.log('时间加载');
+       api.ajax({
+           url: get_time_info_url,
+           method: 'get',
+           data: {
+             values:{time: api.pageParam.select_time}
+           }
+       },function(ret, err){
+         if(ret){
+           console.log('加载时间信息');
+         if(ret){
+           vm.select_time_text=ret.data.text
+          console.log(JSON.stringify(ret));
+         }
+         }
+       })
+     }
+     function input_cvv() {
+       dialogBox.input({
+        keyboardType: 'default',
+        texts: {
+          title: 'Security code',
+          placeholder: '',
+         // leftBtnTitle: '取消',``
+          rightBtnTitle: '确定'
+        },
+        styles: {
+         bg: '#fff',
+         corner: 7,
+         w: 300,
+         h: 200,
+         title: {
+             h: 60,
+             alignment: 'center',
+             size: 14,
+             color: '#000',
+             marginT:10,
+         },
+         input: {
+             h: 60,
+             y:30,
+             marginT:10,
+             marginLeft: 10,
+             marginRight:10,
+             textSize: 14,
+             textColor: '#000'
+         },
+         dividingLine: {
+             width: 0.5,
+             color: '#696969'
+         },
+         // left: {
+         //     bg: 'rgba(5,2,6,8)',
+         //     color: '#007FFF',
+         //     size: 12
+         // },
+         right: {
+             marginR: 30,
+             bg: 'rgba(5,2,6,8)',
+             color: '#007FFF',
+             w: 135,                 //（可选项）数字类型；右边按钮的宽；默认：135
+             h: 55,
+             size: 12
+         }
+     }
+        }, function(ret) {
+     // api.alert({
+     //     msg: JSON.stringify(ret)
+     // });
+     // if (ret.eventType == 'left') {
+     //
+     //     dialogBox.close({
+     //         dialogName: 'input'
+     //     });
+     // }
+     if (ret.eventType == 'right') {
+            console.log(ret.text);
+            cvv=ret.text;
+            vm.go_Pay()
+            dialogBox.close({
+                      dialogName: 'input'
+           });
+      }
+      });
+     }
+</script>
+</html>

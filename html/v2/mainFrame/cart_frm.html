@@ -1,0 +1,594 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/iconfont/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/home.css" />
+   <style>
+   
+  	.aui-radio{
+	    width: 1rem;
+        height: 1rem;
+	}
+   .cate_item{
+   float:left;max-width:100%;}
+   .op-btn-item .minus {
+    height: 1.2rem;
+    width: 1.2rem;
+	  line-height: 1rem;
+    border-radius: 50%;
+    border: 1px solid #e3e3e3;
+    color: #1bbc9b;
+    font-size: 0.94rem;
+    font-weight: bold;
+    text-align: center;
+}
+ .op-btn-item .aui-item-input {
+    height: 1.2rem;
+    line-height: 1.2rem;
+    overflow: hidden;
+	text-align:center;
+}
+  .op-btn-item .plus {
+    height: 1.2rem;
+    width: 1.2rem;
+	  line-height: 1rem;
+    border-radius: 50%;
+    border: 1px solid #e3e3e3;
+    color: #1bbc9b;
+    font-size: 0.94rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+   </style>
+</head>
+<body>
+
+
+<div id="app">
+
+   <section class="aui-content aui-padded-0">
+
+		  <div class="aui-card-list coupon-list aui-padded-t-10 aui-padded-b-10 aui-margin-b-0" style=" border-bottom: 1px solid #eee; " v-for="(vo,index) in list" tapmode>
+             <div class="aui-row  ">
+			        <div class="aui-col-xs-2">
+
+					<div class="aui-info aui-margin-t-10 aui-padded-l-10 aui-padded-r-10">
+                     <div class="aui-info-item">
+                    <label><input class="aui-radio" type="checkbox" v-model="vo.status" tapmode v-on:click="single_check(index)" > </label>
+                    </div>
+                    </div>
+
+                    </div>
+                    <div class="aui-col-xs-3">
+					           <a href="" class="pic" v-on:click="to_goods_info(vo.goods_id)">
+                      <img :src="vo.goods_image" alt=""  :id="forId(index,'goods_list')" alt="" style="width:80%;"/>
+                      </a>
+	                    </div>
+                    <div class="aui-col-xs-7">
+			         <h3 class="name aui-ellipsis-1">{{vo.goods_name}}</h3>
+
+
+
+                    <div class="aui-text-danger aui-padded-t-5 aui-padded-b-5">
+                      <span>$</span>{{vo.now_price.value}}
+                        <div class="aui-text-success " v-if="vo.vip_price!='0.00'"><i class="iconfont iconvip"></i> ${{vo.vip_price}}</div>
+                      <!-- <div class="aui-label aui-label-danger aui-label-outlined aui-font-size-12 aui-margin-l-5">标签</div>  -->
+
+                    </div>
+
+
+						    <div class="cart"  >
+						     <div class="op-btn-item"   >
+						     <div class=" aui-col-xs-12">
+						     <div class="op-btn minus  aui-col-xs-3" tapmode v-on:click="cut_to_cart(index)">
+						      <i class="aui-iconfont aui-icon-minus" ></i>
+						     </div>
+						     <div class="aui-item-input aui-col-xs-6">
+                              {{vo.has_num}}
+						    </div>
+						    <div class="op-btn plus  aui-col-xs-3"   tapmode v-on:click="add_to_cart(index)"  >
+						    <i class="aui-iconfont aui-icon-plus"></i>
+						    </div>
+
+                </div>
+               </div>
+               </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+			  <!-- <div class="aui-card-list coupon-list aui-padded-t-10 aui-padded-b-10 aui-margin-b-0" style=" border-bottom: 1px solid #eee; ">
+             <div class="aui-row  ">
+			        <div class="aui-col-xs-2">
+
+					<div class="aui-info aui-margin-t-10 aui-padded-l-10 aui-padded-r-10">
+                     <div class="aui-info-item">
+                    <label><input class="aui-radio" type="radio" name="demo" checked="" > </label>
+                    </div>
+                    </div>
+
+                    </div>
+                    <div class="aui-col-xs-3">
+					 <a href="" class="pic">
+                      <img src="../../../img/imgs.jpg" alt="" style="width:80%;"/>
+                      </a>
+	                    </div>
+                    <div class="aui-col-xs-7">
+			         <h3 class="name aui-ellipsis-1">妃子笑荔子笑荔子笑荔枝</h3>
+
+
+
+                    <div class="aui-text-danger aui-padded-t-5 aui-padded-b-5"><span>$</span>10.00    <div class="aui-label aui-label-danger aui-label-outlined aui-font-size-12 aui-margin-l-5">标签</div> </div>
+
+
+						    <div class="cart"  >
+						     <div class="op-btn-item"   >
+						     <div class=" aui-col-xs-12">
+						     <div class="op-btn minus  aui-col-xs-3" >
+						      <i class="aui-iconfont aui-icon-minus"></i>
+						     </div>
+						     <div class="aui-item-input aui-col-xs-6">
+                     10g
+						    </div>
+						    <div class="op-btn plus  aui-col-xs-3"   >
+						    <i class="aui-iconfont aui-icon-plus"></i>
+						    </div>
+
+                </div>
+               </div>
+               </div>
+
+                    </div>
+
+                </div>
+            </div>
+	    -->
+	  </section>
+
+
+
+
+</div>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript" src="../../../script/aui-list-swipe.js"></script>
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#app',
+    data: {
+        total_price: 0,
+        all_checked_val: true,
+        list: []
+    },
+    methods: {
+        init:function () {
+           console.log(api.getPrefs({sync: true,key:'login_id'}));
+            api.ajax({
+                url: cart_list_url,
+                method: 'post',
+                timeout: 30,
+                dataType: 'json',
+                returnAll: false,
+                data: {
+                    values: {
+                        token: api.getPrefs({sync: true,key:'login_id'}),
+                        deviceid: api.deviceId,
+                    }
+                }
+            }, function (ret, err) {
+                if (ret) {
+                    if(ret.code == 1){
+                        vm.list = ret.data.goods_list;
+                        vm.total_price = ret.data.order_total_price;
+                        vm.for_all_checked_val();
+                    }else{
+                        vm.list = [];
+                    }
+                    console.log(JSON.stringify(vm.list));
+                    //更新全局购物车总价
+                    api.sendEvent({
+                        name: 'update_cart_total',
+                        extra: {
+                            total_price:ret.data.order_total_price
+                        }
+                    });
+                } else {
+                    api.toast({
+                        msg: err.msg,
+                        duration: 2000,
+                        location: 'bottom'
+                    });
+                    console.log(JSON.stringify(err));
+                }
+            });
+        },
+        //购物车加1
+        // add_to_cart: function (index) {
+        //     var goods_id = vm.list[index].goods_id;
+        //     var goods_sku_id = vm.list[index].goods_sku_id;
+        //     var total_num = Number(vm.list[index].total_num);
+        //
+        //     total_num +=1;
+        //
+        //     vm.list[index].total_num = total_num;
+        //
+        //     // vm.list[index].total_price = Number(vm.list[index].goods_price) * Number(vm.list[index].total_num);
+        //     // if(vm.list[index].status == 1){
+        //     //     vm.total_price = Number(vm.total_price) + Number(vm.list[index].goods_price);
+        //     // }
+        //
+        //     var uint=vm.list[index].unit_name,per_unit=vm.list[index].per_unit,goods_sum=total_num,has_num='';
+        //     has_num=String(per_unit*goods_sum)+uint;
+        //     vm.list[index].has_num=has_num;
+        //
+        //     add_to_cart(goods_id,goods_sku_id,1);
+        // },
+        getGoodsInfo:function(index,moudle){
+
+          if(moudle=='goods_list'){
+            goodinfo=vm.goods_list[index];
+          }
+
+        //猜你喜欢
+        else  if(moudle=='like'){
+            goodinfo=vm.like_goods[index];
+          }
+        else  if(moudle=='goods_even'){
+            goodinfo=vm.goods_even[index];
+          }
+        else  if(moudle=='goods_odd'){
+           goodinfo=vm.goods_odd[index];
+         }
+         else{
+           goodinfo=vm.list[index];
+         }
+
+
+         return goodinfo;
+        },
+        add_to_cart:function(index,moudle){
+
+         var goodinfo;
+         goodinfo=vm.getGoodsInfo(index,moudle);
+         if(is_login()){
+           api.ajax({
+               url: add_to_cart_url,
+               method: 'post',
+               data: {
+                   values: {
+                     token: api.getPrefs({sync: true,key:'login_id'}),
+                     goods_id:goodinfo['goods_id'],
+                     goods_num:1
+                   }
+               }
+             },function(ret, err){
+               if (ret) {
+                  //  tishi(ret.msg);
+               console.log(JSON.stringify(ret));
+                   if(ret.code==1){
+
+                    vm.list[index].has_num=ret.data.clc_now_goods_num;
+
+
+                   //更新全局购物车数量显示function
+                   api.sendEvent({
+                       name: 'update_cart_num',
+                       extra: {
+                           cart_total_num:ret.data.cart_total_num
+                       }
+                   });
+
+                   //更新全局购物车总价
+                   api.sendEvent({
+                       name: 'update_cart_total',
+                       extra: {
+                           total_price:ret.data.total_price
+                       }
+                   });
+
+                }else{
+                 tishi( ret.msg );
+                  Log(ret);
+                }
+
+               } else {
+                   alert( JSON.stringify( err ) );
+                //  console.log(err.msg)
+               }
+             });
+          }else{
+            go_login();
+         }
+        },
+
+        //购物车减1
+        cut_to_cart:function (index) {
+            var goods_id = vm.list[index].goods_id;
+
+            api.ajax({
+                url: cutdown_to_cart_url,
+                method: 'post',
+                timeout: 30,
+                dataType: 'json',
+                returnAll: false,
+                data: {
+                    values: {
+                        goods_id:goods_id,
+                        token: api.getPrefs({sync: true,key:'login_id'}),
+                        deviceid: api.deviceId,
+                    }
+                }
+            }, function (ret, err) {
+                      console.log(JSON.stringify(ret));
+                if (ret) {
+                    if(ret.code == 1){
+                      vm.list[index].has_num=ret.data.clc_now_goods_num;
+                      // vm.list[index].total_num -= 1;
+                      if(ret.data.clc_now_goods_num == 0){
+                           vm.list.splice(index, 1);//删除节点
+                       }
+                        //更新全局购物车数量显示function
+                        api.sendEvent({
+                            name: 'update_cart_num',
+                            extra: {
+                                cart_total_num:ret.data.cart_total_num
+                            }
+                        });
+
+                        //更新全局购物车总价
+                        api.sendEvent({
+                            name: 'update_cart_total',
+                            extra: {
+                                total_price:ret.data.total_price
+                            }
+                        });
+                    }
+                } else {
+                    console.log(JSON.stringify(err));
+                }
+            });
+
+        },
+        //全选
+        all_checked:function () {
+            setTimeout(function () {
+                var temp_status = null;
+                if(vm.all_checked_val){
+                    for(var i=0;i<vm.list.length;i++){
+                        vm.list[i].status = 1;
+                        vm.total_price = Number(vm.total_price) + Number(vm.list[i].total_price);
+                    }
+                    temp_status = 1;
+                }else{
+                    for(var i=0;i<vm.list.length;i++){
+                        vm.list[i].status = 0;
+                    }
+                    vm.total_price = 0;
+                    temp_status = 0;
+                }
+
+                //更新数据库
+                api.ajax({
+                    url: update_allcart_status_url,
+                    method: 'post',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                    data: {
+                        values: {
+                            token: api.getPrefs({sync: true,key:'login_id'}),
+                            deviceid: api.deviceId,
+                            status: temp_status
+                        }
+                    }
+                }, function (ret, err) {
+                    if (ret) {
+                          vm.total_price = ret.data.total_price;
+                          //更新全局购物车总价
+                          api.sendEvent({
+                              name: 'update_cart_total',
+                              extra: {
+                                  total_price:ret.data.total_price
+                              }
+                          });
+                    } else {
+                        api.alert(JSON.stringify(err));
+                    }
+                });
+            },200);
+        },
+        //单选
+        single_check:function (index) {
+            var temp_status = null;
+            setTimeout(function () {
+                if(vm.list[index].status){
+                    // vm.total_price = Number(vm.total_price) + Number(vm.list[index].total_price);
+                    temp_status = 1;
+                }else{
+                    // vm.total_price = Number(vm.total_price) - Number(vm.list[index].total_price);
+                    temp_status = 0;
+                }
+                vm.for_all_checked_val();
+
+
+                //更新数据库
+                api.ajax({
+                    url: update_cart_status_url,
+                    method: 'post',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                    data: {
+                        values: {
+                            token: api.getPrefs({sync: true,key:'login_id'}),
+                            deviceid: api.deviceId,
+                            goods_id: vm.list[index].goods_id,
+                            status: temp_status
+                        }
+                    }
+                }, function (ret, err) {
+                    if (ret) {
+                        console.log(JSON.stringify(ret));
+                        vm.total_price = ret.data.total_price;
+                        //更新全局购物车总价
+                        api.sendEvent({
+                            name: 'update_cart_total',
+                            extra: {
+                                total_price:ret.data.total_price
+                            }
+                        });
+                    } else {
+                        api.alert(JSON.stringify(err));
+                    }
+                });
+            },200);
+
+        },
+        for_all_checked_val:function () {
+
+            for(var i=0;i<vm.list.length;i++){
+              console.log(vm.list[i].status);
+                if(!vm.list[i].status){
+                  console.log('no')
+                    vm.all_checked_val = false;
+                    api.sendEvent({
+                        name: 'checked_status',
+                        extra: {
+                            status: false
+                        }
+                    });
+                    return false;
+                }else{
+                    vm.all_checked_val = true;
+                }
+            }
+
+            api.sendEvent({
+                name: 'checked_status',
+                extra: {
+                    status: vm.all_checked_val
+                }
+            });
+
+        },
+        //打开商品详情
+
+        to_goods_info:function (goods_id) {
+            open_goods_detail(goods_id);
+        },
+        forId:function(index,moudle){
+          return moudle+'_'+index;
+        },
+
+
+        delete_to_cart:function (index) {
+            api.confirm({
+                title: '确认要删除？',
+                msg: vm.list[index].goods_name,
+                buttons: ['确定', '取消']
+            }, function (ret, err) {
+                if (ret) {
+                   if(ret.buttonIndex == 1){
+
+                       api.ajax({
+                           url: delete_to_cart_url,
+                           method: 'post',
+                           timeout: 30,
+                           dataType: 'json',
+                           returnAll: false,
+                           data: {
+                               values: {
+                                   goods_id: vm.list[index].goods_id,
+                                   token: api.getPrefs({sync: true,key:'login_id'}),
+                                   deviceid: api.deviceId,
+                               }
+                           }
+                       }, function (ret, err) {
+                           if (ret) {
+                               if(ret.code == 1){
+                                 vm.total_price = Number(vm.total_price) - Number(vm.list[index].total_price);
+                                   api.sendEvent({
+                                       name: 'tatal_goods_sum'//更新全局购物车数量显示function
+                                   });
+                                   //更新全局购物车总价
+                                   api.sendEvent({
+                                       name: 'update_cart_total',
+                                       extra: {
+                                           total_price:ret.data.total_price
+                                       }
+                                   });
+                                   vm.list.splice(index, 1)
+                               }else{
+                                   api.toast({
+                                       msg: ret.msg,
+                                       duration: 2000,
+                                       location: 'bottom'
+                                   });
+                               }
+                               console.log(JSON.stringify(ret));
+                           } else {
+                               console.log(JSON.stringify(err));
+                           }
+                       });
+                   }
+                } else {
+                    alert(JSON.stringify(err));
+                }
+            });
+        }
+
+    }
+});
+apiready = function () {
+   check_login();
+   console.log('cart_loding')
+  //  var swipe = new ListSwipe(function(ret){});
+
+    api.setRefreshHeaderInfo({
+        visible: true,
+        loadingImg: 'widget://image/refresh.png',
+        bgColor: '#f4f4f4',
+        textColor: '#333333',
+        textDown: '下拉刷新...',
+        textUp: '松开刷新...',
+        showTime: true
+    }, function(ret, err) {
+        vm.init();
+        setInterval("api.refreshHeaderLoadDone()",'1000');
+    });
+    vm.init();
+    //监听网络连接事件
+    api.addEventListener({
+        name: 'update_cart_list'
+    }, function(ret, err) {
+        vm.init();
+    });
+
+    //监听网络连接事件
+    api.addEventListener({
+        name: 'check_all_op'
+    }, function(ret, err) {
+      console.log(JSON.stringify(ret));
+      vm.all_checked_val=ret.value.status;
+        vm.all_checked();
+    });
+
+    api.addEventListener({
+        name: 'tatal_goods_total_price'
+    }, function(ret, err) {
+        vm.total_price=ret.value.total_price;
+    });
+};
+
+</script>
+</html>

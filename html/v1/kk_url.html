@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>APPKK</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/zhu.css"/>
+    <style>
+        header{  height: 40px; line-height: 40px; text-align: center; display: block; color: #000; position: relative;font-size: 16px;background-color: #fff;border-bottom: 1px solid #f2f2f2;  }
+        #title{width: 80%;}
+
+    </style>
+</head>
+<body>
+<div id="wrap" class="flex-wrap flex-vertical">
+    <header class="border-b">
+    <span class="fanhui2" onclick="fanhui()"></span>
+        <span id="title" class="over-cang">我的</span>
+    </header>
+    <div id="main" class="flex-con">
+
+    </div>
+
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../../script/zhu.js"></script>
+<script type="text/javascript">
+    apiready = function () {
+        $api.fixStatusBar($api.dom('header'));
+        api.setStatusBarStyle({
+          style: 'light',
+          animated:true,
+          color: '#000'
+        });
+
+
+        //自定义的源码
+
+if(isweb()==false){
+    return false;
+}
+
+
+dakai(api.pageParam.muban,api.pageParam.title,api.pageParam.id?api.pageParam.id:0);
+        //自定义源码结束
+    }
+
+
+
+
+//m 模板文件名 n 标题名 ,b 参数id
+    function dakai(m,n,b){
+        $("#title").html(n);
+            frames = [];
+                frames.push( {
+                    name: 'apik',
+                    url: m,
+                    pageParam:{id:b},
+                    bgColor : '#eee',
+                    bounces:true
+                } )
+
+        api.openFrameGroup({
+            name: 'group',
+            scrollEnabled: false,
+            rect: {
+                x: 0,
+                y: 40,
+                w: api.winWidth,
+                h: $api.dom('#main').offsetHeight
+            },
+            index: 0,
+            frames: frames
+        }, function (ret, err) {
+
+        });
+    }
+
+
+</script>

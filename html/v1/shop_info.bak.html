@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui-slide.css" />
+    	<link rel="stylesheet" type="text/css" href="../../script/layer/mobile/need/layer.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/zhu.css" />
+    	<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../../script/layer/layer.js"></script>
+    <style type="text/css">
+    body,html{background: #f2f2f2;}
+      .text-light {
+        color: #999;
+      }
+      .text-dark {
+        color: #333 !important;
+      }
+      .bg-white {
+        background: #ffffff;
+      }
+      .aui-list .aui-list-item-label-icon.label-text {
+        line-height: 2.1rem;
+        align-items: baseline;
+        -webkit-align-items: baseline;
+      }
+      .aui-tab-item {
+        width: 2rem;
+        margin: 0 auto;
+      }
+      .zhongdian{left:10px !important;top:100% !important;width: 24px !important;height: 24px !important;position: absolute;border-radius: 50%;}
+      #backs{position: absolute;left: 20px;top: 40px;z-index: 9999;height: 28px;width: 28px;background: rgba(0,0,0,0.4);border-radius: 50%;color: #fff;text-align: center;line-height: 28px;}
+      #headers{position: relative;left: 0;top:0px;right: 0px;}
+
+      .gouwuche{padding: 5px 15px;background: #1bbc9b;color:#fff;line-height: 26px;font-size: 14px;border-radius: 20px;}
+      #footer{border-top: 1px solid #f6f6f6;}
+      .shuru{background-color: #fff !important;text-align: center;color: #000 !important;width: 50px !important;display:inline-block !important;}
+      .aa{display: inline-block;height: 2.2rem;width: 30px;background-color: #f2f2f2;text-align: center;line-height: 2.2rem; color: #000;}
+      .car_num{position: absolute;right: 0;top:0;display: inline-block;line-height: 18px;height: 16px;min-width: 16px; font-size: 10px;text-align: center;background: red;color: #fff;z-index: 999;border-radius: 8px;}
+ .tuijian_list{padding: 5px;float: left;width: 50%;background: #f8f8f8}
+  .shijian li{display: inline; padding-left: 5px;}
+  .shijian .w{color:#ffffff;background: #ff5757; border-radius: 5px;display: inline-block;font-size: 12px;padding: 2px 4px;height: 16px;line-height: 12px;}
+
+
+
+
+.t_list{width: 150px;}
+
+    </style>
+</head>
+<body>
+  <header class="aui-bar aui-bar-nav" id="aui-header">
+      <a class="aui-btn aui-pull-left" tapmode onclick="fanhui()">
+          <span class="aui-iconfont aui-icon-left"></span>
+      </a>
+      <div class="aui-title" id="title">商品详情</div>
+  </header>
+    <section class="aui-card-list" style="margin-bottom:0px;">
+      <div class="aui-card-list-content" id="aui-slide">
+        <div class="aui-slide-wrap" >
+            <div class="aui-slide-node bg-dark">
+                <img src="../../image/goods_img.png" />
+            </div>
+        </div>
+        <div class="aui-slide-page-wrap"><!--分页容器--></div>
+      </div>
+      <div class="hezi" id="f_miaosha" >
+
+      </div>
+        <div id="goods_name" class="pad10 wenzi16 padding-bottom5"></div>
+        <div class=" yanse0 wenzi12" id="miaoshu" style="min-height:14px;padding:0px 10px;"></div>
+
+
+
+        <div class="yanse2 pad10"><small>￥</small><big class="aui-font-size-20" id="jiage">0.00</big><s id="yuanjia" class="wenzi10 yanse0 left5">￥0.00</s></div>
+
+      <div class="aui-card-list-content" style="border-top:1px solid #f4f4f4;">
+        <div class="wenzi12 hanggao18 pad10">
+          <span class="yanse0">12小时内发货</span>
+          <span class="yanse0 left15">称重退差价</span>
+        </div>
+      </div>
+    </section>
+
+
+
+    <div class="hezi bg1 top10 pad5" onclick="list2()">
+      <div class="col1 zhong wenzi12">
+        领券
+      </div>
+     <div class="col6 zhong" id="yhq"></div>
+
+   <div class="col1 juyou " style="font-size:20px;padding-right:5px; " >...</div>
+    </div>
+    <div class="pad10"><span style="padding-left:5px;border-left:5px solid #1bbc9b;">推荐</span></div>
+    <section class="" style="overflow-x: auto;">
+      <div id="tuijian2" class="bg1" style="width:1220px;height:auto;">
+
+      </div>
+    </section>
+
+
+    <div class="pad10"><span style="padding-left:5px;border-left:5px solid #1bbc9b;">评价</span></div>
+    <section class="aui-content" id="comment-list">
+      <ul class="aui-list aui-media-list aui-list-noborder pingjia">
+
+
+      </ul>
+      <div id="pingjia_numk" class="pad10 juzhong" style="display:none;"><span onclick="to_pingjia_list()" class="aui-btn">查看更多(<span id="pingjia_num">0</span>)</span></div>
+    </section>
+
+    <div class="pad10"><span style="padding-left:5px;border-left:5px solid #1bbc9b;">详情</span></div>
+    <section class="aui-content bg-white aui-padded-15 aui-font-size-14" id="goods-detail">
+      加载中
+    </section>
+
+<div class="clear height90"></div>
+
+    <footer class="aui-bar aui-bar-tab" id="footer">
+        <div class="hezi" style="height: 2.25rem">
+          <div class="col1 zhong weizhi" onclick="to_gouwuche()"><img src="../../image/car.png" width="28"><span class="car_num" style="display:none;">0</span></div>
+          <div class="col3">
+            <div class="juyou">
+
+              <a class="aa zhong wenzi16" onclick="jian()">-</a>
+              <input type="text" class="shuru shuliang" readonly="" value="1">
+              <a class="aa zhong wenzi16" onclick="jia()">+</a>
+
+          </div>
+          </div>
+          <div class="col2 zhong" onclick="add_cart2()"><a class="gouwuche" >加入购物车</a></div>
+        </div>
+
+    </footer>
+
+</body>
+<script type="text/javascript" src="../../script/aui-slide.js"></script>
+<script type="text/javascript" src="../../script/aui-tab.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/zhu.js"></script>
+<script type="text/javascript" src="../../script/gototop.js"></script>
+<script type="text/javascript">
+
+var timediff;
+function daojishi(){
+if(timediff<=0){$("#shijian_show").addClass("cang");}else{$("#shijian_show").removeClass("cang");}
+
+			//获取还剩多少天
+			var day=parseInt(timediff/3600/24);
+			//获取还剩多少小时
+			var hour=parseInt(timediff/3600%24);
+			//获取还剩多少分钟
+			var minute=parseInt(timediff/60%60);
+			//获取还剩多少秒
+			var second=timediff%60;
+			//输出还剩多少时间
+			//document.getElementById("1").innerHTML=day;
+			//document.getElementById("2").innerHTML=hour;
+			//document.getElementById("3").innerHTML=minute;
+			//document.getElementById("4").innerHTML=second;
+      $(".shi").html(hour);
+      $(".fen").html(minute);
+      $(".miao").html((second<10)?("0"+second):second);
+			setTimeout(function(){daojishi();},1000);
+      timediff--;
+			if(timediff<=0){return;}
+			}
+
+
+
+var id=0,info={};
+var shop={};
+var car_num=0;
+apiready=function(){
+  yhq();
+  pingjia();
+  api.parseTapmode();
+  var header = $api.byId('aui-header');
+  $api.fixStatusBar(header);
+  api.addEventListener({
+      name: 'good_info_add_cart_donghua'
+  }, function(ret, err) {
+      donghua_add_cart();
+
+  });
+  id=api.pageParam.id;
+  get_shop_info();
+  get_tuijian2();
+  up_car_num();
+}
+    banner();
+    var tab = new auiTab({
+        element:document.getElementById("tab"),
+    },function(ret){
+        if(ret.index == 1){
+          document.getElementById("goods-detail").classList.remove("aui-hide");
+          document.getElementById("comment-list").classList.add("aui-hide");
+          document.getElementById("tuijian").classList.add("aui-hide");
+        }else if(ret.index == 2){
+          document.getElementById("goods-detail").classList.add("aui-hide");
+          document.getElementById("comment-list").classList.remove("aui-hide");
+          document.getElementById("tuijian").classList.add("aui-hide");
+        }else if(ret.index == 3){
+          document.getElementById("goods-detail").classList.add("aui-hide");
+          document.getElementById("comment-list").classList.add("aui-hide");
+          document.getElementById("tuijian").classList.remove("aui-hide");
+        }
+    });
+var yhqs="";
+    function yhq(){
+    api.ajax({
+        url: coupon_url,
+        method: 'post',
+
+    },function(ret, err){
+     var yhqs=ret.data.list;
+     var str='';
+     for(var i = 0; i <= 2; i++){
+
+       str+='<span>'+yhqs[i].name+'</span>';
+     }
+
+    $("#yhq").html(str);
+    });
+
+
+    api.ajax({
+        url: coupon_url,
+        method: 'post',
+
+    },function(ret, err){
+   yhqs=ret.data.list;
+
+  })
+    }
+
+    function lq(id){
+      api.ajax({
+          url: lqkaquan_url,
+          method: 'post',
+          data: {
+              values: {
+                token: api.getPrefs({sync: true,key:'login_id'}),
+                coupon_id:id
+              }
+          }
+      },function(ret, err){
+         tishi(ret.msg);
+    });
+
+    }
+
+    function list2() {
+      var str="";
+  //youhuiquanneirong
+      str+= '  <div style=" overflow:auto;height:310px">';
+      var data=yhqs
+      for(var i=0;i<json_num(yhqs);i++){
+        str+='<div class="hezi" style="background-color: #fff; margin-top:15px">';
+              str+=' <div class="col2" style="border: 1px solid #fff; position: relative;height: 100px;border-radius: 10px;" >';
+              if(data[i].coupon_type.value==10){
+              str+='<span class="kaquan-tag">'+data[i].coupon_type.text+'</span>';
+            }else if(data[i].coupon_type.value==20){
+            str+='<span class="kaquan-tag">'+data[i].coupon_type.text+'</span>';
+          }
+              str+='	<div class="cro_right_bottom "></div>';
+                    str+='<div class="cro_right_top "></div>';
+                  str+='<div style="" class="juzhong top5">';
+                  if(data[i].coupon_type.value==10){
+                    str+='<span class=" wenzi14" style="color: #73e061">￥</span>';
+                    str+='<span class=" wenzi24 cuti" style="color: #73e061">'+data[i].reduce_price+'</span>';
+                  }else if(data[i].coupon_type.value==20){
+                    str+='<span class=" wenzi24 cuti" style="color: #73e061">'+data[i].discount+'折</span>';
+                  }
+                  str+='</div>';
+                    str+='<div style="text-align:center;font-size:12px;color:#888;margin-top:5px;">满'+data[i].min_price+'元使用</div>';
+              str+='</div>';
+
+              str+='<div class="col3 pad-left10" style="border: 1px solid #fff; border-left-color: #f2f2f2; position: relative;height: 100px; border-radius: 10px" >';
+                str+='<div class="cro_left_top " ></div>';
+                str+='<div class="cro_left_bottom "></div>';
+              str+='	<div class="pad-top15 wenzi14" style="color: #73e061">'+data[i].name+'</div>';
+                str+='<div class="pad-top5 wenzi12">全场通用</div>';
+              str+='	<div class="pad-top5 wenzi12">有效期至'+data[i].end_time.text;
+              str+='	<div class="zhong lingqu" onclick="lingqu('+data[i].coupon_id+')">立即使用</div>';
+              str+='	</div>';
+
+              str+='</div>';
+
+
+        str+='  </div>';
+}
+
+  str+=   '</div>';
+
+
+
+
+
+
+
+  		var index = layer.open({
+  			type: 1,
+  			title: ['选择配送时间', 'magin:0;padding:0;text-align:center;'],
+  			area: ['100%', '60%'],
+  			skin: 'layui-layer-demo ', //样式类名
+
+  			closeBtn: 1,
+  			anim: 2,
+  			shadeClose: true, //开启遮罩关闭
+	content: str,
+  			offset: 'b'
+
+  		})
+
+
+    /*  $(".lingqu").click(function(){
+        lq($(this).attr("name"));
+        		layer.close(index);
+      });*/
+
+  	}
+
+
+
+
+
+    function list1(){
+      api.openWin({
+           name: 'yhqlist',
+          url: 'widget://html/v1/lqyhq.html',
+
+      });
+    }
+
+
+
+
+    function pingjia(){
+
+    api.ajax({
+        url: pingjia_list_url,
+        method: 'post',
+        data: {
+            values: {
+
+                goods_id: api.pageParam.id,
+
+            }
+        }
+    },function(ret, err){
+      if(!ret.data.list)return false;
+        var pingjia=ret.data.list.data;
+        var str="";
+        var pingjia_num=json_num(pingjia);
+        if(pingjia_num>1){
+        $("#pingjia_num").html(pingjia_num);
+        $("#pingjia_numk").fadeIn();
+        }
+      for(var i=0;i<json_num(pingjia);i++){
+
+if(i<=1){
+        str+= '<li class="aui-list-item">';
+              str+= '  <div class="aui-media-list-item-inner">';
+                  str+= '  <div class="aui-list-item-media" style="width:2.4rem">';
+                  str+= '      <img src="../../image/221.png" class="aui-img-round" />';
+                  str+= '  </div>';
+                  str+= '  <div class="aui-list-item-inner">';
+                      str+= '  <div class="aui-list-item-text">';
+                          str+= '  <div class="aui-list-item-title aui-text-info">'+pingjia[i].user.nickName+'</div>';
+                      str+= '  </div>';
+                        str+= '  <div class="aui-list-item-text" style="color:#333;">';
+                        switch(pingjia[i].score) {
+                                            case 1:
+                                            str+='<div>';
+                                              str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                                              str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                                                        str+='</div>';
+                                              str+='很不满意';
+                                            break;
+                                             case 2:
+                                             str+='<div>';
+                                               str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                                               str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                                                         str+='</div>';
+                                               str+='不满意';
+                                            break;
+                                            case 3:
+                                            str+='<div>';
+                                              str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                                              str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                                              str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                                                      str+='</div>';
+                                              str+='一般';
+                                            break;
+                                            case 4:
+                                            str+='<div>';
+                                              str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                                              str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                                              str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                                              str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                                                  str+='</div>';
+                                              str+='满意';
+                                            break;
+                                            case 5:
+                                            str+='<div>';
+                                              str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                                              str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                                              str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                                              str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                                              str+='<img style=" display:inline-block; padding:2px; width:20px;height:20px;" src="../../plug/star/lib/img/star-on.png">';
+                                              str+='</div>';
+                                              str+='很满意';
+                                            break;
+                                              }
+                        str+='</div>';
+                      str+= '  <div class="aui-list-item-text" style="color:#333;">'+pingjia[i].content+'</div>';
+
+                      str+= '  <div class="aui-info aui-font-size-12 aui-padded-t-0 aui-padded-b-0">';
+                        str+= '    <div class="aui-info-item">'+pingjia[i].create_time+'</div>';
+                      str+= '  </div>';
+                  str+= '  </div>';
+              str+= '  </div>';
+            str+= '</li>';
+
+
+}
+
+      }
+
+   $(".pingjia").html(str);
+
+
+    });
+
+    }
+
+
+    function get_shop_info(){
+      api.ajax({
+          url: goods_info_url,
+          method: 'post',
+          data: {
+              values: {
+                token: api.getPrefs({sync: true,key:'login_id'}),
+                  goods_id: id
+              }
+          }
+      },function(ret, err){
+          if (ret) {
+            if(ret.code==1){
+            $('html,body').animate({scrollTop:0},'slow');
+              //alert( JSON.stringify( ret ) );
+              var data1=ret.data.detail.prom;
+              var str1="";
+              if(data1!=null){
+                  str1='<div class="col4 wenzi14 pad-left10" style="background:#ff5757; color:#ffffff; height:50px;line-height:50px;">'+data1.name+'<span class="wenzi12 left10">'+data1.status.text+'</span></div>';
+                  str1+='<div class="col4 shijian wenzi14" style="height:50px;line-height:50px; background:#F2F2F2;padding-left:10px;"><div class="daojishi cang"><span style=" color:#ff5757;margin-right:5px;">距结束:</span><span class="w h shi">00</span><span class="left5 right5">:</span><span class="w m fen">00</span><span class="left5 right5">:</span><span class="w s miao">00</span></div></div>';
+                  $("#f_miaosha").html(str1);
+
+                  timediff=data1.status.countdown;
+                  //console.log(timediff)
+                  if(timediff>=0){
+                    $(".daojishi").removeClass("cang");
+                  }
+                 daojishi();
+
+              }
+              var data=ret.data.detail;
+              shop=info=data;
+              api.sendEvent({
+                  name: 'get_goods_info',
+                  extra:{
+                    shopinfo:data
+                  }
+              });
+
+              if(ret.data.cart_total_num>0){
+                $(".car_num").html(ret.data.cart_total_num).show();
+              }
+
+
+              var img=data.image;
+              var str='';
+
+              for (var i = 0; i < json_num(img); i++) {
+
+
+
+                str+='<div class="aui-slide-node bg-dark"><img src="'+img[i].file_path+'" /></div>';
+              }
+              $("#aui-slide .aui-slide-wrap").html(str);
+              banner();
+              $("#goods_name").html(data.goods_name);
+              $(".shuliang").val('1'+shop.units.name);
+              $("#miaoshu").html(data.selling_point);
+              $("#jiage").html(data.now_price.value);
+              $("#yuanjia").html("￥"+data.origin_price);
+              $("#goods-detail").html(data.content);
+            }else{
+              tishi(ret.msg);
+              setTimeout(function(){fanhui();},1500);
+            }
+          } else {
+              //alert( JSON.stringify( err ) );
+              tishi(err.msg)
+          }
+      });
+
+    }
+
+    function banner(){
+      var slide = new auiSlide({
+          container:document.getElementById("aui-slide"),
+          // "width":300,
+          "height":360,
+          "speed":300,
+          "pageShow":true,
+          "pageStyle":'dot',
+          "loop":true,
+          'dotPosition':'center',
+          // currentPage:currentFun
+      })
+    }
+
+
+    function donghua_add_cart(){
+      var weizhi=$("#aui-slide>div>div").eq(0).find('img').offset();
+      var obj=$("#aui-slide>div>div").eq(0).find('img');
+      $("body").append('<img src="'+$("#aui-slide>div>div").eq(0).find('img').attr('src')+'" class="dongtai2" id="donghua_tu" style="border-radius: 50%;width:'+obj.width()+'px;height:'+obj.height()+'px;position:absolute;left:0px;top:'+weizhi.top+'px;z-index:999999">');
+      //alert('<img src="'+$("#aui-slide>div>div").eq(0).find('img').attr('src')+'" class="dongtai" id="donghua_tu" style="width:'+obj.width()+'px;height:'+obj.height()+'px;position:absolute;left:'+weizhi.left+'px;top:'+weizhi.top+'px;z-index:999">');
+
+
+      setTimeout(function(){
+        $("#donghua_tu").addClass("zhongdian");
+
+        setTimeout(function(){
+          $("#donghua_tu").remove();
+        },1000);
+      },200);
+
+    }
+
+
+
+
+          function to_goods_info(id){
+            api.openWin({
+                name: 'to_goods_info2',
+                url: 'widget://html/v1/shop_info.html',
+                progress:{
+                  type:"page"
+                },
+                reload:true,
+                pageParam: {
+                    id:id,
+                }
+            });
+
+          }
+
+
+
+
+          function jia(){
+            var now=$(".shuliang").val()?parseInt($(".shuliang").val()):0;
+            if(now>=shop.sku[0].stock_num){
+                tishi("没有这么多了");
+                return false;
+            }
+            $(".shuliang").val((now+1)+shop.units.name);
+          }
+          function jian(){
+            var now=$(".shuliang").val()?parseInt($(".shuliang").val()):0;
+            if(now<=1){
+                tishi("最低选择1件");
+                return false;
+            }
+            $(".shuliang").val((now-1)+shop.units.name);
+          }
+          function gouwuche(){
+            if(car_num==0){
+              $(".car_num").hide();
+            }else {
+              $(".car_num").html(car_num).show();
+              api.sendEvent({
+                  name: 'update_cart_num',
+                  extra: {
+                      num: car_num
+                  }
+              });
+            }
+          }
+
+
+
+
+          function to_gouwuche(){
+            api.sendEvent({
+                name: 'to_qiehuan',
+                extra: {
+                    name: 2
+                }
+            });
+            api.closeToWin({
+              name: 'root'
+          });
+          }
+
+
+          function add_cart2(){
+            var num=parseInt($(".shuliang").val());
+            $('html,body').animate({scrollTop:0},'slow',function(){
+              add_to_cart2(num);
+            });
+
+            //car_num+=parseInt($(".shuliang").val());
+            $(".shuliang").val(0);
+            //gouwuche();
+
+          }
+
+          function add_to_cart2(num){
+            api.ajax({
+                url: add_to_cart_url,
+                method: 'post',
+                data: {
+                    values: {
+                        token: api.getPrefs({sync: true,key:'login_id'}),
+                        goods_id:shop.goods_id,
+                        goods_sku_id:shop.sku[0].goods_sku_id,
+                        goods_num:num
+                    }
+                }
+            },function(ret, err){
+                if (ret) {
+                      tishi(ret.msg);
+                      if(ret.code==1){
+                        car_num=ret.data.cart_total_num
+                        gouwuche();
+                        api.sendEvent({
+                            name: 'good_info_add_cart_donghua',
+                            extra: {
+                                num: num
+                            }
+                        });
+                      }
+
+                } else {
+                    //alert( JSON.stringify( err ) );
+                    tishi(err.msg)
+                }
+            });
+
+          }
+
+
+function to_pingjia_list(){
+  api.openWin({
+      name: 'to_pingjia_list',
+      url: 'widget://html/v1/common_win.html',
+      progress:{
+        type:"page"
+      },
+      reload:true,
+      pageParam: {
+          id:id,
+          title:"商品评价",
+          muban:"shop_info_pingjia"
+      }
+  });
+}
+
+function get_tuijian2(){
+  api.ajax({
+      url: cate_goodslist_url,
+      method: 'post',
+      data: {
+        values:{category_id:1}
+      }
+  },function(ret, err){
+      if (ret) {
+          if(ret.code==1){
+            var data=ret.data.list.data,str='';
+
+            for (var i = 0; i < json_num(data); i++) {
+              if(i<=7){
+              str+='<div class="t_list">';
+                str+='<div class="t_k">';
+                if(data[i].stock_num==0){
+                  str+='<div class="meiyoulek"  onclick="to_goods_info('+data[i].goods_id+')"><span class="meiyoule">抢光了</span></div>';
+                }
+                  str+='<img src="'+data[i].image+'"  onclick="to_goods_info('+data[i].goods_id+')" id="ttj_'+data[i].goods_id+'" class="widthall">';
+                  str+='<div class="wenzi12 over-cang"   onclick="to_goods_info('+data[i].goods_id+')">'+data[i].goods_name+'</div>';
+                  str+='<div class="t_tags">';
+                  if(data[i].prom){
+                  if(data[i].prom.style.value==1){
+                    str+='<span>秒杀</span>';
+                  }else if(data[i].prom.style.value==2){
+                      str+='<span>限时抢购</span>';
+                  }
+                  }
+                  str+='</div>';
+                  str+='<div class="hanggao24 wenzi12 money">￥<span><span class="wenzi16">'+data[i].now_price.value.substr(0,data[i].now_price.value.length-3)+'</span>'+data[i].now_price.value.substr(-3, 3)+'</span><s class="yanse0">￥'+data[i].origin_price+'</s>';
+
+                  str+='</div>';
+                  str+='<div class="hanggao18 height18 wenzi12 lvka-yanse">';
+                  if(data[i].vip_price>0){
+                  str+='￥<span>'+data[i].vip_price+'</span><span class="price-lvka">绿卡价</span>';
+                  }
+                  str+='</div>';
+                  str+='<img src="../../image/buy.png" class="cart_btn" height="25"    onclick="to_goods_info('+data[i].goods_id+')">';
+                str+='</div>';
+              str+='</div>';
+
+            }
+            $("#tuijian2").html(str+'<div class="clear"></div>');
+            //$(".meiyoulek").click(function(){  tishi("抢光了");});
+          }
+          }
+      } else {
+          tishi( err.msg );
+      }
+  });
+}
+</script>
+</html>

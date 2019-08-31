@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,aItemress=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+        <link rel="stylesheet" type="text/css" href="../../../css/aui-new.css" />
+	  <style>
+    .aui-content{background:white;position: fixed;height: 100%; }
+
+   .aui-tab{display:block;}
+    #footer .aui-btn{
+          border-radius: 5rem;
+		  margin: auto;
+    }
+    </style>
+</head>
+<body  style="background-color:rgba(255,255,255,0);padding:0px;">
+  <header class="aui-bar aui-bar-nav"   style=" border-radius: 0.5rem 0.5rem 0 0;border-bottom:1px #ddd solid; ">
+
+     <div class="aui-title">选择时间</div>
+     <a class="aui-pull-right aui-btn" tapmode onclick="close_timer_select()"  >
+         <span class="aui-iconfont aui-icon-close"></span>
+     </a>
+  </header>
+   <div id="app">
+  <section class="aui-content aui-col-xs-12 ">
+
+    <div class="aui-card-list aui-border-t aui-border-b aui-col-xs-6">
+    <div class="aui-tab" id="tab">
+      <div class="aui-tab-item "  v-bind:class="{'aui-active':active==index}"  v-for="(vo,index) in datelist" v-bind:key="index" tapmode v-on:click="select_date(index)">{{vo.date}}</div>
+
+
+   </div>
+   </div>
+   </section>
+  <!-- <header class="aui-bar aui-bar-nav" id="aui-header" style=" border-radius: 0.5rem 0.5rem 0 0; ">
+      <a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
+          <span class="aui-iconfont aui-icon-left"></span>
+      </a>
+      <div class="aui-title">结算</div>
+  </header> -->
+
+
+
+ <footer class="aui-bar aui-bar-tab" id="footer">
+    <ul class="aui-list aui-list-in  ">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner " style=" line-height: 3rem; height: 3rem; ">
+                   <div class="aui-btn aui-btn-success"  tapmode onclick="close_timer_select()"   >确定</div>
+                </div>
+
+            </li>
+			</ul>
+
+
+
+  </footer>
+
+  </div>
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/aui-tab.js" ></script>
+<script type="text/javascript" src="../../../script/common.js" ></script>
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#app',
+    data: {
+      datelist:[],
+      select_date:'',
+      select_time:'',
+      active:-1
+    },
+    methods: {
+      init:function(){
+console.log(get_date_list_url);
+        api.ajax({
+            url: get_date_list_url,
+            method: 'get',
+            data: {
+              values:{}
+            }
+        },function(ret, err){
+          vm.datelist=ret.data;
+          vm.active=0;
+          console.log(JSON.stringify(vm.datelist));
+        })
+      },
+      select_date:function(index){
+        vm.active=index;
+        console.log(index);
+      }
+    },
+
+    watch:{
+      active:{
+
+        handler: function (val, oldVal) {
+          // console.log(vm.datelist[val].shottime);
+         if(val!=-1){
+           api.sendEvent({
+               name: 'send_date',
+               extra: {
+                 select_date: vm.datelist[val],
+               }
+           });
+           }
+        },
+      },
+     }
+
+
+  });
+    apiready = function(){
+        api.parseTapmode();
+       vm.init();
+      api.addEventListener({
+                  name: 'close_timer_select'
+                }, function(ret, err) {
+                  api.closeFrame();
+              });
+    }
+
+    function close_timer_select() {
+        //  api.closeFrame();
+        api.sendEvent({
+          name: 'close_timer_select',
+         });
+        // api.closeFrame();
+    }
+</script>
+</html>

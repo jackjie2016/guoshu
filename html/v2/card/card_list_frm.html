@@ -1,0 +1,291 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>Mis tarjetas</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+        <link rel="stylesheet" type="text/css" href="../../../css/aui-new.css" />
+    <style>
+	.aui-list-item{
+	    height: 2.2rem;
+        line-height: 2.2rem;
+	 }
+
+	 .active{
+	     opacity: 0.3;
+	   }
+	   .card-info{
+	       height: 2.5rem;
+           line-height: 2.5rem;
+	   }
+	   .card-thumbnail{
+	       line-height: 2.2rem;
+	       height: 2.2rem;
+	       vertical-align: middle;
+	       position: relative;
+	   }
+	   	.card-thumbnail img{
+		    width: 49px;
+	        position: relative;
+	        bottom: -30%;
+	   }
+
+	   .card-name{
+	   font-size: 0.8rem;
+	   height: 1.4rem;
+	   line-height: 1.8rem;
+	   padding-left: 10px;
+	   }
+	   .card-num{font-size: 0.6rem;height: 1rem;line-height: 1rem;padding-left: 10px;}
+	    .op-btn{
+	  text-align: center;
+	  display:flex;
+	 }
+	 .op-btn i{flex:1;}
+	 .op-btn .aui-icon-trash,.op-btn .aui-icon-close{color:green;}
+	 .aui-list .aui-list-header{    padding: 1rem 0.75rem 0.4rem 0.75rem;background-color: #efef;}
+   .footer-btn{
+     position: fixed;
+     bottom: 1rem;
+     width: 80%;
+     left: 10%;
+   }
+	</style>
+</head>
+<body>
+  <div class="aui-content" id="app">
+    <!-- cardlist:[],
+    default_card:[], -->
+
+    <ul class="aui-list aui-list-in aui-list-noborder card-list" style=" margin-top: 0.5rem; " v-if="default_card.length>0">
+
+        <li class="aui-list-item card-info" tapmode="transition-delay: 2s;background:red;" v-for="(vo,index) in default_card" v-bind:key="index"  >
+            <div class="aui-col-xs-10">
+        <div class="aui-col-xs-2 card-thumbnail">
+        <img style="width:49px;" :src="vo['payment_method']['thumbnail']">
+        </div>
+        <div class=" aui-col-xs-10  "   v-bind:class="{ active:op_id==vo.id}">
+        <div class=" aui-col-xs-12 card-name"  >{{vo.cardholder.name}}</div>
+
+    <div class=" aui-col-xs-12 card-num"  >
+    <i class="aui-iconfont aui-icon-more" > </i>
+     <i class="aui-iconfont aui-icon-more" ></i>
+    <i class="aui-iconfont aui-icon-more" ></i>
+     {{vo.last_four_digits}}
+    </div>
+              </div>
+            </div>
+      <div class="aui-col-xs-2 op-btn" v-if="op_id==vo.id">
+          <i class="aui-iconfont aui-icon-trash"   tapmode v-on:click="op_delete(vo.id)"></i>
+          <i class="aui-iconfont aui-icon-close"   tapmode v-on:click="op_action(vo.id)"></i>
+       </div>
+       <div class="aui-col-xs-2 op-btn" v-else>
+         <i class="aui-iconfont "></i>
+        <i class="aui-iconfont aui-icon-more"
+        style="-webkit-transform: rotate(-90deg);transform: rotate(-90deg);"
+        tapmode v-on:click="op_action(vo.id)">
+        </i>
+        </div>
+    </li>
+  </ul>
+    <ul class="aui-list aui-list-in aui-list-noborder card-list" v-if="cardlist.length>0">
+           <li class="aui-list-header">OTRAS TARJETAS</li>
+           <li class="aui-list-item card-info" tapmode="transition-delay: 2s;background:red;" v-for="(vo,index) in cardlist" v-bind:key="index"  >
+               <div class="aui-col-xs-10" v-bind:class="{ active:op_id==vo.id}">
+                   <div class="aui-col-xs-2 card-thumbnail">
+          <img style="width:49px;" :src="vo['payment_method']['thumbnail']">
+         </div>
+         <div class=" aui-col-xs-10  "  >
+                <div class=" aui-col-xs-12 card-name"  >{{vo.cardholder.name}}</div>
+         <div class=" aui-col-xs-12 card-num"  >
+         <i class="aui-iconfont aui-icon-more" >  </i>    <i class="aui-iconfont aui-icon-more" ></i>    <i class="aui-iconfont aui-icon-more" ></i>    {{vo.last_four_digits}}
+         </div>
+        </div>
+        </div>
+        <div class="aui-col-xs-2 op-btn" v-if="op_id==vo.id">
+            <i class="aui-iconfont aui-icon-trash"   tapmode v-on:click="op_delete(vo.id)"></i>
+            <i class="aui-iconfont aui-icon-close"   tapmode v-on:click="op_action(vo.id)"></i>
+         </div>
+         <div class="aui-col-xs-2 op-btn" v-else>
+           <i class="aui-iconfont "></i>
+          <i class="aui-iconfont aui-icon-more"
+          style="-webkit-transform: rotate(-90deg);transform: rotate(-90deg);"
+          tapmode v-on:click="op_action(vo.id)">
+          </i>
+          </div>
+           </li>
+
+    </ul>
+    <div class="aui-btn aui-btn-success aui-btn-block footer-btn" tapmode onclick="to_add_card()">
+      Agrega nueva tarjeta
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+ <script type="text/javascript" src="../../../script/vue.js"></script>
+ <script type="text/javascript" src="../../../script/common.js"></script>
+
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#app',
+    data: {
+       cardlist:[],
+       default_card:[],
+       default_card_id:'',
+       op_id:-1,
+       customers_id:'',
+
+    },
+    methods: {
+
+
+      init:function(){
+        vm.default_card=[];
+        var mcustomer_id=api.getPrefs({sync: true,key:'mcustomer_id_'+Is_debug});
+        console.log(mcustomer_id);
+        if(!mcustomer_id){
+          api.ajax({
+              url: get_customerID_url,
+              method: 'get',
+              data: {
+                values:{token: api.getPrefs({sync: true,key:'login_id'})}
+              }
+          },function(ret, err){
+            console.log(api.getPrefs({sync: true,key:'login_id'}));
+            if(ret){
+            console.log(JSON.stringify(ret));
+            if(ret.code==1){
+              api.setPrefs({ key: 'mcustomer_id_'+Is_debug,value: ret.data.customer_id });
+              vm.customer_id=ret.data.customer_id;
+
+              vm.search_coustom(ret.data.customer_id);
+            }
+            }else{
+            }
+          })
+        }else{
+          vm.customer_id=mcustomer_id;
+          vm.search_coustom(mcustomer_id);
+        }
+        //  this.active_token();
+
+        api.refreshHeaderLoadDone();
+      },
+      search_coustom:function(customer_id) {
+        console.log(customer_id);
+          api.ajax({
+              url: customers_search_url,
+              method: 'get',
+              data: {
+                values:{id: customer_id,access_token:access_token}
+              }
+          },function(ret, err){
+   console.log(JSON.stringify(ret));
+            if(ret){
+   console.log(JSON.stringify(ret));
+            if(ret.results){
+               console.log(JSON.stringify(ret.results));
+            //  console.log(JSON.stringify(ret.results[0].cards.length));
+            if(ret.results.length>0){
+              vm.cardlist=ret.results[0].cards;
+              vm.default_card_id= ret.results[0].default_card;
+
+              // console.log(JSON.stringify(ret.results[0]['cards']));
+              // console.log(vm.default_card_id);
+              if(vm.default_card_id && vm.cardlist.length>0){
+                for(var i=0;i<vm.cardlist.length;i++){
+                  if(vm.cardlist[i]['id']==vm.default_card_id){
+                    vm.default_card=[];
+                     vm.default_card.push(vm.cardlist[i]);
+                        console.log(JSON.stringify(vm.cardlist[i]));
+                     vm.cardlist.splice(i, 1);
+
+                  }
+                }
+
+              }
+
+            }
+
+            }
+            // vm.identification_list=ret;
+            }else{
+
+            }
+          })
+       },
+      get_mcustomer_id:function(){
+
+      },
+	    op_action:function(id){
+
+          if(vm.op_id==id){
+            vm.op_id=-1;
+          }else{
+            vm.op_id=id;
+          }
+       },
+       op_delete:function(id){
+         console.log(customers_url+'/'+vm.customer_id+'/cards/'+id);
+         console.log(access_token);
+         api.ajax({
+             url: customers_url+'/'+vm.customer_id+'/cards/'+id+'?access_token='+access_token,
+             method: 'delete',
+             headers: {
+             "Content-type": "application/json;charset=UTF-8",
+             "X-APICloud-AppId": 'A6003781264450',
+             "X-APICloud-AppKey": 'CEB1F6F0-52BC-BDED-C222-CF6E54BE43D8'
+             },
+             data: {
+               values:{}
+             }
+         },function(ret, err){
+
+           if(ret){
+             console.log(JSON.stringify(ret));
+             api.sendEvent({
+                       name: 'reloading',
+                });
+           // vm.identification_list=ret;
+           }else{
+
+           }
+         })
+       },
+
+
+      }
+     });
+    apiready = function(){
+        api.parseTapmode();
+
+        vm.init();
+        api.setCustomRefreshHeaderInfo({
+        bgColor: '#f2f2f2',
+        images: ['widget://image/jiazai/1.png','widget://image/jiazai/2.png','widget://image/jiazai/3.png','widget://image/jiazai/4.png'],
+        tips: {
+            pull: '下拉刷新',
+            threshold: '松开立即刷新',
+            load: '正在刷新'
+        }
+      }, function() {
+        //下拉刷新被触发，自动进入加载状态，使用 api.refreshHeaderLoadDone() 手动结束加载中状态
+        //下拉刷新被触发，使用 api.refreshHeaderLoadDone() 结束加载中状态
+          vm.init();
+      });
+        //监听网络连接事件
+        api.addEventListener({
+              name: 'reloading'//刷新订单确认页面
+          }, function(ret, err) {
+          window.location.reload()
+
+          });
+    }
+
+
+</script>
+</html>

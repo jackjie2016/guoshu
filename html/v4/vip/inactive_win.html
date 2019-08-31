@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+   <link rel="stylesheet" type="text/css" href="../../../css/icons/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/public.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/T.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/aui-slide.css" />
+    <style>
+       .op-btn i{
+
+    padding: 0.2rem;
+    color: white;
+
+
+    border-radius: 1rem;
+
+	   }
+
+    </style>
+</head>
+<body style="background-color:rgba(255,255,255,0);">
+
+<div id="app">
+
+  <header class="aui-bar aui-bar-nav gray-font aui-font-size-16" id="aui-header"  style="    background: white;"  >
+    <a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
+        <i class="icon iconfont iconround-arrow_back-px gray-font"  ></i>
+    </a>
+    <div class="  aui-font-size-18  pink-font " >V.I.P. Tarjeta Verde</div>
+
+  </header>
+ </body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/T.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+
+
+<script type="text/javascript">
+   	var headerH,pageParam={};
+
+      apiready = function () {
+        api.parseTapmode();
+        var header = $api.byId('aui-header');
+        $api.fixStatusBar(header);
+        var headerPos = $api.offset(header);
+        var body_h = $api.offset($api.dom('body')).h;
+        api.addEventListener({
+            name: 'flush'
+        }, function(ret, err){
+            if( ret ){
+                 console.log('付款成功刷新');;
+            }
+        });
+
+        api.openFrame({
+            name: 'inactive_frm',
+            url: './inactive_frm.html',
+            bounces: false,
+            rect: {
+                x: 0,
+                y: headerPos.h,
+                w: 'auto',
+                h: 'auto'
+            },
+
+
+        })
+      }
+
+
+
+
+
+    function closeWin(){
+        api.closeWin({
+        });
+    }
+</script>
+</html>

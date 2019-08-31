@@ -1,0 +1,189 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+
+    <style>
+       #footer{
+         height: 200px;
+
+       }
+       .aui-searchbar .aui-searchbar-btn{
+         margin-right: -3.5rem;
+         width: 3.5rem;
+       }
+    </style>
+</head>
+<body>
+
+  <header class="aui-bar aui-bar-nav" id="aui-header" style="background:#2e3649;color:white;">
+    <a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
+        <span class="aui-iconfont aui-icon-left" style=" color: white; "></span>
+    </a>
+    <div class="aui-title">Actividad de pico</div>
+     <a class="aui-btn aui-pull-right" tapmode id="cart" style="margin-right:1rem; ">
+        <div class="aui-badge"  v-if="total_goods_sum > 0">{{ total_goods_sum }}</div>
+        <span class="aui-iconfont aui-icon-cart" style=" color: white; "></span>
+      </a>
+  </header>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#aui-header',
+    data: {
+      search_input: '',
+      total_goods_sum:'',
+    },
+    methods: {
+     init:function(){
+       vm.update_tatal_goods_sum();
+       },
+       update_tatal_goods_sum: function () {
+           api.ajax({
+               url: total_goods_sum_url,
+               method: 'post',
+               timeout: 30,
+               dataType: 'json',
+               returnAll: false,
+               data: {
+                   values: {
+                       token: api.getPrefs({sync: true,key:'login_id'}),
+                       deviceid: api.deviceId,
+                   }
+               }
+           }, function (ret, err) {
+               if (ret) {
+                 console.log(JSON.stringify(ret))
+                   if(ret.code == 1){
+                       vm.total_goods_sum = ret.data.data.total_goods_sum;
+                   }else{
+                       vm.total_goods_sum = 0;
+                   }
+               } else {
+                 // console.log(JSON.stringify(err))
+                   api.alert(JSON.stringify(err));
+               }
+           });
+       },
+
+    } ,watch:{
+        search_input:{
+           handler: function (val, oldVal) {
+             api.sendEvent({
+                 name: 'send_keywords',
+                 extra: {
+                     keywords: val
+                 }
+             });
+           }
+        },
+        },
+   });
+    apiready = function(){
+        api.parseTapmode();
+        var header = $api.byId('aui-header');
+
+        $api.fixStatusBar(header);
+        var headerPos = $api.offset(header);
+        var body_h = $api.offset($api.dom('body')).h;
+        var search = $api.byId('search');
+        var searchPos = $api.offset(search);
+        var frameHeight = api.frameHeight || '';
+
+
+           vm.init();
+
+          //  searchBarBtn.onclick = function(){
+          //     var keywords = searchBarInput.value;
+          //     this.style.marginRight = "-"+this.offsetWidth+"px";
+          //     searchBarInput.value = '';
+          //     searchBarInput.blur();
+          //     closeSearchList();
+          // }
+
+        api.openFrame({
+            name: 'detail_frm',
+            url: 'detail_frm.html',
+            bounces: false,
+            rect: {
+                x: 0,
+                y: headerPos.h,
+                w: 'auto',
+                h: 'auto'
+            }
+        });
+
+
+
+        var box=document.getElementById('cart');
+        console.log(box.getBoundingClientRect().top);
+        console.log(box.getBoundingClientRect().left);
+
+        //获取选中的关键字
+        api.addEventListener({
+            name: 'select_keywords'
+        }, function(ret, err){
+            if( ret ){
+                searchBarInput.value = ret.value.keywords;
+                searchBarClearBtn.style.display = 'block';
+            }
+        });
+        //发送购物车的位置
+       api.addEventListener({
+            name: 'ask_top_cart_pos'
+        }, function(ret, err){
+          console.log('发送购物车位置')
+          console.log(box.getBoundingClientRect().top+','+box.getBoundingClientRect().left)
+          api.sendEvent({
+              name: 'top_cart_pos',
+              extra:{
+                cart_top:box.getBoundingClientRect().top,
+                cart_left:box.getBoundingClientRect().left
+              }
+           });
+        });
+        // 加载飞入窗口
+        api.openFrame({
+            name: 'fly_frm',
+            url: '../common/fly_frm.html',
+            bounces: false,
+            rect: {
+                x: 0,
+                y: 0,
+                w: 0,
+                h: 0
+            }
+
+
+        });
+
+
+        //更新购物车数量
+       api.addEventListener({
+           name: 'tatal_goods_sum'
+       }, function(ret, err){
+             vm.update_tatal_goods_sum();
+       });
+       //监听更新购物车命令
+       api.addEventListener({
+           name: 'update_cart_num'
+       }, function(ret, err) {
+           vm.update_tatal_goods_sum();
+       });
+
+    };
+
+
+
+    function closeWin(){
+        api.closeWin({
+        });
+    }
+</script>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,aItemress=no">
+    <title>未使用的有效优惠券</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+
+	  <style>
+
+    #footer .aui-btn{
+          border-radius: 5rem;
+		  margin: auto;
+    }
+	.coupon-list{
+	    border-radius: 5px;
+	}
+	.coupon-list  .item1{
+	 text-align: center;height: 4rem;display: block;border-right: 1px dotted;
+	}
+	.coupon-list  .item2{
+	 display: block;padding: 0;padding-left: 0.5rem;
+	}
+	.coupon-list  .item3{
+	border-radius: 2rem; position: relative; top: 1.5rem;    font-size: 11px;
+	}
+    </style>
+
+</head>
+<body   >
+   <div id="app">
+       <section class="aui-content aui-padded-10">
+	    <div class="aui-card-list coupon-list aui-padded-t-5 aui-padded-b-5" v-for="(vo,index) in coupon_list">
+             <div class="aui-row  ">
+                    <div class="aui-col-xs-4 ">
+					<div class=" aui-info item1" >
+					<div  class="aui-font-size-18 aui-text-success ">
+					 ${{vo.min_price}}
+					 </div>
+					<div class="aui-font-size-12 aui-text-default aui-ellipsis-1">满{{vo.reduce_price}}元使用</div>
+					</div>
+
+                    </div>
+                    <div class="aui-col-xs-8">
+					 <div class=" aui-info item2" >
+					     <h2 class="aui-grid-label aui-ellipsis-1" >{{vo.name}}</h2>
+					      <div class="aui-grid-label aui-ellipsis-1" style=" font-size:11px;">{{vo.coupon_type.text}}</div>
+					      <div class="aui-grid-label aui-ellipsis-1" style=" font-size:11px;">        有效期至 {{vo.end_time.text}} 00:00</div>
+
+					</div>
+
+
+
+					  <div class="aui-info aui-font-size-12 aui-padded-0 aui-padded-l-10     "><div class="aui-info-item">
+
+                              </div> <div class="aui-info-item aui-padded-r-15  aui-text-success aui-list-item-arrow" style=" padding-right: 1.2rem !important; ">Usar ahora</div>
+				     </div>
+                    </div>
+
+                </div>
+            </div>
+
+			 <!-- <div class="aui-card-list coupon-list aui-padded-t-5 aui-padded-b-5">
+             <div class="aui-row  ">
+                    <div class="aui-col-xs-4">
+					<div class=" aui-info" style="    text-align: center;height: 4rem;display: block;border-right: 1px dotted;">
+					<div  class="aui-font-size-18 aui-text-success ">
+					 $10
+					 </div>
+					<div class="aui-font-size-12 aui-text-default aui-ellipsis-1">满77元使用</div>
+					</div>
+
+                    </div>
+                    <div class="aui-col-xs-8">
+					 <div class=" aui-info" style=" display: block;padding: 0;padding-left: 0.5rem; ">
+					  <h2 class="aui-grid-label aui-ellipsis-1" >七夕10元表白券</h2>
+					      <div class="aui-grid-label aui-ellipsis-1" style=" font-size:11px;">全程通用</div>
+
+					</div>
+					 <div class="aui-info aui-font-size-12 aui-padded-0 aui-padded-l-10     "><div class="aui-info-item">
+                                    有效期至 2019-08-01 00:00
+                              </div> <div class="aui-info-item aui-padded-r-15  aui-text-success aui-list-item-arrow" style=" padding-right: 1.2rem !important; ">Usar ahora</div>
+				     </div>
+                    </div>
+
+                </div>
+            </div> -->
+	   </section>
+
+
+
+  </div>
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#app',
+    data: {
+     coupon_list:[],
+
+    },
+    methods: {
+
+      coupon_list:function(){
+        api.ajax({
+            url: user_coupon_url,
+            method: 'post',
+            timeout: 30,
+            dataType: 'json',
+            returnAll: false,
+            data: {
+                values: {
+                    data_type: 'not_use',
+                    token: api.getPrefs({sync: true,key:'login_id'}),
+
+                }
+            }
+        }, function (ret, err) {
+             console.log(JSON.stringify(ret))
+              console.log(JSON.stringify(err))
+            if (ret) {
+
+                if(ret.code == 1){
+
+                  vm.coupon_list=ret.data.list;
+
+                }
+
+            } else {
+                api.alert(JSON.stringify(err));
+            }
+        });
+      },
+      receive_list:function(index){
+        api.ajax({
+            url: receive_coupon_url,
+            method: 'post',
+            timeout: 30,
+            dataType: 'json',
+            returnAll: false,
+            data: {
+                values: {
+                    coupon_id: vm.coupon_list[index].coupon_id,
+                    token: api.getPrefs({sync: true,key:'login_id'}),
+
+                }
+            }
+        }, function (ret, err) {
+             console.log(JSON.stringify(ret))
+              console.log(JSON.stringify(err))
+            if (ret) {
+
+                if(ret.code == 1){
+                  vm.coupon_list[index].is_receive=true;
+                }
+                api.toast({
+                    msg: ret.msg,
+                    duration: 2000,
+                    location: 'bottom'
+                });
+            } else {
+                api.alert(JSON.stringify(err));
+            }
+        });
+
+
+      },
+    },
+    watch:{
+      coupon_id:{
+        handler: function (val, oldVal) {
+          console.log(val);
+
+           api.sendEvent({
+               name: 'selected_coupon',
+               extra: {
+                 coupon_index: vm.coupon_index,
+                 coupon_id: vm.coupon_id,
+               }
+           });
+
+        },
+      }
+
+    }
+  });
+    apiready = function(){
+        api.parseTapmode();
+        vm.coupon_list();
+
+    }
+
+</script>
+</html>

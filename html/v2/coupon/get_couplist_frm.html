@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,aItemress=no">
+    <title>Recoge cupones</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+        <link rel="stylesheet" type="text/css" href="../../../css/aui-new.css" />
+	  <style>
+
+    #footer .aui-btn{
+          border-radius: 5rem;
+		  margin: auto;
+    }
+    </style>
+</head>
+<body  style="background-color:rgba(255,255,255,0);padding:0px;">
+  <header class="aui-bar aui-bar-nav"   style=" border-radius: 0.5rem 0.5rem 0 0; ">
+
+     <div class="aui-title">Recoge cupones</div>
+     <a class="aui-pull-right aui-btn" tapmode onclick="close_couplist()"  >
+         <span class="aui-iconfont aui-icon-close"></span>
+     </a>
+  </header>
+
+  <!-- <header class="aui-bar aui-bar-nav" id="aui-header" style=" border-radius: 0.5rem 0.5rem 0 0; ">
+      <a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
+          <span class="aui-iconfont aui-icon-left"></span>
+      </a>
+      <div class="aui-title">结算</div>
+  </header> -->
+   <div id="app">
+
+<!--
+ <footer class="aui-bar aui-bar-tab" id="footer">
+    <ul class="aui-list aui-list-in  ">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner " style=" line-height: 3rem; height: 3rem; ">
+                   <div class="aui-btn aui-btn-success" tapmode onclick="no_use_coupon()"  >No uses cupones</div>
+                </div>
+
+            </li>
+			</ul>
+	</div>
+
+
+  </footer> -->
+
+  </div>
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#app',
+    data: {
+      styleObject: {
+        background: 'white',
+        height: 0,
+        opacity: 1,
+       },
+        height: 0,//显示当前索引
+    },
+    methods: {
+    },
+  });
+    apiready = function(){
+        api.parseTapmode();
+
+
+		var headerPos = $api.offset(header);
+
+		vm.styleObject['height']=api.winHeight+'px';
+        console.log(api.winHeight);
+        vm.styleObject['height']=api.winHeight+'px';
+          console.log(api.winHeight);
+
+		   var header = $api.byId('aui-header');
+        $api.fixStatusBar(header);
+
+
+    }
+
+
+</script>
+</html>

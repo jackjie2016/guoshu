@@ -1,0 +1,304 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit" />
+	<link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/zhu.css"/>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="../../script/zhu.js"></script>
+<title>添加地址</title>
+<style type="text/css">
+/* 顶部 开始*/
+
+.gengduo{ width:17px; height:17px;}
+.kaiguan{ width:32px; height:32px;display: inline-block;background: url(../../image/kaiguan1.png) no-repeat center center;background-size: 32px;}
+.kaiguan.on{ width:32px; height:32px;display: inline-block;background: url(../../image/kaiguan2.png) no-repeat center center;background-size: 32px;}
+.biaodan{padding: 20px;position: absolute;left:0;top:0;right: 0;bottom: 0;z-index: 200;display: none;background-color: #fff;}
+.biaodan.on{display: block;}
+
+.sex{ padding-left: 21px;line-height: 18px;background: url(../../image/x2.png) center left no-repeat;background-size: 18px;font-size: 14px;color: #666;margin: 3px 5px;}
+.sex.on {background: url(../../image/x1.png) center left no-repeat;background-size: 18px;}
+.bq{ line-height:26px;}
+.moren{ margin:5px auto 0;}
+.shuoming{ font-size:12px; color:#999;}
+.baocun{ text-align:center; border: #00B75B 1px solid; background-color:#00B75B ; color:#FFF; padding:6px; margin:10px; border-radius:20px;}
+.baocun2{ text-align:center; border: #eee 1px solid; background-color:#eee ; color:#000; padding:6px; margin:10px; border-radius:20px;}
+
+#anniuk{position: fixed;left: 0;right: 0;bottom: 0;z-index: 100;}
+.shuru{line-height: 32px; height: 32px;border: 0;width: 100%;}
+.kkk{padding: 10px 0;border-bottom: 1px solid #f6f6f6;}
+.dizhigai{width: 24px;height: 24px;}
+/*#dizhilist .hezi{border-bottom: 1px solid #f6f6f6;position:relative;}
+#dizhilist .hezi .moren{display: none;}
+#dizhilist .hezi.on .moren{display: block;position: absolute;left:0;top:-5px;width: 32px;z-index: 101;}*/
+
+/*大燕修改样式*/
+.xiugai{width: 24px; height: 24px;}
+.biao{color: #1fb157;background-color: #e9ffe3; padding:0 8px;border-radius: 12px; font-size:12px; margin-left: 5px;}
+.biao1{ padding:0 8px;border-radius: 12px; font-size:12px;background-color: #fff3d8;color: #ffb000; margin-left: 5px;}
+.shouji{margin-left: 5px;}
+.tianjia{width: 70%; border-radius: 20px;}
+</style>
+</head>
+
+<body>
+<!-- 顶部开始-->
+<div id="dizhilist"></div>
+<div class="height100"></div>
+<div id="anniuk" class="pad10 juzhong"><a onclick="show_dizhi()" class="btn btn-success" style="border-radius:24px;padding-left:20px;padding-right:20px;">+ Agregar nueva direccion</a></div>
+
+    <div class="biaodan">
+			<div class="hezi kkk">
+				<div class="col1 hanggao32">Contacto</div>
+				<div class="col3"><input type="text" class="shuru" id="name" placeholder="Por favor ingrese su contacto"></div>
+			</div>
+			<div class="hezi kkk">
+				<div class="col1 hanggao32"> </div>
+				<div class="col3">
+					<label class="sex on">Masculino</label>
+					<label class="sex">Femanino</label>
+				</div>
+			</div>
+
+			<div class="hezi kkk">
+				<div class="col1 hanggao32">Numero de Celular</div>
+				<div class="col3"> <input type="text" class="shuru" id="phone" placeholder="Por favor ingrese su número de móvil"></div>
+			</div>
+
+			<div class="hezi kkk">
+				<div class="col1 hanggao32">Direccion de envio</div>
+				<div class="col3"><input type="text" readonly onclick="top_map()" id="dizhi1" class="shuru" placeholder="Por favor seleccione la dirección de envío">
+				<input type="hidden" id="lat" value=""><input type="hidden" id="lng" value=""><input type="hidden" id="biaoqian" value="">
+			</div>
+			</div>
+			<div class="hezi kkk">
+				<div class="col1 hanggao32">Numero de casa</div>
+				<div class="col3"><input type="text" class="shuru" id="dizhi"  placeholder=""></div>
+			</div>
+			<!--<div class="hezi kkk">
+				<div class="col1 hanggao32">标签</div>
+				<div class="col3">  <span class="xx">学校</span><span class="xx">公司</span><span class="xx">家</span></div>
+			</div>-->
+
+
+			<div class="hezi kkk">
+				<div class="col3 hanggao18">
+					<div class="moren">Establezca la direccion predeterminada y luego </div>
+					  <!-- <div class="shuoming">再启动APP时将优先定位至默认地址,避免下单时选择错误地址.</div> -->
+				</div>
+				<div class="col1 zhong" onclick="kaiguan()"><span class="kaiguan"></span></div>
+			</div>
+
+       <hr />
+       <div class="baocun" onclick="baocun()">Guardar</div>
+       <div class="baocun2" onclick="quxiao()">Eliminar</div>
+
+    </div>
+</body>
+</html>
+<script>
+var address_id=0;
+var laiyuan=0;
+	apiready=function(){
+		api.addEventListener({
+				name: 'xuan_dizhi_bymap'
+		}, function(ret, err) {
+			var zhi=ret.value;
+			$("#lat").val(zhi.lat);
+			$("#lng").val(zhi.lng);
+			$("#biaoqian").val(zhi.biaoqian);
+			$("#dizhi1").val(zhi.jiedao)
+		});
+		laiyuan=api.pageParam.id;
+		jiazai();
+
+		$(function(){
+			$("#dizhilist").on("click",'.hezi',function(){
+				$("#dizhilist .hezi").removeClass("on");
+				$(this).addClass("on");
+			});
+			$(".sex").click(function(){
+				$(".sex").removeClass("on");
+				$(this).addClass("on");
+			});
+		})
+
+	}
+
+
+	function kaiguan(){
+		$(".kaiguan").toggleClass("on");
+	}
+
+  function jiazai(){
+	api.ajax({
+	    url: list_address_url,
+	    method: 'post',
+	    data: {
+	        values: {
+	            token: api.getPrefs({sync: true,key:'login_id'}),
+	        }
+	    }
+	},function(ret, err){
+	    if (ret) {
+	        //alert( JSON.stringify( ret ) );
+					if(ret.code==1){
+						if($.isEmptyObject(ret.data.list)){
+							$(".biaodan").addClass("on");
+						}else{
+
+							var goods=ret.data.list,str='',default_id=ret.data.default_id;
+							for (var i = 0; i < json_num(goods); i++) {
+								str+='<div class="pad15 hezi bg1">';
+								str+='<div class="col3" onclick="moren('+goods[i].address_id+')">';
+								    str+='	<div class="yanse3 cuti">'+goods[i].detail2;
+										if(goods[i].tag){
+										str+='<span class="biao">'+goods[i].tag+'</span>';
+										}
+										str+=((default_id==goods[i].address_id)?'<span class="biao1">Predeterminado</span>':'')+'</div>';
+										str+='	<div class="lou hanggao18 wenzi12">'+goods[i].detail1+'</div>';
+											str+='<div class="wenzi12 yanse0"><span id="mingzi" >'+goods[i].name+'</span><span class="shouji wenzi12">'+goods[i].phone+'</span></div>';
+											str+='</div>';
+											str+='<div class="col1 zhong"><img class="xiugai"   onclick="dizhi_gai('+goods[i].address_id+',\''+goods[i].name+'\',\''+goods[i].phone+'\',\''+goods[i].detail1+'\',\''+goods[i].detail2+'\',\''+goods[i].lat+'\',\''+goods[i].lng+'\',\''+goods[i].tag+'\')"  src="../../image/xiugai01.png" /><img class="dizhigai left5" onclick="shanchu('+goods[i].address_id+')" src="../../image/shanchu.png" /></div>';
+								  str+='  </div>';
+
+
+							}
+							$("#dizhilist").html(str);
+
+						}
+
+					}
+	    } else {
+	        //alert( JSON.stringify( err ) );
+	    }
+	});
+
+	}
+
+	//打开城市列表插件
+	function top_map(){
+		api.openWin({
+	      name: 'to_map',
+	      url: 'widget://html/v1/map.html',
+	      pageParam: {
+	          id:0,
+	          title:"Seleccionar direccion",
+	          muban:"map"
+	      }
+	  });
+	}
+
+//保存地址
+	function baocun(){
+		if($("#name").val()==''){tishi("Por favor complete el contacto");return false;}
+		if(!isshouji($("#phone").val())){tishi("Por favor, rellene el número de contacto correcto");return false;}
+		if($("#dizhi").val()==''){tishi("Por favor, complete la dirección de envío");return false;}
+
+		api.ajax({
+		    url: (address_id>0)?update_address_url:add_address_url,
+		    method: 'post',
+		    data: {
+		        values: {
+							address_id: address_id,
+							                name: $("#name").val(),
+															phone: $("#phone").val(),
+															lat:$("#lat").val(),
+															lng:$("#lng").val(),
+															tag:$("#biaoqian").val(),
+															detail1: $("#dizhi1").val(),
+															detail2: $("#dizhi").val(),
+															label: $(".xx.on").html(),
+															is_default:($(".kaiguan").hasClass("on")?1:0),
+															token: api.getPrefs({sync: true,key:'login_id'}),
+															deviceid: api.deviceId
+		        }
+		    }
+		},function(ret, err){
+		    if (ret) {
+					quxiao();jiazai();
+					$("#name").val('');
+					$("#phone").val('');
+					$("#dizhi1").val('');
+					$("#dizhi").val('');
+		        //alert( JSON.stringify( ret ) );
+		    } else {
+		        //alert( JSON.stringify( err ) );
+		    }
+		});
+
+	}
+//显示新加地址界面
+	function show_dizhi(){
+		$("#name").val('');
+		$("#phone").val('');
+		$("#dizhi1").val('');
+		$("#dizhi").val('');
+		$(".biaodan").addClass("on");
+	}
+	function quxiao(){
+		$(".biaodan").removeClass("on");
+	}
+
+	//设置为默认地址
+	function moren(iid){
+		api.ajax({
+		    url: set_default_address_url,
+		    method: 'post',
+		    data: {
+		        values: {
+		            token: api.getPrefs({sync: true,key:'login_id'}),
+								address_id:iid
+		        }
+		    }
+		},function(ret, err){
+		    if (ret) {
+					if(laiyuan==1){fanhui();}
+					jiazai();
+		        //alert( JSON.stringify( ret ) );
+		    } else {
+		        //alert( JSON.stringify( err ) );
+		    }
+		});
+
+	}
+		//删除地址
+		function shanchu(iid){
+			api.ajax({
+			    url: delete_address_url,
+			    method: 'post',
+			    data: {
+			        values: {
+			            token: api.getPrefs({sync: true,key:'login_id'}),
+									address_id:iid
+			        }
+			    }
+			},function(ret, err){
+			    if (ret) {
+						jiazai();
+			        //alert( JSON.stringify( ret ) );
+			    } else {
+			        //alert( JSON.stringify( err ) );
+			    }
+			});
+
+		}
+
+	function dizhi_gai(id,name,phone,dizhi1,dizhi,lat,lng,biaoqian){
+		address_id=id;
+		$("#name").val(name);
+		$("#phone").val(phone);
+		$("#dizhi1").val(dizhi1);
+		$("#dizhi").val(dizhi);
+		$("#lat").val(lat);
+		$("#lng").val(lng);
+		$("#biaoqian").val(biaoqian);
+		$(".biaodan").addClass("on");
+	}
+</script>

@@ -1,0 +1,495 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>信用卡提交界面</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+        <link rel="stylesheet" type="text/css" href="../../../css/aui-new.css" />
+    <style>
+     <!--
+     #mercadopago-form {margin-top:1rem;padding-bottom:2rem;background: white;}
+     #mercadopago-form .aui-list-item{padding-top:0.5rem;    border: none;background: none;}
+
+     .item-field{
+     font-size: 0.6rem;
+     }
+     .item-field label{
+
+     }
+     .item-field label em{
+     color:red;
+     }
+     .item-field input,.item-field select{
+     background-color: #fff;
+       border: 1px solid #cecece;
+       padding: 5px;
+       border-radius: 3px;
+       color: #666;
+     height: 1.8rem;
+     }
+
+     #mp-separete-date {
+       vertical-align: middle;
+       line-height: 75px;
+       text-align: center;
+       height: 48px;
+       font-size: 24px;
+       font-weight: 100;
+    }
+      .footer-btn{
+        /*position: fixed;*/
+        /*bottom: 1rem;*/
+        width: 80%;
+        margin: auto;
+        /*left: 10%;*/
+      }
+     #mercadopago-form .error{
+          border: 1px solid red;
+      }
+     -->
+     </style>
+
+</head>
+<body>
+  <div class="aui-content aui-margin-b-15" id="app">
+        <ul class="aui-list aui-form-list" id="mercadopago-form">
+
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+
+              <div class="aui-list-item-input item-field">
+					<label for="cardNumber" style="height:0.5rem;color:black;">
+					<span >Credit card number</span>
+					<em>
+					<span style="vertical-align: inherit;">*</span>
+
+					</em>
+					</label>
+                  <input type="number" placeholder="cardNumber" id="cardNumber" v-bind:class="{ error:cardNumber_error}" v-model="cardNumber" οnkeyup="value=value.replace(/[^\d\.]/g,'')">
+                    </div>
+                </div>
+            </li>
+			 <li class="aui-list-item">
+			   <div class=" item-field aui-col-xs-5">
+
+                    <div class="aui-list-item-input item-field">
+					<label for="cardNumber">
+					<span style="vertical-align: inherit;">
+					Expiration month
+					</span>
+					<em>
+					<span style="vertical-align: inherit;">*</span>
+
+					</em>
+					</label>
+                      <select name="cardExpirationMonth" v-model="cardExpirationMonth" v-bind:class="{ error:Month_error}">
+                         <option value="-1"  > Month </option>
+                         <option value="1"> 1</option>
+                         <option value="2"> 2</option>
+                         <option value="3"> 3</option>
+                         <option value="4"> 4</option>
+                         <option value="5"> 5</option>
+                         <option value="6"> 6</option>
+                         <option value="7"> 7</option>
+                         <option value="8"> 8</option>
+                         <option value="9"> 9</option>
+                         <option value="10"> 10</option>
+                         <option value="11"> 11</option>
+                         <option value="12"> 12</option>
+                        </select>
+                    </div>
+                </div>
+				<div class="item-field aui-col-xs-1">
+				<div class="aui-list-item-input item-field">
+				 <div id="mp-separete-date">
+
+				 <span style="vertical-align: inherit;">
+                       /
+                   </span>
+
+				  </div>
+                 </div>
+                </div>
+				 <div class="item-field aui-col-xs-6">
+
+                    <div class="aui-list-item-input item-field">
+					<label for="cardNumber">
+					<span style="vertical-align: inherit;">
+					Expiration year
+					</span>
+					<em>
+					<span style="vertical-align: inherit;">*</span>
+
+					</em>
+					</label>
+
+                      <select id="cardExpirationYear"  v-model="cardExpirationYear" v-bind:class="{ error:Year_error}">
+                         <option value="-1" > Year </option>
+                           <option :value="vo" v-for="vo in Year_list" >{{vo}}</option>
+                        </select>
+                    </div>
+                </div>
+
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+
+                    <div class="aui-list-item-input item-field">
+					<label for="cardNumber">
+					<span style="vertical-align: inherit;">Card holder name </span>
+
+					<em>
+					<span style="vertical-align: inherit;">*</span>
+
+					</em>
+					</label>
+                     <input type="text" placeholder="cardNumber" id="cardNumber" v-model="cardholderName" v-bind:class="{ error:holderName_error}">
+                    </div>
+                </div>
+            </li>
+			 <li class="aui-list-item">
+                <div class="item-field aui-col-xs-6">
+
+                    <div class="aui-list-item-input item-field">
+					<label for="security_code">
+
+					<span style="vertical-align: inherit;">Security code</span>
+					<em>
+			 	<span style="vertical-align: inherit;">*</span>
+
+					</em>
+					</label>
+                     <input type="number" placeholder="security_code" id="security_code" v-model="security_code" v-bind:class="{ error:cvv_error}" οnkeyup="value=value.replace(/[^\d\.]/g,'')" maxLength="4">
+                    </div>
+                </div>
+            </li>
+			 <li class="aui-list-item">
+
+				 <div class="item-field aui-col-xs-5">
+
+                    <div class="aui-list-item-input item-field">
+					<label for="docType">
+
+					<span style="vertical-align: inherit;">Document Type</span>
+
+					<em>
+						<span style="vertical-align: inherit;">*</span>
+					</em>
+					</label>
+                      <select v-model="docType" @change="getdocTypeSelected" v-bind:class="{ error:docType_error}">
+                          <option value="-1"  >docType</option>
+                          <option :value="docType.id" v-for="docType in docType_list" >{{docType.id}}</option>
+                        </select>
+                    </div>
+                </div>
+
+				 <div class="item-field aui-col-xs-7">
+
+                    <div class="aui-list-item-input item-field">
+					<label for="docNumber">
+
+					<span style="vertical-align: inherit;">Document number </span>
+
+					<em>
+					<span style="vertical-align: inherit;">*</span>
+
+					</em>
+					</label>
+            <input type="number" placeholder="docNumber" id="docNumber" v-model="docNumber" v-bind:class="{ error:docNum_error}" οnkeyup="value=value.replace(/[^\d\.]/g,'')">
+                    </div>
+                </div>
+            </li>
+
+
+        </ul>
+        <div class="aui-btn aui-btn-success aui-btn-block footer-btn" tapmode v-on:click="add_card()">
+            Agrega nueva tarjeta
+        </div>
+    </div>
+ </body>
+ <script type="text/javascript" src="../../script/api.js"></script>
+ <script type="text/javascript" src="../../../script/vue.js"></script>
+  <!-- <script type="text/javascript" src="../../../script/mercadopago.js"></script> -->
+  <script type="text/javascript" src="../../../script/common.js"></script>
+<script>
+
+var vm = new Vue({
+    el: '#app',
+    data: {
+        cardNumber:'',
+        cardExpirationYear:-1,
+        cardExpirationMonth:-1,
+        cardholderName:'',
+        security_code:'',
+        docType:-1,
+        docNumber:'',
+        docType_list:[],
+        Year_list:[],
+        card_token: '',
+        docNumberlimit:{'min_length':0,'max_length':0},
+        cardNumber_error:0,
+        Month_error:0,
+        date_error:0,
+        Year_error:0,
+        holderName_error:0,
+        cvv_error:0,
+        docType_error:0,
+        docNum_error:0,
+        has_error:0,
+    },
+
+    methods: {
+
+      open_loading:function(){
+        to_loading();
+        api.sendEvent({
+              name: 'say_status_loading',
+              extra:{
+                status:'22222',
+                code:0,
+              }
+            });
+
+        vm.init();
+
+      },
+      init:function(){
+
+  console.log(api.getPrefs({sync: true,key:'login_id'}));
+         this.get_10year();
+         this.get_token();
+         this.get_identification_list();
+
+        //  this.active_token();
+      },
+      validator:function() {
+        //卡号问题
+        console.log(vm.cardNumber);
+        console.log(vm.docType);
+        if(vm.cardNumber==''||vm.cardNumber==null){
+          vm.cardNumber_error=1;
+          vm.has_error=1;
+
+        }
+        if(vm.cardExpirationMonth==-1 || vm.cardExpirationMonth==''){
+          console.log(vm.cardExpirationMonth);
+          vm.Month_error=1;
+          vm.has_error=1;
+        }
+        if(vm.cardExpirationYear==-1 || vm.cardExpirationMonth==''){
+          vm.Year_error=1;
+          vm.has_error=1;
+        }
+
+          var myDate = new Date();
+          if(vm.cardExpirationYear==myDate.getFullYear() &&   vm.cardExpirationMonth<(myDate.getMonth()+1) ){
+            vm.date_error=1;
+            vm.Year_error=1;
+            vm.Month_error=1;
+            vm.has_error=1;
+          }
+
+        if(vm.cardholderName==''||vm.cardholderName==null){
+          vm.holderName_error=1;
+          vm.has_error=1;
+        }
+        if(vm.security_code==null || vm.security_code==''){
+          vm.cvv_error=1;
+          vm.has_error=1;
+        }
+
+        if(vm.docType==null|| vm.docType==-1){
+          vm.docType_error=1;
+           vm.has_error=1;
+        }
+        if(vm.docNumber==null|| vm.docNumber==''){
+          vm.docNum_error=1;
+           vm.has_error=1;
+        }
+
+        if(  vm.has_error==1){
+          return false;
+        }
+         return true;
+      },
+      get_10year:function() {
+        var myDate = new Date();
+        for(var i=0;i<11;i++){
+          var year=myDate.getFullYear();
+          vm.Year_list.push(year+i);
+        }
+       console.log(vm.Year_list);
+     },
+      get_identification_list:function() {
+        // console.log(this.get_identification_list())
+          api.ajax({
+              url: identification_url,
+              method: 'get',
+              data: {
+                values:{public_key: public_key}
+              }
+          },function(ret, err){
+            if(ret){
+            vm.docType_list=ret;
+            console.log(JSON.stringify(vm.docType_list[0].id));
+            this.docType = vm.docType_list[0].id;
+            api.sendEvent({
+                  name: 'say_status_loading',
+                  extra:{
+                    status:'ok',
+                    code:0,
+                  }
+                });
+
+            }else{
+
+            }
+          })
+       },
+      get_token:function(){
+             api.ajax({
+                 url: card_tokens_url+'?public_key='+public_key,
+                 method: 'post',
+                 data: {
+                  //  values:{public_key: public_key}
+                 }
+             },function(ret, err){
+
+               if(ret){
+               console.log(JSON.stringify(ret));
+               vm.card_token=ret.id;
+
+               }else{
+
+               }
+             })
+       },
+
+      add_card:function() {
+
+          console.log(api.getPrefs({sync: true,key:'login_id'}));
+          if(vm.validator()){
+           to_loading();
+          var device=api.deviceId;
+
+            console.log(card_tokens_url+'/'+vm.token+'?public_key='+public_key);
+            if(vm.token!=''){
+              console.log('od');
+              api.ajax({
+                 //  url: card_tokens_url+'/'+vm.token+'?public_key='+public_key,
+                  url:createCard_url,
+                  method: 'post',
+                  data: {
+                    values:{
+                      'token':api.getPrefs({sync: true,key:'login_id'}),
+                      'card_token':vm.card_token,
+                      'deviceid':api.deviceId,
+                      'card_number':vm.cardNumber,
+                      'expiration_month':vm.cardExpirationMonth,
+                      'expiration_year':vm.cardExpirationYear,
+                      'cardholderName':vm.cardholderName,
+                      'docType':vm.docType,
+                      'docNumber':vm.docNumber,
+                      'security_code':vm.security_code
+                    }
+                  }
+              },function(ret, err){
+
+                if(ret){
+
+                  if(ret.code==1){
+                    api.sendEvent({
+                        name: 'cart_add_close',
+                    });
+
+                    // to_creditcardlist();
+
+                  }else{
+                    api.sendEvent({
+                          name: 'say_status_loading',
+                          extra:{
+                            status:ret.msg,
+                            code:0,
+                          }
+                        });
+                    console.log( ret.msg );
+                  }
+
+                }else{
+                  console.log(JSON.stringify(err));
+                }
+              })
+            }else{
+              api.alert({
+                  title: 'token 未生成',
+                  msg: 'testmsg',
+              });
+
+            }
+          }
+
+
+        },
+        initdocType(){
+　　　　　　//如果没有这句代码，select中初始化会是空白的，默认选中就无法实现
+            this.docType = this.identification_list[0].id;
+        },
+        getdocTypeSelected:function() {
+             console.log(this.docType)
+        },
+
+      },
+       watch: {
+            cardNumber: {
+                handler: function (val, oldVal) {
+               vm.has_error=0;
+                },
+            },
+            cardExpirationYear:{
+              handler: function (val, oldVal) {
+               vm.has_error=0;
+                },
+              },
+            cardExpirationMonth:{
+                  handler: function (val, oldVal) {
+               vm.has_error=0;
+                  },
+                },
+            security_code:{
+              handler: function (val, oldVal) {
+               vm.has_error=0;
+              },
+            },
+          cardholderName:{
+              handler: function (val, oldVal) {
+               vm.has_error=0;
+              },
+            },
+          docType:{
+              handler: function (val, oldVal) {
+               vm.has_error=0;
+              },
+            },
+          docNumber:{
+              handler: function (val, oldVal) {
+               vm.has_error=0;
+              },
+          },
+        }
+     });
+ // window.onload=function(){
+ //           vm.init();
+ //    }
+apiready=function(){
+    vm.init();
+	}
+
+
+
+
+
+
+</script>
+</html>

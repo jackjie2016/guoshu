@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+     <link rel="stylesheet" type="text/css" href="../../../css/icons/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/public.css" />
+</head>
+<body  style="background-color:rgba(255,255,255,0);padding:0px;" >
+
+
+    <div id="app" class="aui-content aui-margin-b-15" style="border-radius:5px;height:100%">
+        <ul class="aui-list aui-select-list">
+         <li class="aui-list-item"   >
+
+                <div class="aui-list-item-inner">
+                  <div class="aui-list-item-title "  >  Elige una dirección de entrega</div>
+
+
+                    </div>
+            </li>
+            <li class="aui-list-item"  v-for="(vo,index) in list">
+                <div class="aui-list-item-label">
+                    <!--<input class="aui-radio" type="radio" name="radio"  :value="vo.address_id" v-model="select_id">-->
+                     <span class="icon iconfont lv-font aui-font-size-20 aui-margin-r-15" v-if="cun_index==index"></span>
+				     <span class="icon iconfont iconoutline-radio_button_px aui-font-size-20 aui-margin-r-15"  @click="selectAddress(index)" v-else></span>
+                </div>
+                <div class="aui-list-item-inner">
+                  <div class="aui-list-item-title "  >  {{vo.detail}}</div>
+
+                  <div class="aui-list-item-text">
+                        {{vo.merger_locality}}
+                       </div>
+                    </div>
+            </li>
+            <!-- <li class="aui-list-item"   >
+                <div class="aui-list-item-label">
+
+                     <span class="icon iconfont lv-font aui-font-size-20 aui-margin-r-15" v-if="cun_index==index"></span>
+				     <span class="icon iconfont iconoutline-radio_button_px aui-font-size-20 aui-margin-r-15"  @click="selectAddress(index)" v-else></span>
+                </div>
+                <div class="aui-list-item-inner">
+                  <div class="aui-list-item-title "  >  Casa</div>
+
+                  <div class="aui-list-item-text">
+                        Av. Congreso 4755 1A CP 1431, CABA, Argentina
+                       </div>
+                    </div>
+            </li>
+            <li class="aui-list-item"   >
+                <div class="aui-list-item-label">
+
+                     <span class="icon iconfont lv-font aui-font-size-20 aui-margin-r-15" v-if="cun_index==index"></span>
+             <span class="icon iconfont iconoutline-radio_button_px aui-font-size-20 aui-margin-r-15"  @click="selectAddress(index)" v-else></span>
+                </div>
+                <div class="aui-list-item-inner">
+                  <div class="aui-list-item-title "  >  Casa</div>
+
+                  <div class="aui-list-item-text">
+                        Av. Congreso 4755 1A CP 1431, CABA, Argentina
+                       </div>
+                    </div>
+            </li>  -->
+        </ul>
+		  <div   class="m-t method-item" style=" background: white; ">
+					 	  <div class="aui-padded-5  aui-padded-l-0 aui-padded-r-10">
+
+           				     <div class="aui-btn font-bold black-font text-center w-100" style=" background: white;    " tapmode  onclick="add_address()" >+ Añadir nueva dirección</div>
+        			</div>
+
+                     </div>
+    </div>
+
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript">
+
+  var vm = new Vue({
+    el: '#app',
+     data: {
+       list:[],
+       default_id:0,
+       select_id:-1,
+	   cun_index:-1,
+    },
+   methods: {
+       init: function () {
+       },
+	   selectAddress:function(index){
+	       vm.cun_index=index;
+		   vm.select_id=vm.list[index].address_id;
+	   },
+
+      //获取默认地址
+      getDefaultaddress:function(){},
+      //获取1000m 内可配送的地址
+      getAllowList:function(origin){
+        api.ajax({
+            url: push_list_address_url,
+            method: 'post',
+            timeout: 30,
+            dataType: 'json',
+            returnAll: false,
+            data: {
+                values: {
+                    token: api.getPrefs({sync: true,key:'login_id'}),
+                    origin: origin
+                }
+            }
+         }, function (ret, err) {
+           console.log(JSON.stringify(err));
+           console.log(JSON.stringify(ret));
+            if (ret) {
+              vm.list=ret.data.list;
+              vm.default_id=ret.data.default_address;
+            }
+
+          });
+      },
+      //获取默认地址
+      set_default_address: function (address_id) {
+          api.ajax({
+              url: set_default_address_url,
+              method: 'post',
+              timeout: 30,
+              dataType: 'json',
+              returnAll: false,
+              data: {
+                  values: {
+                      token:api.getPrefs({sync: true,key:'login_id'}),
+                      address_id: address_id,
+                  }
+              }
+          }, function (ret, err) {
+              if (ret) {
+                api.sendEvent({
+                    name: 'home_address_select',
+
+                });
+
+                  api.toast({
+                      msg: '设置成功',
+                      duration: 2000,
+                      location: 'bottom'
+                  });
+                  api.closeFrame({
+                      name: 'blank'
+                  });
+
+                  api.closeFrame();
+              } else {
+                  api.alert(JSON.stringify(err));
+              }
+          });
+      },
+   },
+   watch:{
+     select_id:{
+       handler: function (val, oldVal) {
+         console.log(val);
+         vm.set_default_address(val);
+
+       },
+     }
+   }
+});
+    apiready = function(){
+      console.log(JSON.stringify(api.pageParam.list));
+      vm.list=api.pageParam.list.list;
+      vm.default_id=api.pageParam.list.default_address;
+              api.startLocation({
+                accuracy: '10m',
+                filter: 1,
+                autoStop: true
+               }, function(ret, err){
+                 if(ret && ret.status){
+                     //获取位置信息成功
+
+                    //  vm.getAllowList(ret.latitude+','+ret.longitude);
+                   }else{
+                     console.log(JSON.stringify(err));
+                  }
+               });
+        api.parseTapmode();
+    }
+
+</script>
+</html>

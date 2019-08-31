@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+     <style>
+       #footer{
+         height: 200px;
+
+       }
+
+       .loser{
+             color: #999;
+       }
+	 
+    </style>
+</head>
+<body>
+  <div id="app">
+    <div class="aui-content aui-margin-b-15">
+       <ul class="aui-list aui-list-in">
+          
+           <li class="aui-list-item" v-for="(vo,index) in list " v-bind:key="index" tapmode v-on:click="open_address(index)">
+               <!-- <div class="aui-list-item-label-icon">
+                   <i class="aui-iconfont aui-icon-home"></i>
+               </div> -->
+               <div class="aui-list-item-inner address_item"  :class="{'loser':vo.area_id==0}" style="display:block; padding:10px 0;">
+				 	<big class="aui-gird-lable aui-font-size-16   "> {{vo.coustom_formatted_address.detail}}</big>
+                   <div class="aui-gird-lable aui-font-size-12  " style=" color: #999999;">{{vo.coustom_formatted_address.ext}}</div>
+               </div>
+           </li>
+
+       </ul>
+   </div>
+   </div>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript">
+
+var vm = new Vue({
+    el: '#app',
+    data: {
+      search_input: '',
+      list:[],
+    },
+    methods: {
+     search:function(keywords){
+       api.ajax({
+           url: google_autocomplete_url,
+           method: 'get',
+           data: {
+             values:{token: api.getPrefs({sync: true,key:'login_id'}),keywords:keywords}
+           }
+       },function(ret, err){
+         if(ret){
+         if(ret.status=='OK'){
+           vm.list=ret.predictions;
+         }
+         }
+       });
+
+       },
+
+       open_address:function(index) {
+         if(vm.list[index]['area_id']==0){
+                 return false;
+         }
+         api.sendEvent({
+             name: 'mapto_search_address',
+             extra: {
+                 place_id: vm.list[index]['place_id'],
+           }
+         });
+        //  api.closeFrame();
+
+         },
+
+    } ,watch:{
+        search_input:{
+           handler: function (val, oldVal) {
+
+           }
+        },
+        },
+   });
+    apiready = function(){
+        api.addEventListener({
+            name: 'send_keywords'
+        }, function(ret, err){
+            if( ret ){
+                console.log(JSON.stringify( ret ));
+                if(ret.value.keywords!='')
+                  vm.search(ret.value.keywords);
+                  else {
+                    vm.list=[];
+                  }
+            }
+        });
+
+        api.parseTapmode();
+        var header = $api.byId('aui-header');
+        $api.fixStatusBar(header);
+        var headerPos = $api.offset(header);
+        var body_h = $api.offset($api.dom('body')).h;
+    };
+
+</script>
+</html>

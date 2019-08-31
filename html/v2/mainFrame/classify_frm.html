@@ -1,0 +1,684 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/iconfont/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/home.css" />
+   <style>
+   .cate_item{
+   float:left;max-width:100%;}
+   </style>
+</head>
+<body>
+<div id="app">
+  <section class="aui-content aui-margin-b-10">
+         <div class="aui-grid"  >
+             <div class="aui-row ">
+                 <div class="aui-col-xs-3" @click="init_children_list(index)" v-for="(vo,index) in list" v-bind:class="{ 'aui-text-pink': index==cun_index }" style="  padding:0.5rem 0;width:20%;" >
+                     <img :src="vo.image.file_path" class="  aui-iconfont" style="text-align:center;margin:auto;width:2rem;height:2rem;border-radius:50px;" >
+                     <div class="aui-grid-label aui-ellipsis-1">{{vo.name}}</div>
+                 </div>
+             </div>
+         </div>
+     </section>
+
+
+
+	<section class="aui-content aui-margin-b-10" style="overflow:hidden; background:#ffffff;">
+	<div class="  cate_list  aui-col-xs-10  aui-padded-l-15 aui-padded-r-15" style="    display: block;    ">
+        <div class="aui-padded-l-15 aui-padded-r-15  aui-padded-t-5 aui-padded-b-5 aui-ellipsis-1 cate_item" :class="" v-for="(vo,index) in children_list"   @click="select_goods_list(index)" v-if="children_list.length>0"  v-bind:class="{ 'aui-text-pink': index==select_index }">{{vo.name}}      </div>
+
+    </div>
+</section>
+
+
+
+  <section class="aui-content aui-margin-b-10">
+   <!-- 筛选器 -->
+            <div class="list-sxq">
+                <b  @click="change_sort('all')"  v-bind:class="{ 'aui-text-success': sortType=='all' }" >Comprensivo </b>
+                <b  @click="change_sort('sales')" v-bind:class="{ 'aui-text-success': sortType=='sales' }" >Popularidad  </b>
+                <b  @click="change_sort('price')" v-bind:class="{ 'aui-text-success': sortType=='price' }">Precio <span>
+                  <i class="t" v-bind:class="{ 'active': sortPrice==0 }"></i>
+                  <i class="b "  v-bind:class="{ 'active': sortPrice==1 }">
+                  </i>
+                </span>
+              </b>
+                <a>
+                    <i class="aui-iconfont iconfont iconfenlei10" v-if="listStyle" @click="change(0)"></i>
+                    <i class="aui-iconfont iconfont iconunie63a" v-else @click="change(1)"></i>
+                </a>
+            </div>
+  </section>
+  <section class="aui-content aui-margin-b-10" style="overflow:hidden;  ">
+
+  <div class="aui-col-xs-12  goods-list" v-if="listStyle==1">
+
+
+    <ul class="aui-col-xs-6  ">
+
+         <li  v-for="(goods,index) in goods_even" tapmode>
+           <div class="item">
+             <div  class="pic" v-on:click="to_goods_info(goods.goods_id)">
+             <img :src="goods.image" alt=""  :id="forId(index,'goods_even')"  />
+              <div class="no" v-if="goods.stock_num==0">
+                 <span>Fuera de stock</span>
+               </div>
+             </div>
+             <h3 class="name">{{goods.goods_name}}</h3>
+             <!-- <div class="tags">
+               <span>{{goods.now_price.text}}</span>
+             </div> -->
+             <div class="price">
+               <div class="txt">
+                 <div class="cur"><span>$</span>{{goods.now_price.value}}   								<div class="old" v-if="goods.origin_price!='0.00'">${{goods.origin_price}}</div></div>
+
+                 <div class="lkj" v-if="goods.vip_price!='0.00'"><span><i class="iconfont iconvip"></i>   </span style="font-size:0.9rem">${{goods.vip_price}}</div>
+                 </div>
+
+             </div>
+
+
+
+           <div class="cart"  >
+
+             <div class="aui-bar aui-bar-btn" style="width:80%;" type="count" id="demo" v-if="goods.cart_num==0">
+               <div class="car-btn Increase "  @click="add_to_cart(index,'goods_even')"   v-if="goods.stock_num>0"   >
+               <i class="iconfont icongouwuchekong"></i>
+               </div>
+               <div class="car-btn Increase " style="color: #ddd;"   v-else>
+                <i class="iconfont icongouwuchekong"></i>
+              </div>
+              </div>
+
+            <div class="op-btn-item" v-else >
+               <div class=" aui-col-xs-12">
+                 <div class="op-btn minus  aui-col-xs-3" @click="cutdown_to_cart(index,'goods_even')">
+                     <i class="aui-iconfont aui-icon-minus"></i>
+                 </div>
+              <div class="aui-item-input aui-col-xs-6">
+                   {{goods.cart_unit_num}}
+              </div>
+              <div class="op-btn plus  aui-col-xs-3"  @click="add_to_cart(index,'goods_even')" v-if="goods.stock_num>goods.cart_num" >
+                   <i class="aui-iconfont aui-icon-plus"></i>
+              </div>
+              <div class="op-btn plus  aui-col-xs-3" style="color: #ddd;"   v-else >
+                  <i class="aui-iconfont aui-icon-plus"></i>
+             </div>
+              </div>
+             </div>
+             </div>
+           </div>
+
+         </li>
+
+     </ul>
+     <ul class="aui-col-xs-6 ">
+       <li  v-for="(goods,index) in goods_odd" tapmode>
+           <div class="item">
+             <div  class="pic" v-on:click="to_goods_info(goods.goods_id)">
+             <img :src="goods.image" alt=""  :id="forId(index,'goods_odd')"  />
+              <div class="no" v-if="goods.stock_num==0">
+                 <span>Fuera de stock</span>
+               </div>
+             </div>
+             <h3 class="name">{{goods.goods_name}}</h3>
+             <!-- <div class="tags">
+               <span>{{goods.now_price.text}}</span>
+             </div> -->
+             <div class="price">
+               <div class="txt">
+                 <div class="cur"><span>$</span>{{goods.now_price.value}}			<div class="old" v-if="goods.origin_price!='0.00'">${{goods.origin_price}}</div></div>
+
+                 <div class="lkj" v-if="goods.vip_price!='0.00'"><span><i class="iconfont iconvip"></i>   </span style="font-size:0.9rem">${{goods.vip_price}} </div>
+                 </div>
+
+             </div>
+         <div class="cart"  >
+
+           <div class="aui-bar aui-bar-btn" style="width:80%;" type="count" id="demo" v-if="goods.cart_num==0">
+             <div class="car-btn Increase "  @click="add_to_cart(index,'goods_odd')"   v-if="goods.stock_num>0"   >
+             <i class="iconfont icongouwuchekong"></i>
+             </div>
+             <div class="car-btn Increase " style="color: #ddd;"   v-else>
+              <i class="iconfont icongouwuchekong"></i>
+            </div>
+            </div>
+
+          <div class="op-btn-item" v-else >
+             <div class=" aui-col-xs-12">
+               <div class="op-btn minus  aui-col-xs-3" @click="cutdown_to_cart(index,'goods_odd')">
+                   <i class="aui-iconfont aui-icon-minus"></i>
+               </div>
+            <div class="aui-item-input aui-col-xs-6">
+                 {{goods.cart_unit_num}}
+            </div>
+            <div class="op-btn plus  aui-col-xs-3"  @click="add_to_cart(index,'goods_odd')" v-if="goods.stock_num>goods.cart_num" >
+                 <i class="aui-iconfont aui-icon-plus"></i>
+            </div>
+            <div class="op-btn plus  aui-col-xs-3" style="color: #ddd;"   v-else >
+                <i class="aui-iconfont aui-icon-plus"></i>
+           </div>
+            </div>
+           </div>
+           </div>
+
+           </div>
+
+         </li>
+
+
+
+
+
+     </ul>
+
+  </div>
+   <!-- 商品列表 -->
+  <div class="aui-col-xs-12 " v-else>
+       <!-- 商品列表 -->
+            <ul class="goods-list horizontal-list">
+                <li v-for="(goods,index) in goods_list" tapmode>
+                    <div class="item">
+                       <div class=" aui-col-xs-4" >
+
+						  <div  class="pic" v-on:click="to_goods_info(goods.goods_id)">
+						   <img :src="goods.image" alt=""  :id="forId(index,'goods_list')" style="width:80%;" />
+						   <div class="no" v-if="goods.stock_num==0">
+						  <span>Fuera de stock</span>
+						  </div>
+						  </div>
+                        </div>
+						   <div class=" aui-col-xs-8">
+                        <h3 class="name">{{goods.goods_name}}</h3>
+
+                        <div class="price">
+               <div class="txt">
+                 <div class="cur"><span>$</span>{{goods.now_price.value}}			<div class="old" v-if="goods.origin_price!='0.00'">${{goods.origin_price}}</div></div>
+
+                 <div class="lkj" v-if="goods.vip_price!='0.00'"><span><i class="iconfont iconvip"></i>   </span style="font-size:0.9rem">${{goods.vip_price}} </div>
+                 </div>
+
+             </div>
+
+						<div class="cart"  >
+
+           <div class="aui-bar aui-bar-btn" style="width:80%;" type="count" id="demo" v-if="goods.cart_num==0">
+             <div class="car-btn Increase "  @click="add_to_cart(index,'goods_list')"   v-if="goods.stock_num>0"   >
+             <i class="iconfont icongouwuchekong"></i>
+             </div>
+             <div class="car-btn Increase " style="color: #ddd;"   v-else>
+              <i class="iconfont icongouwuchekong"></i>
+            </div>
+            </div>
+
+          <div class="op-btn-item" v-else >
+             <div class=" aui-col-xs-12">
+               <div class="op-btn minus  aui-col-xs-3" @click="cutdown_to_cart(index,'goods_list')">
+                   <i class="aui-iconfont aui-icon-minus"></i>
+               </div>
+            <div class="aui-item-input aui-col-xs-6">
+                 {{goods.cart_unit_num}}
+            </div>
+            <div class="op-btn plus  aui-col-xs-3"  @click="add_to_cart(index,'goods_list')" v-if="goods.stock_num>goods.cart_num" >
+                 <i class="aui-iconfont aui-icon-plus"></i>
+            </div>
+            <div class="op-btn plus  aui-col-xs-3" style="color: #ddd;"   v-else >
+                <i class="aui-iconfont aui-icon-plus"></i>
+           </div>
+            </div>
+           </div>
+           </div>
+					</div>
+
+                    </div>
+                </li>
+
+
+
+            </ul>
+
+ </div>
+
+</section>
+
+</div>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#app',
+    data: {
+        cun_index:0,
+        select_index:0,
+        list: [],
+        children_list:[],
+        is_scroller: 0,
+        category_id: 0,
+        child_cate_id:0,
+        page: 1,
+        goods_list: [],
+        goods_odd: [],
+        goods_even: [],
+        isA:0,
+        listStyle:1,
+        sortType:'all',
+        sortPrice:-1,
+    },
+    methods: {
+        init: function () {
+            vm.list = [];
+            api.ajax({
+                url: cate_list_url,
+                method: 'post',
+                timeout: 30,
+                dataType: 'json',
+                returnAll: false,
+            }, function (ret, err) {
+                if (ret) {
+                    vm.list = ret.data.list;
+                    vm.init_children_list(vm.cun_index);
+                } else {
+                    console.log(JSON.stringify(err));
+                }
+            });
+        },
+
+        init_children_list:function (index) {
+
+            vm.children_list =vm.list[index].child;
+            vm.cun_index = index;
+            vm.category_id = vm.list[index].category_id;
+
+          //  console.log(JSON.stringify(vm.children_list));
+           vm.page=1;
+		       vm.select_index=0;
+           vm.init_goods_list(0);
+
+        },
+	   	select_goods_list:function (index) {
+		       vm.select_index=index;
+             vm.page=1;
+             vm.init_goods_list(index);
+
+        },
+        init_goods_list:function(index){
+        console.log(vm.sortPrice);
+              api.ajax({
+                  url: cate_goodslist_url,
+                  method: 'get',
+                  timeout: 30,
+                  dataType: 'json',
+                  returnAll: false,
+                  data: {
+                      values: {
+                          category_id: vm.children_list[index].category_id,
+                          token: api.getPrefs({sync: true,key:'login_id'}),
+                          page: vm.page,
+                          sortType:vm.sortType,
+                          sortPrice:vm.sortPrice
+                      }
+                  }
+              }, function (ret, err) {
+
+                  if (ret) {
+                      if (vm.page == 1) {
+                          vm.goods_even=[];
+                          vm.goods_odd=[];
+                          vm.goods_list = ret.data.list.data;
+                          var j=1;
+   											for (var i = 0; i < ret.data.list.data.length; i++) {
+   											    if(j==1){
+   												  vm.goods_even.push(ret.data.list.data[i]);
+   												   j=0;
+   												  }else{
+   													j=1;
+   												  vm.goods_odd.push(ret.data.list.data[i]);
+   												   }
+   											}
+                      } else {
+                          var j=1;
+                          for (var i = 0; i < ret.data.list.data.length; i++) {
+                              vm.goods_list.push(ret.data.list.data[i]);
+                              if(j==1){
+      													j=0;
+      												  vm.goods_even.push(ret.data.list.data[i]);
+      												  }else{
+      												  j=1;
+      												  vm.goods_odd.push(ret.data.list.data[i]);
+      												  }
+                          }
+                      }
+
+                      vm.page += 1;
+                  } else {
+                      api.alert(JSON.stringify(err));
+                  }
+              });
+        },
+        change_sort:function(sort){
+              vm.sortType=sort;
+
+          if(sort=='all' || sort=='sales'){
+            vm.sortPrice=-1;
+          }else{
+            if(vm.sortPrice==-1 || vm.sortPrice==0){
+                  vm.sortPrice=1;
+            }else{
+              vm.sortPrice=0;
+            }
+          }
+          vm.page=1;
+          vm.init_goods_list(vm.select_index);
+        },
+        forId:function(index,moudle){
+          return moudle+'_'+index;
+        },
+        change(idx){
+         this.listStyle = idx;
+         Log(this.listStyle)
+          },
+        open_cate_goodslist:function (index) {
+            var category_id = vm.children_list[index].category_id;
+            console.log(category_id);
+            api.openWin({
+                name: 'goods_list',
+                url: 'widget://html/index/goods_list.html',
+                pageParam: {
+                    category_id: category_id
+                }
+            });
+        },
+
+        add_to_cart:function(index,moudle){
+
+         var goodinfo;
+         goodinfo=vm.getGoodsInof(index,moudle);
+
+
+         if(is_login()){
+           api.ajax({
+               url: add_to_cart_url,
+               method: 'post',
+               data: {
+                   values: {
+                     token: api.getPrefs({sync: true,key:'login_id'}),
+                     goods_id:goodinfo['goods_id'],
+                     goods_sku_id:goodinfo['goods_sku_id'],
+                     goods_num:1
+                   }
+               }
+             },function(ret, err){
+               if (ret) {
+                  //  tishi(ret.msg);
+
+                   if(ret.code==1){
+                    var fly_img=goodinfo.image
+                    var box=document.getElementById(moudle+'_'+index);
+                    vm.fly_cart(fly_img,(box.getBoundingClientRect().left+box.getBoundingClientRect().right)/2,(box.getBoundingClientRect().top+box.getBoundingClientRect().bottom)/2);
+
+                     //修改产品数量
+                    vm.changeCartNum(index,moudle,ret.data.now_goods_num,ret.data.clc_now_goods_num);
+
+                   api.sendEvent({
+                       name: 'update_cart_num',
+                   });
+                   api.sendEvent({
+                       name: 'update_cart_list',//更新购物车列表
+                   });
+                  //  api.sendEvent({
+                  // 		 name: 'update_cart_list',//更新购物车列表
+                  //  });
+
+                }else{
+                 tishi( ret.msg );
+                  Log(ret);
+                }
+
+               } else {
+                   alert( JSON.stringify( err ) );
+                //  console.log(err.msg)
+               }
+             });
+          }else{
+            go_login();
+         }
+        },
+
+        cutdown_to_cart:function(index,moudle){
+          var goodinfo;
+          goodinfo=vm.getGoodsInof(index,moudle);
+         //特价
+
+         if(is_login()){
+           api.ajax({
+               url: cutdown_to_cart_url,
+               method: 'post',
+               data: {
+                   values: {
+                     token: api.getPrefs({sync: true,key:'login_id'}),
+                     goods_id:goodinfo['goods_id'],
+                     goods_sku_id:goodinfo['goods_sku_id'],
+                     deviceid: api.deviceId,
+                   }
+               }
+             },function(ret, err){
+               if (ret) {
+                  //  tishi(ret.msg);
+
+                   if(ret.code==1){
+                     Log(ret);
+                     //修改产品数量
+                    vm.changeCartNum(index,moudle,ret.data.now_goods_num,ret.data.clc_now_goods_num);
+
+                   api.sendEvent({
+                       name: 'update_cart_num',
+                   });
+                   api.sendEvent({
+                       name: 'update_cart_list',//更新购物车列表
+                   });
+                  //  api.sendEvent({
+                  // 		 name: 'update_cart_list',//更新购物车列表
+                  //  });
+
+                   }
+
+               } else {
+                   alert( JSON.stringify( err ) );
+                //  console.log(err.msg)
+               }
+             });
+          }else{
+            go_login();
+         }
+        },
+        getGoodsInof:function(index,moudle){
+          if(moudle=='goods_list'){
+            goodinfo=vm.goods_list[index];
+          }
+
+        //猜你喜欢
+          if(moudle=='like'){
+            goodinfo=vm.like_goods[index];
+          }
+          if(moudle=='goods_even'){
+            goodinfo=vm.goods_even[index];
+          }
+          if(moudle=='goods_odd'){
+           goodinfo=vm.goods_odd[index];
+         }
+
+
+         return goodinfo;
+        },
+        changeCartNum:function(index,moudle,num,unit_num){
+          if(moudle=='goods_list'){
+           vm.goods_list[index].cart_num=num;
+           vm.goods_list[index].cart_unit_num=unit_num;
+          }
+
+          if(moudle=='goods_even'){
+           vm.goods_even[index].cart_num=num;
+           vm.goods_even[index].cart_unit_num=unit_num;
+           }
+          if(moudle=='goods_odd'){
+           vm.goods_odd[index].cart_num=num;
+           vm.goods_odd[index].cart_unit_num=unit_num;
+           }
+
+
+          },
+          to_goods_info:function (goods_id) {
+					open_goods_detail(goods_id);
+  				},
+        fly_cart:function (img,x,y){
+
+          // var box=document.getElementById(moudle+'_'+index);
+
+           //发送飞入的图片
+          api.sendEvent({
+              name: 'fly_img',
+              extra: {
+                  img: img
+              }
+           });
+           api.bringFrameToFront({
+           from: 'fly_frm',
+           to: 'classify_frm'
+           });
+           console.log('fly放到最前面')
+          //打开飞入的窗口
+          api.setFrameAttr({
+              name: 'fly_frm',
+              bounces: false,
+              hidden:true,
+              vScrollBarEnabled: false,
+              hScrollBarEnabled: false,
+              rect: {
+                  x: x,
+                  y: y,
+                  w: 70,
+                  h: 70
+              },
+          });
+          vm.timeer=10;
+          //初始化坐标
+          var x1=x;
+          var y1=y;
+
+          //计算比例，以小的为参照
+          var vx,vy,sx,sy;
+          Log(cart_top);
+            Log(cart_left);
+          sy=cart_top-y-40;
+          sx=cart_left-x-40;
+          //sy 不可能等于0 的情况出现
+          if(sx==0){
+            vy=sy/Math.abs(sy);
+          }else{
+            vx=sx/vm.timeer;
+            vy=(vx*sy)/sx;
+          }
+          // vm.timeer = temp_count;
+          var coutnnum = setInterval(function () {
+              if(vm.timeer == 0){
+                    // api.closeFrame({
+                    //   name: 'fly_frm'
+                    // });
+                    api.setFrameAttr({
+                        name: 'fly_frm',
+                        hidden:true,
+                    });
+                  clearInterval(coutnnum);
+                  return;
+              }else{
+                        x1 += vx;
+                        y1 += vy;
+                        api.setFrameAttr({
+                           name: 'fly_frm',
+                           rect:{
+                             x:x1,
+                             y:y1,
+                           }
+                        });
+                  vm.timeer -= 1;
+              }
+          },'100');
+
+        },
+
+    },watch:{
+      list:{
+        handler: function (val, oldVal) {
+          console.log(JSON.stringify(val));
+        }
+      },
+    }
+});
+
+ var cart_top=-1,cart_left=-1;
+    apiready = function(){
+        api.parseTapmode();
+        var header = $api.byId('aui-header');
+        $api.fixStatusBar(header);
+        var headerPos = $api.offset(header);
+        var body_h = $api.offset($api.dom('body')).h;
+        var i=0;
+        vm.init();
+       api.sendEvent({
+           name: 'first_load_frm',
+           extra: {
+               frame: 'classify_frm'
+           }
+       });
+       api.addEventListener({
+           name: 'flush_main_frame'//刷新主界面
+       }, function(ret, err){
+         console.log('flush_main_frame 刷新');
+          vm.init();
+       });
+       api.addEventListener({
+           name: 'to_cate'
+       }, function(ret, err) {
+
+         console.log(vm.cun_index);
+         for(var i=0;i<vm.list.length;i++){
+           if(vm.list[i].category_id==ret.value.cate_id){
+                vm.cun_index=i;
+                vm.init_children_list(i);
+                return 1;
+           }
+         }
+         tishi('No se encontró clasificación.');
+
+
+       });
+
+       // 询问购物车的位置
+      if(cart_top==-1){
+        api.sendEvent({
+            name: 'ask_cart_pos',
+         });
+      }
+       //获取购物车的位置
+       api.addEventListener({
+           name: 'cart_pos'
+       }, function(ret, err){
+           if( ret ){
+                console.log('获取购物车位置')
+                console.log(JSON.stringify(ret))
+                cart_top=ret.value.cart_top;
+                cart_left=ret.value.cart_left;
+           }
+       });
+
+    };
+
+</script>
+</html>

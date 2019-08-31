@@ -1,0 +1,434 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>首页</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <link rel="stylesheet" type="text/css" href="./css/zhu.css" />
+    <style>
+        header {
+            background-color: #1bbc9b;color:#fff;
+        }
+
+        header ul li {
+            height: 42px;
+            line-height: 42px;
+            text-align: center;
+            display: none;
+            color: #FFF;
+            position: relative;
+            font-size: 16px;
+        }
+
+        header ul li.active {
+            display: block;
+        }
+
+        #footer {
+            background-color: #fff;
+            border-top: 1px solid #f6f6f6;
+        }
+
+        #footer ul li {  padding-top: 32px;
+            padding-bottom: 4px;
+            background: url() no-repeat center 6px;
+            background-size: 24px;
+            font-size: 12px;
+            text-align: center;}
+
+        #footer ul li.active {color: rgb(65, 162, 11);}
+
+        #footer ul li:nth-child(1) {background-image: url(./image/bottombtn0101.png);}
+
+        #footer ul li:nth-child(2) {background-image: url(./image/bottombtn0201.png);}
+
+        #footer ul li:nth-child(3) {background-image: url(./image/bottombtn0301.png);}
+
+        #footer ul li:nth-child(4) {background-image: url(./image/bottombtn0401.png);}
+
+        #footer ul li:nth-child(1).active {background-image: url(./image/bottombtn0102.png);}
+
+        #footer ul li:nth-child(2).active {background-image: url(./image/bottombtn0202.png);}
+
+        #footer ul li:nth-child(3).active {background-image: url(./image/bottombtn0302.png);}
+
+        #footer ul li:nth-child(4).active {background-image: url(./image/bottombtn0402.png);}
+
+        .flex-con {overflow: auto}
+        #search-input,#search-input2{width: 100%;border-radius: 5px;background: #fff;color: #888;font-size: 12px;line-height: 32px;padding-left: 10px;padding-right: 30px;}
+        #search-btn,#search-btn2{position: absolute;right: 3px;top: 6px;height: 30px;width: 30px;}
+        .car_num{position: absolute;right: 10px;top:0;display: inline-block;line-height: 18px;height: 16px;min-width: 16px; font-size: 10px;text-align: center;background: red;color: #fff;z-index: 999;border-radius: 8px;}
+
+    </style>
+</head>
+
+<body>
+
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header style="display:none;">
+            <ul>
+                <li class="border-b active">
+                  <div class="hezi" style="height:42px;">
+                    <div class="col1 juzuo pad-left10" onclick="saoma()"><img src="./image/code.png" style="height:24px; margin-top:8px;"></div>
+                    <div class="col4 zhong weizhi">
+                      <input type="search" placeholder="Ingrese el nombre de producto" id="search-input">
+                      <img src="image/so.png" onclick="sousuo(this)" id="search-btn">
+                    </div>
+                    <div class="col1 juyou pad-right10" onclick="to_myxinxi()"><img src="./image/chat.png" style="height:24px; margin-top:8px;"></div>
+                  </div>
+                </li>
+                <li class="border-b" id="dafenlei">
+                  <div class="hezi" style="height:42px;">
+                    <div class="col1 juzuo pad-left10" onclick="saoma()"><img src="./image/code.png" style="height:24px; margin-top:8px;"></div>
+                    <div class="col4 zhong weizhi">
+                      <input type="search" placeholder="Ingrese el nombre de producto" id="search-input2">
+                      <img src="image/so.png" onclick="sousuo(this)" id="search-btn2">
+                    </div>
+                    <div class="col1 juyou pad-right10" onclick="to_myxinxi()"><img src="./image/chat.png" style="height:24px; margin-top:8px;"></div>
+                  </div>
+                </li>
+     <li class="border-b" style="background:#fff; color:#000;">
+          <div class="hezi">
+        <div class="col1"></div>
+            <div class="col1">Carrito de Compras</div>
+            <div class="col1"><span onclick="cartlist_del()" style="float:right;margin-right:10px;margin-top:2px; font-size:14px;">删除</span></div>
+        </div>
+      </li>
+<li class="border-b" style="background:#28bd60;">个人中心</li>
+            </ul>
+        </header>
+        <div id="main" class="flex-con">
+
+        </div>
+        <div id="footer" class="border-t">
+            <ul class="flex-wrap">
+                <li tapmode="hover" onclick="randomSwitchBtn( this,1 );" class="flex-con active">Inicio</li>
+                <li tapmode="hover" onclick="randomSwitchBtn( this,2 );" class="flex-con">Clasificacion</li>
+                <li tapmode="hover" onclick="randomSwitchBtn( this,3 );" class="flex-con gouwuche dongtai weizhi">Carrito de Compras<span class="car_num" style="display:none"></span></li>
+                <li tapmode="hover" onclick="randomSwitchBtn( this,4 );" class="flex-con">Mio</li>
+            </ul>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript" src="script/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="script/zhu.js"></script>
+<script type="text/javascript">
+var ajpush,shebei;
+    apiready = function() {
+        $api.fixStatusBar($api.dom('header'));
+        api.setStatusBarStyle({
+            style: 'light',
+            animated: true
+        });
+        funIniGroup();
+        up_car_num();
+        api.addEventListener({
+            name: 'offline'
+        }, function(ret, err) {
+            tishi('设备已断网');
+        });
+        api.addEventListener({
+            name: 'online'
+        }, function(ret, err) {
+            tishi('设备已连网');
+        });
+
+        api.addEventListener({
+            name: 'resume'
+        }, function(ret, err) {
+            api.setPrefs({
+                key: 'app_ing',
+                value: 1
+            }); //前台
+            up_my_cart_num();
+        });
+        api.addEventListener({
+            name: 'pause'
+        }, function(ret, err) {
+            api.setPrefs({
+                key: 'app_ing',
+                value: 0
+            }); //后台
+        });
+        api.addEventListener({
+            name: 'keyback'
+        }, function(ret, err) {
+            api.toLauncher(); //直接回到系统桌面
+        });
+        api.addEventListener({
+            name: 'login'
+        }, function(ret, err) {
+            //alert(JSON.stringify(ret.value));
+            //登陆成功的处理
+            //alert()
+            up_my_cart_num();
+        });
+        api.addEventListener({
+            name: 'tuichu'
+        }, function(ret, err) {
+            qiehuan(0);
+        });
+        api.addEventListener({
+            name: 'gobuy'
+        }, function(ret, err) {
+            qiehuan(0);
+        });
+        api.addEventListener({
+            name: 'to_fenlei'
+        }, function(ret, err) {
+          var zhi=ret.value;
+          //$("#dafenlei").html(zhi.name);
+          qiehuan(1);
+        });
+        api.addEventListener({
+            name: 'to_fenlei2'
+        }, function(ret, err) {
+          var zhi=ret.value;
+          //$("#dafenlei").html(zhi.name);
+        });
+        //监听更新购物车命令
+        api.addEventListener({
+            name: 'update_cart_num'
+        }, function(ret, err) {
+          up_my_cart_num();
+        });
+        //监听购物车数量
+        api.addEventListener({
+            name: 'update_cart_num_bynum'
+        }, function(ret, err) {
+          var zhi=ret.value;
+          if(zhi.num>0){
+          $(".car_num").html(zhi.num).show();
+          add_to_cart_donghua();
+        }else{
+          $(".car_num").html(0).hide();
+        }
+        });
+        api.addEventListener({
+            name: 'to_qiehuan'
+        }, function(ret, err) {
+          var zhi=ret.value;
+          qiehuan(zhi.name);
+        });
+
+        //极光推送
+
+    ajpush = api.require('ajpush');
+    shebei=api.systemType;
+    if(shebei=='android'){
+    ajpush.init(function(ret) {if (ret && ret.status){}});//初始化
+    }else if(shebei=='ios'){
+     tuisong_jieshou();
+    }
+    tuisong_jieshou();
+    tuisong_jieshou_chuli();
+
+
+    }
+
+    function funIniGroup() {
+        var eHeaderLis = $api.domAll('header li'),
+            frames = [];
+        for (var i = 0, len = eHeaderLis.length; i < len; i++) {
+            frames.push({
+                name: 'frame' + i,
+                url: './html/v1/frame' + i + '.html',
+                bgColor: '#eee',
+                bounces: false
+            })
+        }
+        api.openFrameGroup({
+            name: 'group',
+            scrollEnabled: false,
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: api.winWidth,
+                h: $api.dom('#main').offsetHeight
+            },
+            index: 0,
+            frames: frames
+        }, function(ret, err) {
+          if(ret.index==2){
+            api.sendEvent({
+                name: 'update_cart_list'
+            });
+          }
+        });
+    }
+
+    // 随意切换按钮
+    function randomSwitchBtn(tag, m) {
+        if (m > 1) {
+            if (isdenglu() == false) {
+                to_denglu();
+                return false;
+            }
+        }
+        if(m==1){
+          api.openFrame({
+              name: 'sousuo',
+              url: 'widget://html/v1/top_sousuo.html',
+              rect: {
+                  x: 0,
+                  y: api.safeArea.top,
+                  w: api.winWidth,
+                  h: 42
+              },
+              pageParam: {
+                  name: 'test'
+              }
+          });
+        }else{
+          api.closeFrame({name: 'sousuo'});
+        }
+        /*if(m==3){
+          $(".car_num").html(0).hide();
+        }*/
+        if (tag == $api.dom('#footer li.active')) return;
+        var eFootLis = $api.domAll('#footer li'),
+            eHeaderLis = $api.domAll('header li'),
+            index = 0;
+        for (var i = 0, len = eFootLis.length; i < len; i++) {
+            if (tag == eFootLis[i]) {
+                index = i;
+            } else {
+                $api.removeCls(eFootLis[i], 'active');
+                $api.removeCls(eHeaderLis[i], 'active');
+            }
+        }
+        $api.addCls(eFootLis[index], 'active');
+        $api.addCls(eHeaderLis[index], 'active');
+        api.setFrameGroupIndex({
+            name: 'group',
+            index: index
+        });
+    }
+
+    //切换frame
+    function qiehuan(m) {
+        $('header li.active').removeClass('active');
+        $('header li').eq(m).addClass('active');
+        $('#footer li.active').removeClass('active');
+        $('#footer li').eq(m).addClass('active');
+        api.setFrameGroupIndex({
+            name: 'group',
+            index: m
+        });
+    }
+
+    //
+    function cartlist_del(){
+      api.sendEvent({
+          name: 'cartlist_del'
+      });
+    }
+
+    function up_my_cart_num(){
+      api.ajax({
+          url: total_goods_sum_url,
+          method: 'post',
+          data: {
+              values: {
+                  token: api.getPrefs({sync: true,key:'login_id'}),
+                  deviceid: api.deviceId
+              }
+          }
+      },function(ret, err){
+          if (ret) {
+              //alert( JSON.stringify( ret ) );
+              if(ret.code==1){
+                api.sendEvent({
+                    name: 'update_cart_num_bynum',
+                    extra: {
+                        num: ret.data.data.total_goods_sum
+                    }
+                });
+              }
+          } else {
+              //alert( JSON.stringify( err ) );
+              tishi(err.msg);
+          }
+      });
+
+    }
+
+
+
+
+    //点击状态栏通知的触发事件
+function tuisong_jieshou_chuli(){
+     if(shebei=='android'){
+   api.addEventListener({
+     name: 'appintent'
+   }, function(ret, err) {
+    if (ret && ret.appParam.ajpush) {
+      console.log(JSON.stringify(ret));
+        var ajpush = ret.appParam.ajpush;
+        var id = ajpush.id;
+        var title = ajpush.title;
+        var content = ajpush.content;
+        var extra = ajpush.extra;
+        tishi("接收到推送信息");
+        if(extra.id){
+           tishi("接收到推送信息");
+        }
+    }
+  });
+    }else if(shebei=='ios'){
+  api.addEventListener({
+    name: 'noticeclicked'
+  }, function(ret, err) {
+  //api.toast({msg: '查看推送信息',location: 'bottom'});
+    if (ret && ret.value) {
+        var ajpush = ret.value;
+        var content = ajpush.content;
+        var extra = ajpush.extra;
+        tishi("接收到推送信息");
+        if(extra.id){
+           tishi("接收到推送信息");
+        }
+    }
+  });
+    }
+}
+
+function tuisong_jieshou(){
+  //此函数貌似没用
+    ajpush.setListener(
+    function(ret) {
+      //console.log('监听处理');
+      //console.log(JSON.stringify(ret));
+         var id = ret.id;
+         var content = ret.content;
+         var extra = ret.extra;
+         setTimeout(function(){
+           api.notification({
+           notify: {
+           title: "水果蔬菜通知信息",
+            content: content
+           },
+           vibrate:[100, 500, 100, 500],
+           light:true,
+           sound:"widget://css/msg.mp3"
+           });
+         },5000);
+    }
+  );
+ }
+
+
+function add_to_cart_donghua(){
+  $(".gouwuche").css({"background-size":"28px"});
+  setTimeout(function(){$(".gouwuche").css({"background-size":"20px"});},300);
+  setTimeout(function(){$(".gouwuche").css({"background-size":"24px"});},600);
+}
+</script>

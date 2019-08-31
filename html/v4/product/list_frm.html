@@ -1,0 +1,556 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/icons/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/public.css" />
+	<!-- <link rel="stylesheet" type="text/css" href="../../../css/T.css" /> -->
+	<link rel="stylesheet" type="text/css" href="../../../css/aui-slide.css" />
+	<style>
+
+      .cate-list .cate-item{
+
+	  }
+
+.header{width: 100%;/*height: 40px;*/background: rgba(249, 249, 249, 1);border-bottom: 1px solid rgba(242, 242, 242, 1);}
+.header_warp_box{overflow: hidden;position: relative;}
+.header_warp{white-space: nowrap;position: absolute;}
+
+    .header_item{ padding: 0 ;box-sizing:border-box;display: inline-block;border-bottom: 2px solid rgba(26, 188, 156, 0);width:4rem;
+    color:#a8a8a8;
+    }
+.c-image{
+  background: #aaaaaa;
+  border-radius: 0.5rem;
+}
+.c_1{display:none;}
+.c_2{display:block;}
+.header_item_active{color: #313131;position: relative; }
+.header_item_active .c_1{display:block !important;}
+.header_item_active .c_2{display:none !important;}
+.header_item img{}
+	</style>
+</head>
+<body>
+ <div id="app">
+
+
+
+
+ <div class="aui-info aui-padded-0 aui-padded-l-0 aui-padded-r-0   ">
+        <div class="rows-list">
+					<ul style="    display: flex;height:6.2rem;" id="cates">
+						<!--注意： 商品个数*6rem-->
+
+            <li class="aui-row   aui-margin-10 header_item" tapmode @click="firstcate_select(index)" v-for="(vo,index) in list"  >
+
+                <div class="aui-padded-10 c-image aui-margin-b-5 header_item_active"     :style="{background:vo.bg2}" v-if="vo.category_id==first_id">
+               <img :src="vo.image2" class="c_1"  >
+               <img :src="vo.image3"  class="c_2" >
+                </div>
+                <div class="aui-padded-10 c-image aui-margin-b-5"     :style="{background:vo.bg1}" v-else>
+               <img :src="vo.image2" class="c_1"  >
+               <img :src="vo.image3"  class="c_2" >
+                </div>
+               <div class="aui-font-size-12 text-center aui-ellipsis-1">{{vo.name}}</div>
+
+            </li>
+            <!--
+            <li class="aui-row   aui-margin-10 header_item" tapmode onclick="headerItemSwitch(this)"  >
+
+                <div class="aui-padded-10 c-image aui-margin-b-5"  >
+               <img src="../../../image/c/Capa19.png" class="c_1">
+               <img src="../../../image/c/Capa19byn.png"  class="c_2">
+                </div>
+               <div class="aui-font-size-12 text-center aui-ellipsis-1">Frutas</div>
+
+            </li> -->
+						 </ul>
+				</div>
+    </div>
+
+     <section class="aui-content   aui-padded-t-0 aui-padded-b-0 aui-margin-b-15 aui-refresh-content"  >
+
+      <div class="aui-info aui-margin-b-15 aui-padded-l-10 aui-padded-r-10">
+            <div class="aui-info-item ">
+            <span class="aui-margin-l-0  aui-btn aui-font-size-12 " style=" background: white; border-radius: 1rem;padding: 0 0.2rem; ">
+				 <div class="aui-info-item " style="z-index:10001;" @click="sortop()">
+                 <div class="black-font ">Ordenar por</div>
+				 <div class="lv-font aui-padded-l-5 "> Mayor Precio </div>
+
+				 <i class="icon iconfont iconround-expand_more-px aui-padded-l-0" style="  font-size: 1rem !important; "></i>
+                </div>
+				  <div class="orderby-list aui-info  " v-bind:class="{ 'aui-hide': open_sort==0 }" >
+				 <div class="orderby-item    " @click="change_sort('all')">
+				 <div class="aui-invisible">Ordenaarrr</div>  <div class="  aui-padded-l-0"  @click="change_sort('sales')"> Mayor Precio 	</div>
+				 </div>
+				 	 <div class="orderby-item    ">
+				 <div class="aui-invisible">Ordenaarrr</div>  <div class="  aui-padded-l-0" @click="change_sort('sales')"> Menor Precio	</div>
+				 </div>
+				 	 <div class="orderby-item    ">
+				 <div class="aui-invisible">Ordenaarrr</div>  <div class="  aui-padded-l-0" @click="change_sort('sales')"> Destacado Con 	</div>
+				 </div>
+				 	 <div class="orderby-item    ">
+				 <div class="aui-invisible">Ordenaarrr</div>  <div class="  aui-padded-l-0" @click="change_sort(0)">Mas Vendido 	</div>
+				 </div>
+
+				 </div>
+				 </span>
+
+                </div>
+                <div class="aui-info-item ">
+                <span class="aui-margin-l-5   aui-btn aui-font-size-12 " style=" background: white; border-radius: 1rem; padding: 0.0.2rem;">
+                <div class="aui-info-item " style="z-index:10001;" @click="cate_select()">
+<!-- font-extraBold -->
+                <div class="lv-font aui-padded-l-5  "> Mayor Precio </div>
+
+                <i class="icon iconfont iconround-expand_more-px aui-padded-l-0" style="  font-size: 1rem !important; "></i>
+                    </div>
+
+                <div class="orderby-list aui-info  " v-bind:class="{ 'aui-hide': open_catelist==0 }" >
+                <div class="orderby-item    " @click="change_cate(0)" v-for="(vo,index) in children_list">
+              <div class="  aui-padded-l-5"  @click="change_cate(index)"> {{vo.name}} 	</div>
+                </div>
+                <div class="orderby-item    ">
+                <div class="  aui-padded-l-5" @click="change_cate(0)"> Menor Precio	</div>
+                </div>
+                <div class="orderby-item    ">
+                   <div class="  aui-padded-l-5" @click="change_cate(0)"> Destacado Con 	</div>
+                </div>
+                <div class="orderby-item    ">
+                   <div class="  aui-padded-l-5" @click="change_cate(0)">Mas Vendido 	</div>
+                </div>
+
+                </div>
+                </span>
+
+                    </div>
+            <div class="aui-info-item  ">
+			<!-- <i class="icon iconfont iconround-view_module-px-G  aui-font-size-20  aui-margin-r-10" v-bind:class="{ 'lv-font': listStyle==0 }"   @click="changeStyle(0)"></i>
+			<i class="icon iconfont iconround-view_list-px-G aui-font-size-20" v-bind:class="{ 'lv-font': listStyle==1 }" @click="changeStyle(1)"></i> -->
+
+      <i class="icon iconfont iconround-view_module-px-G  aui-font-size-20   lv-font"    @click="changeStyle(0)" v-if="listStyle==1"></i>
+			<i class="icon iconfont iconround-view_list-px-G aui-font-size-20 lv-font"   @click="changeStyle(1)" v-if="listStyle==0"> </i>
+			</div>
+        </div>
+
+       <div class="aui-margin-b-15 aui-padded-l-15 aui-padded-r-15  " v-if="listStyle==1">
+                <div class="aui-row aui-row-padded goods_list_row">
+                    <div class="aui-col-xs-6  goods_list_item"   v-for="(goods,index) in goods_list">
+					 <div class="goods-content aui-padded-15">
+                        <img :src="goods.image" v-on:click="to_goods_info(goods.goods_id)">
+
+						  <div class="aui-card-list  font-bold">
+                        <div class=" aui-padded-0">
+                            {{goods.goods_name}}
+                        </div>
+                        <div class=" now-price">
+                            ${{goods.now_price.value}}
+                        </div>
+                        <div class=" vip-price">
+                           <div v-if="goods.vip_price!=0.00">
+                            ${{goods.vip_price}} V.I.P.
+                          </div>
+                        </div>
+			            	<div class="aui-btn add_cart" @click="add_to_cart(index)" v-if="goods.stock_num>goods.cart_num">Agregar</div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="aui-col-xs-6 goods_list_item">
+						 <div class="goods-content aui-padded-15">
+                        <img src="../../../image/p/p5.png">
+							 <div class="aui-card-list  ">
+                       <div class="  aui-padded-0">
+                           Frutos Rojos
+                       </div>
+                        <div class=" now-price">
+                            $360,00
+                        </div>
+                        <div class=" vip-price">
+                            $340,00 V.I.P.
+                        </div>
+			           	<div class="aui-btn add_cart">Agregar</div>
+                       </div>
+                    </div>
+                    </div>
+					    <div class="aui-col-xs-6 goods_list_item">
+						 <div class="goods-content aui-padded-15">
+                        <img src="../../../image/p/p6.png">
+							 <div class="aui-card-list  font-bold">
+                       <div class=" aui-padded-0">
+                           Frutos Rojos
+                       </div>
+                        <div class=" now-price">
+                            $360,00
+                        </div>
+                        <div class=" vip-price">
+                            $340,00 V.I.P.
+                        </div>
+			           	<div class="aui-btn add_cart">Agregar</div>
+                       </div>
+                    </div>
+                    </div>
+					    <div class="aui-col-xs-6 goods_list_item">
+						 <div class="goods-content aui-padded-15">
+                        <img src="../../../image/p/p4.png">
+							 <div class="aui-card-list  font-bold">
+                       <div class=" aui-padded-0">
+                           Frutos Rojos
+                       </div>
+                       <div class=" now-price">
+                            $360,00
+                        </div>
+                        <div class=" vip-price">
+                            $340,00 V.I.P.
+                        </div>
+			           	<div class="aui-btn add_cart">Agregar</div>
+                       </div>
+                    </div>
+                    </div>
+
+
+                </div>
+        </div>
+
+	   <div class="aui-margin-b-15 aui-padded-l-15 aui-padded-r-15  " v-if="listStyle==0">
+                <div class="  aui-row-padded goods_list_row">
+
+                    <div class="goods_col_item"  v-for="(goods,index) in goods_list">
+					 <div class="goods-content aui-padded-5 aui-row">
+					 <div class="aui-col-xs-3" v-on:click="to_goods_info(goods.goods_id)">
+					        <img :src="goods.image">
+					  </div>
+					 <div class="aui-col-xs-5   " v-on:click="to_goods_info(goods.goods_id)">
+					 	  <div class="aui-card-list  aui-padded-l-10 ">
+                        <div class=" aui-padded-0 aui-ellipsis-1 font-bold">
+                              {{goods.goods_name}}
+                        </div>
+                        <div class=" now-price">
+                             ${{goods.now_price.value}}
+                        </div>
+                        <div class=" vip-price">
+                               <div v-if="goods.vip_price!=0.00">
+                            ${{goods.vip_price}} V.I.P.
+                          </div>
+                        </div>
+
+                        </div>
+					  </div>
+					  <div class="aui-col-xs-4">
+					     	<div class="aui-btn add_cart aui-margin-t-15"  @click="add_to_cart(index)" v-if="goods.stock_num>goods.cart_num"> Agregar</div>
+					  </div>
+                    </div>
+                    </div>
+
+
+
+                </div>
+        </div>
+
+	</section>
+
+     </div>
+
+
+
+
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript" src="../../../script/T.js"></script>
+<script type="text/javascript" src="../../../script/iScroll-lite.js"></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/aui-scroll.js"></script>
+<script type="text/javascript" src="../../../script/aui-pull-refresh.js"></script>
+<script type="text/javascript">
+var vm = new Vue({
+     el: '#app',
+      data: {
+        listStyle:0,
+		    open_sort:0,
+        cun_index:0,
+        list: [],
+        first_id: 0,
+        cun_cate_id:0,//当前产品列表的分类
+        second_index:-1,
+        children_list:[],
+        page: 1,
+        goods_list: [],
+        isA:0,
+        listStyle:1,
+        sortType:'all',
+        sortPrice:-1,
+        open_catelist:0,
+        has_more:1,
+       },
+      methods: {
+      //  init:function(){
+	    //     vm.second_list(vm.first_id);
+	    //  },
+     firstcate_select:function(index){
+       vm.first_id=vm.list[index].category_id;
+
+       vm.second_index=0;
+     },
+
+    //  二级分类选择
+    cate_select:function() {
+          vm.open_catelist=1;
+     },
+    change_cate:function(index){
+       vm.open_catelist=0;
+       vm.second_index=index;
+       vm.cun_cate_id = vm.children_list[index].category_id;
+     },
+
+	  add_to_cart:function(index,moudle){
+         if(is_login()){
+           api.ajax({
+               url: add_to_cart_url,
+               method: 'post',
+               data: {
+                   values: {
+                     token: api.getPrefs({sync: true,key:'login_id'}),
+                     goods_id:vm.goods_list[index]['goods_id'],
+
+                     goods_num:1
+                   }
+               }
+             },function(ret, err){
+               if (ret) {
+                  //  tishi(ret.msg);
+
+                   if(ret.code==1){
+
+                   tishi( ret.msg );
+                   api.sendEvent({
+                       name: 'update_cart_num',
+                   });
+                   api.sendEvent({
+                       name: 'update_cart_list',//更新购物车列表
+                   });
+
+                }else{
+                 tishi( ret.msg );
+                  Log(ret);
+                }
+
+               } else {
+                   alert( JSON.stringify( err ) );
+                //  console.log(err.msg)
+               }
+             });
+          }else{
+            go_login();
+         }
+        },
+	  changeStyle:function(idx){
+	       this.listStyle = idx;
+	    },
+
+	   sortop:function(){
+	      console.log(vm.open_sort);
+	     if(vm.open_sort==1){
+	       vm.open_sort=0;
+	     }else{
+	       vm.open_sort=1;
+	       console.log(vm.open_sort);
+		   }
+	    },
+     change_sort:function(sort){
+	      vm.open_sort=0;
+        vm.sortType=sort;
+       if(sort=='all' || sort=='sales'){
+         vm.sortPrice=-1;
+       }else{
+         if(vm.sortPrice==-1 || vm.sortPrice==0){
+               vm.sortPrice=1;
+         }else{
+           vm.sortPrice=0;
+         }
+       }
+       vm.page=1;
+       vm.has_more=1;
+       vm.get_goods_list();
+     },
+     second_list:function (first_id) {
+          api.ajax({
+             url: cate_list_url,
+             method: 'get',
+             data: {
+                 values: {
+                   pid:first_id
+                 }
+             }
+            },function(ret, err){
+             if (ret) {
+               if(ret.data.length==0){
+                    vm.cun_cate_id=first_id;
+               }else{
+                   vm.cun_cate_id=ret.data[0].category_id;
+               }
+               vm.second_index=0;
+               vm.children_list=ret.data;
+             }
+           });
+      },
+     get_goods_list:function(){
+
+        if(vm.has_more){
+
+            api.ajax({
+                url: cate_goodslist_url,
+                method: 'get',
+                timeout: 30,
+                dataType: 'json',
+                returnAll: false,
+                data: {
+                    values: {
+                        category_id: vm.cun_cate_id,
+                        page: vm.page,
+                        sortType:vm.sortType,
+                        sortPrice:vm.sortPrice
+                    }
+                }
+            }, function (ret, err) {
+              console.log(JSON.stringify(ret))
+                if (ret) {
+                    if (vm.page == 1) {
+                        vm.goods_list = ret.data.list.data;
+                    } else {
+                        for (var i = 0; i < ret.data.list.data.length; i++) {
+                            vm.goods_list.push(ret.data.list.data[i]);
+                        }
+                    }
+                    if(ret.data.list.current_page==ret.data.list.last_page){
+                      vm.has_more=0;
+                    }
+
+                    vm.page += 1;
+                } else {
+                    api.alert(JSON.stringify(err));
+                }
+            });
+
+            }
+      },
+     to_goods_info:function (goods_id) {
+					open_goods_detail(goods_id);
+  		},
+     select_second:function(index){
+        vm.second_index=index;
+        vm.cun_cate_id = vm.children_list[index].category_id;
+
+      }
+	  },
+     watch:{
+      //  当前一级分类的变化，获取二级分类
+      first_id:{
+        handler: function (val, oldVal) {
+          console.log(val);
+
+         vm.second_list(val);
+        }
+      },
+      // 当前产品列表分类id 来获取产品
+      cun_cate_id:{
+        handler: function (val, oldVal) {
+          console.log(val);
+         vm.page=1;
+         vm.has_more=1;
+         vm.get_goods_list();
+        }
+      },
+    }
+
+	})
+
+  var headerH;
+	var myScroll;
+	apiready = function () {
+	//	myScroll = new IScroll('#iscroll', {scrollX: true,tap: true});
+
+    // document.querySelector('#cates').scroll(100,0);
+
+    // api.pageDown(function(ret, err) {
+    //         console.log("已经滚动到顶部了");
+    //     if (!ret.scrolled) {
+    //
+    //              console.log("已经滚动到顶部了");
+    //     }
+    // });
+    // api.pageUp(function(ret, err) {
+    //   if (!ret.scrolled) {
+    //
+    //       console.log("已经滚动到顶部了");
+    //    }
+    //  });
+      api.addEventListener({
+         name: 'scrolltobottom',
+         extra: {
+             threshold: 0            //设置距离底部多少距离时触发，默认值为0，数字类型
+         }
+         }, function (ret, err) {
+          console.log('到底部了')
+          vm.get_goods_list();
+         // vm.get_like_goods();
+       });
+      vm.first_id=api.pageParam.cate_id;
+
+      api.ajax({
+          url: cate_list_url,
+          method: 'get',
+          data: {
+              values: {
+              }
+          }
+        },function(ret, err){
+          if (ret) {
+
+            var first_cates=ret.data,str='';
+            vm.list=ret.data;
+                        console.log(JSON.stringify(vm.list));
+            // class="aui-col-xs-3"
+            // for (var i = 0; i < json_num(first_cates); i++) {
+            //   if(first_cates[i].image2!='' && first_cates[i].image3!='' ){
+            //     if(first_cates[i].category_id==api.pageParam.cate_id){
+			      //     	vm.cun_index=i;
+            //       str+='<li  class="aui-row   aui-margin-10  header_item header_item_active" tapmode onclick="headerItemSwitch(this,'+i+')"  ><div  >';
+            //         }else{
+            //       str+='<li  class="aui-row   aui-margin-10 header_item" tapmode onclick="headerItemSwitch(this,'+i+')"><div  >';
+            //     }
+            //     str+='<img src="'+first_cates[i].image2+'" class="c_1">';
+            //     str+='<img src="'+first_cates[i].image3+'"  class="c_2">';
+            //     str+='<div class="aui-font-size-14 text-center font-bold aui-ellipsis-1">'+first_cates[i].name+'</div>';
+            //     str+='</div></li>';
+            //    }
+            //  }
+            //  console.log(str);
+            // document.getElementById("cates").innerHTML=str;
+            // myScroll.scrollTo(-pos_x, 0, 300)
+          }
+        });
+
+
+	}
+
+  //
+	// function headerItemSwitch(_this,index){
+	// 	vm.cun_index=index;
+  //
+	// 	var items = $api.domAll(_this.parentNode, ".header_item");
+	// 	for(var i=0;i<items.length;i++){
+  //  console.log(i);
+	// 		$api.removeCls(items[i], "header_item_active");
+	// 	}
+	// 	$api.addCls(_this, "header_item_active");
+	// 	// myScroll.scrollToElement(_this, 300, true);
+	// }
+
+
+</script>
+</html>

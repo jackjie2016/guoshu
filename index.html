@@ -1,0 +1,525 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="./css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="./css/icons/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="./css/public.css" />
+    <style type="text/css">
+        #demo {
+            width: 4rem;
+            height: 4rem;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -2rem;
+            margin-top: -2rem;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            line-height: 4rem;
+            text-align: center;
+            color: #212121;
+            font-size: 1.2rem;
+        }
+        .aui-bar{
+          min-height: 1.85rem;
+        }
+        .aui-bar-nav{
+          line-height: 1.85rem;
+        }
+		.aui-searchbar{
+		background:transparent !important;
+    width: 95%;
+    height: 1.8rem!important;
+		}
+		.aui-searchbar-input{
+		margin:0;
+     height: 1.2rem;
+    line-height: 1.2rem
+		}
+
+		 	.aui-searchbar-input input{
+	    line-height: 1.2rem;
+      height: 1.2rem;
+      text-indent: 0.5rem;
+		}
+
+		#aui-header{box-shadow: 0px 1px 1px #a8a8a8;}
+		#aui-footer{box-shadow: 0px -1px 1px #a8a8a8;}
+    #footer{
+      -moz-box-shadow:0px -2px 2px #a8a8a8, 2px 2px 2px #a8a8a8;
+       -webkit-box-shadow:0px -2px 2px #a8a8a8, 2px 2px 2px #a8a8a8;
+       box-shadow:0px -2px 2px #a8a8a8, 2px 2px 2px #a8a8a8;
+       background: #eee
+    }
+
+	/*.icon{font-size: 1.2rem !important;}*/
+    </style>
+</head>
+<body>
+<div id="app"  v-cloak>
+  <header class="aui-bar aui-bar-nav  disnone   aui-padded-l-15 aui-padded-r-15"   id="aui-header">
+    <!-- <div class="aui-clearfix header-c"   >
+        <div class="aui-title" >Categorías</div>
+        <div class="aui-col-xs-2 aui-pull-right">
+            <i class="aui-iconfont aui-icon-message" onclick="openWin('member','info')"  ></i>
+        </div>
+    </div> -->
+           <div class="aui-clearfix header-c "    >
+
+              <div class="aui-col-xs-11"   v-bind:class="{'aui-hide': cou_index>0}">
+                 <div class="aui-searchbar" id="search">
+                   <div class="aui-searchbar-input aui-border-radius" style="border-radius: 2rem;  ">
+
+		                <i class="icon iconfont iconround-search-px2 aui-font-size-20 "  style=" font-size: 1rem !important; "   ></i>
+                       <input type="search" placeholder="¿Qué estás buscando?" id="search-input" onclick="open_search()">
+                       <div class="aui-searchbar-clear-btn">
+                           <i class="aui-iconfont aui-icon-close"></i>
+                       </div>
+                   </div>
+                </div>
+              </div>
+
+                <div class="aui-title" v-bind:class="{'aui-hide': cou_index==0}">{{list[cou_index].title}}</div>
+
+              <div class="aui-col-xs-1  " v-bind:class="{'aui-invisible': cou_index>0}">
+                  <i class="icon iconfont iconround-notifications-px aui-font-size-20 " tapmode onclick="open_info_center()" style=" font-size: 1rem !important; " ></i>
+              </div>
+          </div>
+
+          <!-- <div class="aui-clearfix header-c"    >
+              <div class="aui-title" >{{list[cou_index].title}}2</div>
+
+              <div class="aui-col-xs-2 aui-pull-right">
+                  <i class="aui-iconfont aui-icon-message" onclick="openWin('member','info')"  ></i>
+              </div>
+          </div> -->
+
+      </header>
+
+
+      <!-- <header class="aui-bar aui-bar-nav  disnone aui-padded-l-15 aui-padded-r-15"   id="aui-header">
+
+
+              <div class="aui-clearfix header-c"   >
+                  <div class="aui-title" >Categorías</div>
+                  <div class="aui-col-xs-2 aui-pull-right">
+                      <i class="aui-iconfont aui-icon-message" onclick="openWin('member','info')"  ></i>
+                  </div>
+              </div>
+
+          </header> -->
+    <footer class="aui-bar aui-bar-tab" id="footer" >
+        <div class="aui-bar-tab-item footer-nav"  v-for="(vo,index) in list" v-bind:class="{'lv-font': cou_index == index}"  @click="change_menu(index)" tapmode>
+              <i class="icon iconfont iconoutline-home-px-G  " v-if="index == 0"></i>
+              <i class="icon iconfont iconoutline-category-px-G " v-if="index == 1"></i>
+
+             <div class="aui-dot" id="cart" v-if="index == 2" v-if="total_goods_sum > 0"></div>
+             <i class="icon iconfont iconoutline-shopping_cart-px " v-if="index == 2"></i>
+
+              <!-- <div class="aui-dot" v-if="index == 3"></div> -->
+             <i class="icon iconfont iconoutline-account_circle-px-G " v-if="index == 3"></i>
+
+
+        </div>
+
+    </footer>
+	</div>
+</body>
+<script type="text/javascript" src="./script/api.js" ></script>
+<script type="text/javascript" src="./script/vue.js" ></script>
+<script type="text/javascript" src="./script/aui-tab.js" ></script>
+<script type="text/javascript" src="./script/common.js" ></script>
+<script type="text/javascript">
+
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            total_goods_sum: 0,
+            cou_index: 0,//显示当前索引
+            now_height:0,
+            offsetHeight:0,
+            list:[
+                {title:'Home'},
+                {title:'Categorías'},
+                {title:'Carrito'},
+                {title:'Mi Cuenta'}
+            ]
+        },
+        methods: {
+            update_tatal_goods_sum: function () {
+                api.ajax({
+                    url: total_goods_sum_url,
+                    method: 'post',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                    data: {
+                        values: {
+                            token: api.getPrefs({sync: true,key:'login_id'}),
+                            deviceid: api.deviceId,
+                        }
+                    }
+                }, function (ret, err) {
+                    if (ret) {
+                      // console.log(JSON.stringify(ret))
+                        if(ret.code == 1){
+                            vm.total_goods_sum = ret.data.data.total_goods_sum;
+                        }else{
+                            vm.total_goods_sum = 0;
+                        }
+                    } else {
+                      // console.log(JSON.stringify(err))
+                        api.alert(JSON.stringify(err));
+                    }
+                });
+            },
+            init: function () {
+              //  if(vm.cou_index==0){
+              //      vm.offsetHeight=0;
+              //  }else {
+              //     vm.offsetHeight=$api.dom('header').offsetHeight;
+              //  }
+              vm.update_tatal_goods_sum();
+
+
+                api.openFrameGroup({
+                    name: 'IndexGroup',//app首页frame组预加载
+                    background: 'bgcolor',
+                    scrollEnabled: false,
+                    rect: {
+                        x: 0,
+                        y: $api.dom('header').offsetHeight,//$api.dom('header').offsetHeight
+                        w: 'auto',
+                        h: api.winHeight  - $api.dom('footer').offsetHeight-$api.dom('header').offsetHeight
+                    },
+                    index: vm.cou_index,
+                    preload: true,
+                    frames: [
+                        {
+                            name: 'home',
+                            url: './html/v4/mainFrame/home_frm.html',
+                            bgColor: 'bgcolor',
+                            bounces: true,
+                            reload: false,
+                            pageParam: {
+                                footerH: $api.dom('footer').offsetHeight
+                            }
+
+                        },
+                        {
+                            name: 'classify_index',
+                            url: './html/v4/mainFrame/cate_frm.html',
+                            // url: './html/v1/frame1.html',
+                            bgColor: 'bgcolor',
+                            bounces: false,
+                            reload: true,
+                            overScrollMode:'always',
+                            pageParam: {
+                                footerH: $api.dom('footer').offsetHeight
+                            }
+                        },
+                        {
+                            name: 'cart_index',
+                            // url: './html/v2/mainFrame/cart.html',
+                            url: './html/v4/mainFrame/cart_frm.html',
+                            bgColor: 'bgcolor',
+                            bounces: false,
+                            reload: true,
+                            overScrollMode:'always',
+                            pageParam: {
+                                footerH: $api.dom('footer').offsetHeight
+                            }
+                        },
+                        {
+                            name: 'member_index',
+                            url: './html/v4/mainFrame/profile_frm.html',
+                            // url: './html/v1/frame3.html',
+                            bgColor: 'bgcolor',
+                            bounces: false,
+                            reload: true,
+                            overScrollMode:'always',
+
+                        }
+                    ]
+                }, function (ret, err) {
+                  console.log(JSON.stringify(ret));
+
+                });
+            },
+
+            change_menu: function (index) {
+              console.log(index);
+                // if (index > 1) {
+                //     if (!is_login()) {
+                //         go_login();
+                //         return false;
+                //     }
+                // }
+                if (vm.cou_index == index) {
+                    return false;
+                }
+              if (index== 0) {
+               api.setFrameAttr({ // 隐藏内容层
+                  name: 'home_top',
+                  hidden:false,
+                });
+                api.bringFrameToFront({
+                   from: 'home_top',
+                   to: 'home'
+                 });
+
+              }else{
+                api.setFrameAttr({ // 隐藏内容层
+                   name: 'home_top',
+                   hidden:true,
+                 });
+              }
+
+              if (index== 1) {
+               api.setFrameAttr({ // 隐藏内容层
+                  name: 'classify_frm',
+                  hidden:false,
+                });
+
+              }else{
+                api.setFrameAttr({ // 隐藏内容层
+                   name: 'classify_frm',
+                   hidden:true,
+                 });
+              }
+
+
+              if (index== 2) {
+               api.setFrameAttr({ // 隐藏内容层
+                  name: 'cart_frm',
+                  hidden:false
+                });
+              }else{
+                api.setFrameAttr({ // 隐藏内容层
+                   name: 'cart_frm',
+                   hidden:true,
+                 });
+              }
+
+              if (index== 3) {
+               api.setFrameAttr({ // 隐藏内容层
+                  name: 'member_top',
+                  hidden:false
+                });
+              }else{
+                api.setFrameAttr({ // 隐藏内容层
+                   name: 'member_top',
+                   hidden:true,
+                 });
+              }
+
+              api.sendEvent({
+                  name: 'man_menu',
+                  extra: {
+                      man_index: index
+                  }
+              });
+
+                //切换菜单
+                vm.cou_index = index;
+                api.setFrameGroupIndex({
+                    name: 'IndexGroup',
+                    index: index
+                });
+            }
+        },watch:{
+            cou_index:{
+               handler: function (val, oldVal) {
+                 console.log('classify_frm');
+                //  api.setFrameAttr({ // 隐藏内容层
+                //                     name: 'classify_frm',
+                //                     hidden:true,
+                //                 });
+               }
+            },
+    },
+    });
+    var headerPos;
+    apiready = function(){
+
+        api.parseTapmode();
+        var header = $api.byId('aui-header');
+       $api.fixStatusBar(header);
+       headerPos = $api.offset(header);
+       vm.init();
+        var header = $api.byId('aui-header');
+        $api.fixStatusBar(header);
+        var headerPos = $api.offset(header);
+        var body_h = $api.offset($api.dom('body')).h;
+
+        var frames = api.frames();
+        console.log(frames);
+        //  vm.cou_index=2;
+        // vm.change_menu(vm.cou_index);
+        api.addEventListener({
+            name: 'first_load_frm'
+        }, function(ret, err){
+            if( ret ){
+              api.setFrameAttr({ // 隐藏内容层
+                 name: ret.value.frame,
+                 hidden:true,
+               });
+            }
+        });
+
+
+
+         //切换
+        api.addEventListener({
+            name: 'to_qiehuan'
+        }, function(ret, err) {
+          var zhi=ret.value;
+          vm.change_menu(zhi.name);
+        });
+         //更新购物车数量
+        api.addEventListener({
+            name: 'tatal_goods_sum'
+        }, function(ret, err){
+              vm.update_tatal_goods_sum();
+        });
+        //监听更新购物车命令
+        api.addEventListener({
+            name: 'update_cart_num'
+        }, function(ret, err) {
+            vm.update_tatal_goods_sum();
+        });
+        var box=document.getElementById('cart');
+        console.log(box.getBoundingClientRect().top);
+        console.log(box.getBoundingClientRect().left);
+        //发送购物车的位置
+       api.addEventListener({
+            name: 'ask_cart_pos'
+        }, function(ret, err){
+          console.log('发送购物车位置')
+          console.log(box.getBoundingClientRect().top+','+box.getBoundingClientRect().left)
+          api.sendEvent({
+              name: 'cart_pos',
+              extra:{
+                cart_top:box.getBoundingClientRect().top,
+                cart_left:box.getBoundingClientRect().left
+              }
+           });
+        });
+
+
+        // 加载飞入窗口
+        api.openFrame({
+            name: 'fly_frm',
+            url: './html/v2/common/fly_frm.html',
+            bounces: false,
+            rect: {
+                x: 0,
+                y: 0,
+                w: 0,
+                h: 0
+            },
+
+        });
+        api.addEventListener({
+            name: 'fly_loading'
+        }, function(ret, err){
+          api.setFrameAttr({
+              name: 'fly_frm',
+              bounces: false,
+              hidden:true,
+              vScrollBarEnafalsebled: true,
+              hScrollBarEnabled: true,
+              rect: {
+                  x: 20,
+                  y: 60,
+                  w: 50,
+                  h: 50
+              },
+          });
+        });
+
+
+        //极光推送
+
+    ajpush = api.require('ajpush');
+    shebei=api.systemType;
+    if(shebei=='android'){
+    ajpush.init(function(ret) {if (ret && ret.status){}});//初始化
+    }else if(shebei=='ios'){
+     tuisong_jieshou();
+    }
+    tuisong_jieshou();
+    tuisong_jieshou_chuli();
+    }
+
+
+        //点击状态栏通知的触发事件
+    function tuisong_jieshou_chuli(){
+         if(shebei=='android'){
+       api.addEventListener({
+         name: 'appintent'
+       }, function(ret, err) {
+        if (ret && ret.appParam.ajpush) {
+          console.log(JSON.stringify(ret));
+            var ajpush = ret.appParam.ajpush;
+            var id = ajpush.id;
+            var title = ajpush.title;
+            var content = ajpush.content;
+            var extra = ajpush.extra;
+            tishi("接收到推送信息");
+            if(extra.id){
+               tishi("接收到推送信息");
+            }
+        }
+      });
+        }else if(shebei=='ios'){
+      api.addEventListener({
+        name: 'noticeclicked'
+      }, function(ret, err) {
+      //api.toast({msg: '查看推送信息',location: 'bottom'});
+        if (ret && ret.value) {
+            var ajpush = ret.value;
+            var content = ajpush.content;
+            var extra = ajpush.extra;
+            tishi("接收到推送信息");
+            if(extra.id){
+               tishi("接收到推送信息");
+            }
+        }
+      });
+        }
+    }
+
+    function tuisong_jieshou(){
+      //此函数貌似没用
+        ajpush.setListener(
+        function(ret) {
+          //console.log('监听处理');
+          //console.log(JSON.stringify(ret));
+             var id = ret.id;
+             var content = ret.content;
+             var extra = ret.extra;
+             setTimeout(function(){
+               api.notification({
+               notify: {
+               title: "水果蔬菜通知信息",
+                content: content
+               },
+               vibrate:[100, 500, 100, 500],
+               light:true,
+               sound:"widget://css/msg.mp3"
+               });
+             },5000);
+        }
+      );
+     }
+
+
+
+</script>
+</html>

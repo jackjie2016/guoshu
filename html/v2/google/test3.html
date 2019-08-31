@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>Retrieving Autocomplete Predictions</title>
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+
+<script type="text/javascript" src="../../../script/vue.js"></script>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #right-panel {
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+
+      #right-panel select, #right-panel input {
+        font-size: 15px;
+      }
+
+      #right-panel select {
+        width: 100%;
+      }
+
+      #right-panel i {
+        font-size: 12px;
+      }
+    </style>
+
+  </head>
+  <body>
+    <div id="right-panel">
+	  <input v-model="keywords">
+      <p>Query suggestions for 'pizza near Syd':</p>
+      <ul id="results"></ul>
+    </div>
+    <script>
+	var deviceid;
+    var cvv;
+var time=0;
+var vm = new Vue({
+    el: '#right-panel',
+    data: {
+      keywords: 'EE',
+    },
+    methods: {
+     init:function(){
+
+
+       },
+
+    } ,watch:{
+
+        keywords:{
+           handler: function (val, oldVal) {
+               console.log(val);
+                initService();
+           }
+        },
+        },
+   });
+
+
+
+      // This example retrieves autocomplete predictions programmatically from the
+      // autocomplete service, and displays them as an HTML list.
+
+      // This example requires the Places library. Include the libraries=places
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAp7R9ZFep3cdO21_JpUY-5wVGdM3DUcVw&libraries=places">
+
+      function initService() {
+        var displaySuggestions = function(predictions, status) {
+          if (status != google.maps.places.PlacesServiceStatus.OK) {
+
+			console.log(status);
+            return;
+          }
+      console.log(JSON.stringify(predictions));
+            predictions.forEach(function(prediction) {
+             var li = document.createElement('li');
+		 //	console.log(JSON.stringify(prediction))
+            li.appendChild(document.createTextNode(prediction.description));
+            document.getElementById('results').appendChild(li);
+           });
+        };
+
+		var token=google.maps.places.AutocompleteSessionToken();
+
+        var service = new google.maps.places.AutocompleteService();
+        //service.getQueryPredictions({ input: 'pizza near Syd' }, displaySuggestions);
+
+		//service.getQueryPredictions({
+		//input: vm.keywords,
+
+	   // componentRestrictions: {country: "arg"}
+		//},
+		//displaySuggestions);
+
+		//perform request. limit results to Australia
+		var request = {
+   		 input: vm.keywords,
+
+		};
+		service.getPlacePredictions(request, displaySuggestions);
+        //service.getQueryPredictions({ input: vm.keywords }, displaySuggestions);
+      }
+    </script>
+    <script type="text/javascript" src="https://maps.google.cn/maps/api/js?key=AIzaSyAp7R9ZFep3cdO21_JpUY-5wVGdM3DUcVw&libraries=places"
+        async defer>
+	</script>
+  </body>
+</html>

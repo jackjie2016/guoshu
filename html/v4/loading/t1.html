@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit" />
+<link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+
+<link rel="stylesheet" type="text/css" href="../../../css/public.css"/>
+
+<script type="text/javascript" src="../../script/api.js"></script>
+
+<style>
+@import url(https://fonts.googleapis.com/css?family=Comfortaa:400,700,300);
+*, html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background:#a5d16d;
+  text-align: center;
+  font-family: 'Comfortaa', cursive;
+}
+
+svg {
+  width: 10rem;
+  height: 10rem;
+  margin: 2rem;
+  display: inline-block;
+}
+
+h1 b {
+  font-weight: 700;
+}
+
+.made-with-love {
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 10px;
+  font-family: arial;
+  color: #fff;
+}
+.made-with-love i {
+  font-style: normal;
+  color: #F50057;
+  font-size: 14px;
+  position: relative;
+  top: 2px;
+}
+.made-with-love a {
+  color: #fff;
+  text-decoration: none;
+}
+.made-with-love a:hover {
+  text-decoration: underline;
+}
+
+</style>
+</head>
+
+<body>
+  <div id="app">
+    <section class="aui-content-padded" style="padding-top:10rem">
+
+
+<svg version="1.1" id="L2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+  viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve" v-if="flag==0">
+<circle fill="none" stroke="#fff" stroke-width="4" stroke-miterlimit="10" cx="50" cy="50" r="48"/>
+<line fill="none" stroke-linecap="round" stroke="#fff" stroke-width="4" stroke-miterlimit="10" x1="50" y1="50" x2="85" y2="50.5">
+  <animateTransform
+       attributeName="transform"
+       dur="2s"
+       type="rotate"
+       from="0 50 50"
+       to="360 50 50"
+       repeatCount="indefinite" />
+</line>
+<line fill="none" stroke-linecap="round" stroke="#fff" stroke-width="4" stroke-miterlimit="10" x1="50" y1="50" x2="49.5" y2="74">
+  <animateTransform
+       attributeName="transform"
+       dur="15s"
+       type="rotate"
+       from="0 50 50"
+       to="360 50 50"
+       repeatCount="indefinite" />
+</line>
+</svg>
+
+<svg t="1566810254314" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="13845" width="200" height="200" v-else><path d="M456.533333 695.466667c-17.066667 17.066667-42.666667 17.066667-59.733333 0l-153.6-153.6c-17.066667-17.066667-17.066667-42.666667 0-59.733334s42.666667-17.066667 59.733333 0l123.733334 123.733334 294.4-294.4c17.066667-17.066667 42.666667-17.066667 59.733333 0s17.066667 42.666667 0 59.733333l-324.266667 324.266667z" fill="#FFFFFF" p-id="13846"></path><path d="M512 0C230.4 0 0 230.4 0 512s230.4 512 512 512 512-230.4 512-512S793.6 0 512 0z m0 938.666667C277.333333 938.666667 85.333333 746.666667 85.333333 512S277.333333 85.333333 512 85.333333s426.666667 192 426.666667 426.666667-192 426.666667-426.666667 426.666667z" fill="#FFFFFF" p-id="13847"></path></svg>
+   <div class="font-extraBold aui-font-size-20" style="color:white;font-size: 3rem;"> {{status}}</div>
+  </section>
+
+</div>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#app',
+    data: {
+	flag:0,
+    status:'wait...',
+    },
+    methods: {
+
+    }
+  });
+    apiready = function(){
+       console.log('loading2');
+        api.parseTapmode();
+        api.sendEvent({
+                name: 'ask_status',
+               });
+        // 监听页面消失的时候，关掉页面就可以了
+        api.addEventListener({
+               name:'closeloading'
+           },function(){
+               console.log('closeloading');
+               api.closeFrame();
+           });
+        api.addEventListener({
+              name:'say_status_loading'
+          },function(ret, err){
+              console.log(JSON.stringify(ret))
+              console.log('122');
+              vm.flag=ret.value.code;
+              vm.status=ret.value.status;
+              if(ret.value.code==0){
+                  api.sendEvent({
+                      name: 'flush',
+                  });
+
+                  api.closeFrame();
+                  }
+              });
+
+
+
+    }
+
+</script>
+
+</body>
+</html>

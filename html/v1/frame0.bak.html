@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>首页</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" href="../../css/aui-slide.css" />
+		<link rel="stylesheet" href="../../css/comm.css" />
+		<link rel="stylesheet" href="../../css/cover.css" />
+		<link rel="stylesheet" href="../../css/index.css" />
+		<link rel="stylesheet" href="../../css/zhu.css" />
+    <style>
+
+    #jiedaok{background: url(../../image/weizhi2.png) 8px center no-repeat #1bbc9b;background-size: 18px;padding:7px 10px 7px 36px;border-top:1px solid #7ddcc8;}
+        #fenlei{white-space: nowrap;overflow-x: scroll;}
+        #fenlei span{display: inline-block;line-height: 28px; font-size: 14px;color: #444;border-bottom: 2px solid #fff;padding: 0 10px;}
+        #fenlei  span.on{display: inline-block;line-height: 28px; font-size: 14px;color: #1bbc9b;border-bottom: 2px solid #1bbc9b;padding: 0 10px;}
+        .ad33 img{width: 100% !important;}
+
+        #caidans{margin-top: -5px;}
+        .menu_item img{width: 60%;}
+        .over-cang{overflow: hidden;}
+        #caidans .menu_item{float: left;width: 20%;font-size: 12px;text-align: center;padding-bottom: 3px;padding-top: 3px;overflow: hidden;}
+        #caidans .menu_item a{color: #333;padding: 0;margin: 0;overflow: hidden;}
+        #caidans .menu_item .menuename{width: 100%;line-height: 20px;height: 20px;word-break: break-word;overflow: hidden}
+        .best_seller_type li{float: none;display: inline-block;width: auto;padding-left: 3px;padding-right: 3px;-webkit-transition: all 0.1s ease-in-out;-moz-transition: all 0.1s ease-in-out;-ms-transition: all 0.1s ease-in-out;-o-transition: all 0.1s ease-in-out;transition: all 0.1s ease-in-out;}
+    </style>
+
+    <script type="text/javascript" src="../../script/api.js"></script>
+    <script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../../script/aui-slide.js"></script>
+    <script type="text/javascript" src="../../script/zhu.js"></script>
+    <script type="text/javascript" src="../../script/gototop.js"></script>
+</head>
+<body>
+<div class="wenzi12 yanse4 bg-zhu over-cang" id="jiedaok">
+<span id="jiedao">定位中</span>
+</div>
+
+  		<!--热卖/特卖-->
+          <!--<div class="pad5 wenzi14 bg1" id="fenlei">
+            <span class="on">分类</span>
+            <span>分类</span>
+          </div>-->
+
+  		<!--热卖/特卖END-->
+      <div class="bg1 pad10" style="margin-top:114px;padding-top:20px;">
+      <div id="caidans">
+          </div>
+      <div style="clear:both"></div>
+      </div>
+  		<!--轮播-->
+
+
+  		<!--轮播END-->
+
+  		<!--广告-->
+  			<div class="main ad33">
+
+  			</div>
+  		<!--广告END-->
+
+  		<!--限时抢购-->
+  		<div class="limited_time bg1 cang" id="miaoshak">
+  			<div class="main top5">
+  				<div class="m_tit">
+  					<div class="aui-pull-left f_16">
+  						<span style="padding-left:5px;border-left:5px solid #1bbc9b;">秒杀</span>
+  					</div>
+  					<div class="aui-pull-left">
+  						<div class="count_down">
+  							<ul id="shijian_show" class="">
+  								<li class="h shi">00</li>
+  								<li>:</li>
+  								<li class="m fen">00</li>
+  								<li>:</li>
+  								<li class="s miao">00</li>
+  							</ul>
+  						</div>
+  					</div>
+  					<div class="aui-pull-right f_14 c_99" onclick="to_miaosha()">
+  						查看更多<i class="aui-iconfont aui-icon-right"></i>
+  					</div>
+
+  				</div>
+
+  				<div class="limited_time_product_wrap">
+  					<div class="limited_time_product_box" id='newlist'>
+
+
+
+
+  					</div>
+
+  				</div>
+
+  			</div>
+
+
+
+  		</div>
+  		<!--限时抢购END-->
+<div class="height10 bg2"></div>
+  		<!--本周特价-->
+  		<div class="limited_time bg1">
+  			<div class="main">
+  				<img src="../../image/bztj.png" style="width:100% !important;" onclick="to_tejia()">
+  				<div class="limited_time_product_wrap aui-margin-t-10 ">
+
+  					<div class="limited_time_product_box" id="tuijian">
+  						<div class="limited_time_product_item">
+  							<a href="">
+  								<div class="limited_time_product_item_pic">
+  									<img src="../../image/goods_img.png">
+  								</div>
+  								<div class="limited_time_product_item_name">产品名称产品名称</div>
+  								<div class="limited_time_product_item_price aui-pull-left">
+  									<div class="current_price">￥0</div>
+  									<div class="old_price c_99">￥0</div>
+  								</div>
+  								<div class="aui-pull-right add_card">
+  									<img src="../../image/buy.png">
+  								</div>
+  							</a>
+  						</div>
+  					</div>
+  				</div>
+  			</div>
+  		</div>
+  		<!--本周特价END-->
+      <div class="height10 bg2"></div>
+  		<div class="recommend bg_ff">
+  			<div class="main">
+  				<div class="m_tit">
+  					<div class="aui-pull-left f_14 cuti">
+  						<span style="padding-left:5px;border-left:5px solid #1bbc9b;">果蔬栏</span>
+  					</div>
+  					<div class="aui-pull-right f_14 c_99" onclick="to_guoshulan()">
+  						查看更多<i class="aui-iconfont aui-icon-right"></i>
+  					</div>
+  				</div>
+  				<div class="recommend_wrap" id="hotlist">
+
+
+            <div style="clear:both"></div>
+  				</div>
+  			</div>
+  		</div>
+  		<!--本周果蔬END-->
+<div class="height10 bg2 clear"></div>
+  		<div class="title bg2"><span class="xxxx">◆</span>为你推荐<span class="xxxx">◆</span></div>
+  		<div class="bg2 pad5" id="tuijian2"></div>
+
+  		<!--为你推荐END-->
+
+
+</body>
+</html>
+<script src="https://maps.google.cn/maps/api/js?key=AIzaSyAp7R9ZFep3cdO21_JpUY-5wVGdM3DUcVw&libraries=places" async defer></script>
+<script>
+var timediff=0,lat,lng;
+apiready=function(){
+
+
+  api.openFrame({
+      name: 'ing',
+      url: 'widget://html/v1/top.html',
+      rect: {
+          x: 0,
+          y: 0,
+          w: api.winWidth,
+          h: api.safeArea.top
+      },
+      pageParam: {
+          name: 'test'
+      }
+  });
+
+$(function(){
+
+  $(window).scroll(function(){
+
+　　//do something...
+api.sendEvent({
+    name: 'zhuangtailan',
+    extra: {
+        zhi: $(document).scrollTop()
+    }
+});
+console.log( $(document).scrollTop())
+
+});
+
+})
+
+
+
+  api.addEventListener({
+      name: 'jiedao_dingwei'
+  }, function(ret, err) {
+    var zhi=ret.value;
+    $("#jiedao").html(zhi.dizhi)
+  });
+
+
+
+  $(function(){
+    $("#fenlei").on('click','span',function(){
+      $("#fenlei span").removeClass("on");
+      $(this).addClass("on");
+      api.sendEvent({
+          name: 'to_fenlei',
+          extra: {
+              id: $(this).data("id"),
+              name: $(this).data("name")
+          }
+      });
+    });
+  })
+  jiazai();
+  api.setCustomRefreshHeaderInfo({
+  bgColor: '#f2f2f2',
+  images: ['widget://image/jiazai/1.png','widget://image/jiazai/2.png','widget://image/jiazai/3.png','widget://image/jiazai/4.png'],
+  tips: {
+      pull: '下拉刷新',
+      threshold: '松开立即刷新',
+      load: '正在刷新'
+  }
+}, function() {
+  //下拉刷新被触发，自动进入加载状态，使用 api.refreshHeaderLoadDone() 手动结束加载中状态
+  //下拉刷新被触发，使用 api.refreshHeaderLoadDone() 结束加载中状态
+jiazai();
+});
+//开始定位
+dingwei();
+
+}
+
+
+function dingwei(){
+  api.startLocation({
+    accuracy: '100m',
+    filter: 1,
+    autoStop: true
+}, function(ret, err){
+    if(ret && ret.status){
+         //获取位置信息成功
+         //alert(JSON.stringify(ret));
+         lat= ret.latitude
+         lng= ret.longitude
+       var  geocoder = new google.maps.Geocoder();
+       geocoder.geocode({location:new google.maps.LatLng(lat, lng)},function geoResults(results, status){
+  //这里处理结果和上面一模一样
+  if (status == google.maps.GeocoderStatus.OK) {
+    //console.log(JSON.stringify(results))
+      //alert('地理反解析结果：'+results[0].formatted_address);
+      //$("#jiedao").html(results[0].formatted_address)
+      api.sendEvent({
+          name: 'jiedao_dingwei',
+          extra: {
+              dizhi: results[0].formatted_address
+          }
+      });
+        //alert('地理反解析结果：'+results[0].geometry.location);
+  }else{
+    api.sendEvent({
+        name: 'jiedao_dingwei',
+        extra: {
+            dizhi: "没有成功获取到您的位置"
+        }
+    });
+  }
+ });
+
+    }else{
+         //alert(JSON.stringify(err));
+         api.sendEvent({
+             name: 'jiedao_dingwei',
+             extra: {
+                 dizhi: "没有成功获取到您的位置"
+             }
+         });
+    }
+});
+}
+
+
+
+function jiazai(){
+  api.refreshHeaderLoadDone();
+  get_fenlei();get_index();get_tuijian();
+}
+
+/**
+*获取分类数据
+*/
+function get_fenlei(){
+  api.ajax({
+      url: cate_list_url,
+      method: 'post',
+      data: {
+      }
+  },function(ret, err){
+      if (ret) {
+          if(ret.code==1){
+            var data=ret.data.list,str='';
+            for (var i = 0; i < json_num(data); i++) {
+              str+='<span class="'+((i==0)?'on':'')+'"  data-name="'+data[i].name+'" data-id="'+data[i].category_id+'">'+data[i].name+'</span>';
+            }
+
+            $("#fenlei").html(str);
+          }
+      } else {
+          tishi( err.msg );
+      }
+  });
+
+}
+/**
+*获取首页数据
+*/
+function get_index(){
+  api.ajax({
+      url: index_url,
+      method: 'post',
+      data: {
+      }
+  },function(ret, err){
+      if (ret) {
+          if(ret.code==1){
+            api.setPrefs({
+                key: 'ios',
+                value: ret.data.ios
+            })
+            //本周特价
+            var tlist=ret.data.promotion,bb='';
+            for (var i = 0; i < json_num(tlist); i++) {
+
+
+
+              bb+='<div class="limited_time_product_item">';
+              if(tlist[i].stock_num==0){
+                bb+='<div class="meiyoulek"  onclick="to_goods_info('+tlist[i].goods_id+')"><span class="meiyoule">抢光了</span></div>';
+              }
+                  bb+='<div class="limited_time_product_item_pic">';
+                    bb+='<img src="'+tlist[i].image+'"  id="tj_'+tlist[i].goods_id+'"  onclick="to_goods_info('+tlist[i].goods_id+')">';
+
+                  bb+='</div>';
+                  bb+='<div class="limited_time_product_item_name "  onclick="to_goods_info('+tlist[i].goods_id+')">'+tlist[i].goods_name+'</div>';
+
+                      //bb+='<div>限时抢购</div>';
+
+                  bb+='<div class="wenzi12 money">';
+                  bb+='<img src="../../image/buy.png"  class="gouwuche_btn top10"  onclick="add_cart('+tlist[i].goods_id+','+tlist[i].goods_sku_id+',\'tj\')" align="right">';
+                  bb+='￥<span><span class="wenzi16">'+tlist[i].now_price.value.substr(0,tlist[i].now_price.value.length-3)+'</span>'+tlist[i].now_price.value.substr(-3, 3)+'</span><br><s class="yanse0">￥'+tlist[i].origin_price+'</s>';
+                  bb+='</div>';
+
+              bb+='</div>';
+            }
+            bb+='<div style="clear:both"></div>';
+            $("#tuijian").html(bb);
+            //轮播
+            var banners=ret.data.banner_list.scoll,imgs=[];
+            for (var i = 0; i < json_num(banners); i++) {
+              imgs[i]=banners[i].image;
+            }
+            //alert(JSON.stringify(imgs));
+            banner(imgs);
+            var nav=ret.data.banner_list.nav,str4='';
+            for (var i = 0; i < json_num(nav); i++) {
+              str4+='<div class="menu_item">';
+                str4+='<a href="'+nav[i].link+'">';
+                  str4+='<img src="'+nav[i].image+'">';
+                  str4+='<div class="menuename">'+nav[i].name+'</div>';
+                str4+='</a>';
+              str4+='</div>';
+            }
+            str4+='<div class="clear"></div>';
+            //console.log(str4);
+            $("#caidans").html(str4);
+
+            $(".ad33").html('<a href="'+ret.data.banner_list.ad3[0].link+'"><img src="'+ret.data.banner_list.ad3[0].image+'"></a>');
+
+            //限时秒杀
+            var newlist=ret.data.falsh.goods_list,str1='';
+            if(newlist){
+            timediff=ret.data.falsh.info[0].status.countdown;
+            console.log(timediff)
+            if(timediff>0){
+              daojishi();
+
+            }
+            for (var i = 0; i < json_num(newlist); i++) {
+              str1+='<div class="limited_time_product_item">';
+              if(newlist[i].stock_num==0){
+                str1+='<div class="meiyoulek"  onclick="to_goods_info('+newlist[i].goods_id+')"><span class="meiyoule">抢光了</span></div>';
+              }
+                  str1+='<div class="limited_time_product_item_pic">';
+                    str1+='<img src="'+newlist[i].image+'"  id="tj_'+newlist[i].goods_id+'"  onclick="to_goods_info('+newlist[i].goods_id+')">';
+                    str1+='<img class="xsth" src="../../image/xsth.png">';
+                  str1+='</div>';
+                  str1+='<div class="limited_time_product_item_name "  onclick="to_goods_info('+newlist[i].goods_id+')">'+newlist[i].goods_name+'</div>';
+
+                      //bb+='<div>限时抢购</div>';
+
+                  str1+='<div class="wenzi12 money">';
+                  str1+='<img src="../../image/buy.png"  class="gouwuche_btn top10"  onclick="add_cart('+newlist[i].goods_id+','+newlist[i].goods_sku_id+',\'tj\')" align="right">';
+                  str1+='￥<span><span class="wenzi16">'+newlist[i].now_price.value.substr(0,newlist[i].now_price.value.length-3)+'</span>'+newlist[i].now_price.value.substr(-3, 3)+'</span><br><s class="yanse0">￥'+newlist[i].origin_price+'</s>';
+                  str1+='</div>';
+
+              str1+='</div>';
+            }
+            $("#newlist").html(str1);
+            $("#miaoshak").removeClass("cang");
+          }else{
+            $("#miaoshak").addClass("cang");
+          }
+
+            var tuijian=ret.data.recommendlist,str3='';
+            for (var i = 0; i < json_num(tuijian); i++) {
+              str3+='<div class="recommend_block"  onclick="to_guoshulan2('+tuijian[i].hurdles_id+')">';
+    						str3+='<div class="b_name">'+tuijian[i].hurdles_name+'</div>';
+    						str3+='<div class="s_name">'+tuijian[i].desc+'</div>';
+    						str3+='<div class="">';
+    							str3+='<img width="49%" style="display:inline-block" src="'+tuijian[i].image[0]+'"><img  style="display:inline-block" width="49%" src="'+tuijian[i].image[1]+'">';
+    						str3+='</div>';
+    				  str3+='</div>';
+
+            }
+            str3+='<div style="clear:both"></div>';
+            $("#hotlist").html(str3);
+          }
+      } else {
+          tishi( err.msg );
+      }
+  });
+
+}
+
+//获取随机商品
+
+
+//启动幻灯片
+function banner(x){
+
+      var UIScrollPicture = api.require('UIScrollPicture');
+UIScrollPicture.open({
+    rect: {
+        x: 0,
+        y: 32,
+        w: api.winWidth,
+        h: 120
+    },
+    data: {
+        paths:x
+    },
+    styles: {
+        caption: {
+            height: 35,
+            color: '#E0FFFF',
+            size: 13,
+            bgColor: '#696969',
+            position: 'bottom'
+        },
+        indicator: {
+           dot:{
+             w:10,
+             h:10,
+             r:5,
+             margin:10
+          },
+            align: 'center',
+            color: '#888',
+            activeColor: '#1bbc9b'
+        }
+    },
+    placeholderImg: 'widget://image/goods_img.png',
+    contentMode: 'scaleToFill',
+    interval: 3,
+    fixedOn: api.frameName,
+    loop: true,
+    fixed: false
+}, function(ret, err) {
+    if (ret) {
+        //alert(JSON.stringify(ret));
+    } else {
+        //alert(JSON.stringify(err));
+    }
+});
+}
+//加入购物车动画
+function add_cart(id,sku_id,objs){
+  is_login();
+add_to_cart(id,sku_id);
+
+  var obj=$("#"+objs+"_"+id);
+  var weizhi=obj.offset();
+  $("body").append('<img src="'+obj.attr('src')+'" class="dongtai2" id="donghua_tu" style="border-radius: 50%;width:'+obj.width()+'px;height:'+obj.height()+'px;position:absolute;left:'+weizhi.left+'px;top:'+weizhi.top+'px;z-index:999999">');
+
+  setTimeout(function(){
+    //$("#donghua_tu").addClass("zhongdian");$("#donghua_tu").remove()
+    $("#donghua_tu").animate({top:(document.body.scrollTop+document.body.clientHeight+30)+"px",left:"60%",width:"24px",height:"24px"},500,"linear",function(){
+      setTimeout(function(){$("#donghua_tu").remove()},1000);
+    });
+  },50);
+}
+
+function add_to_cart(goods_id,sku_id){
+  api.ajax({
+      url: add_to_cart_url,
+      method: 'post',
+      data: {
+          values: {
+              token: api.getPrefs({sync: true,key:'login_id'}),
+              goods_id:goods_id,
+              goods_sku_id:sku_id,
+              goods_num:1
+          }
+      }
+  },function(ret, err){
+      if (ret) {
+            tishi(ret.msg);
+            if(ret.code==1){
+              num=ret.data.cart_total_num
+              api.sendEvent({
+                  name: 'update_cart_num',
+                  extra: {
+                      num: num
+                  }
+              });
+            }
+
+      } else {
+          //alert( JSON.stringify( err ) );
+          tishi(err.msg)
+      }
+  });
+
+}
+
+//倒计时
+function daojishi(){
+if(timediff<=0){$("#shijian_show").addClass("cang");}else{$("#shijian_show").removeClass("cang");}
+
+			//获取还剩多少天
+			var day=parseInt(timediff/3600/24);
+			//获取还剩多少小时
+			var hour=parseInt(timediff/3600%24);
+			//获取还剩多少分钟
+			var minute=parseInt(timediff/60%60);
+			//获取还剩多少秒
+			var second=timediff%60;
+			//输出还剩多少时间
+			//document.getElementById("1").innerHTML=day;
+			//document.getElementById("2").innerHTML=hour;
+			//document.getElementById("3").innerHTML=minute;
+			//document.getElementById("4").innerHTML=second;
+      $(".shi").html(hour);
+      $(".fen").html(minute);
+      $(".miao").html((second<10)?("0"+second):second);
+			setTimeout(function(){daojishi();},1000);
+      timediff--;
+			if(timediff==0){return;}
+			}
+
+
+
+
+      function to_miaosha(){
+        api.openWin({
+            name: 'to_miaosha',
+            url: 'widget://html/v1/common_win.html',
+            pageParam: {
+                id:0,
+                title:"新品秒杀",
+                muban:"miaosha"
+            }
+        });
+      }
+      function to_tejia(){
+        api.openWin({
+            name: 'to_tejia',
+            url: 'widget://html/v1/prom_win.html',
+            pageParam: {
+                id:0,
+                title:"本周特价",
+                muban:"prom_body"
+            }
+        });
+      }
+
+      function to_guoshulan(){
+        api.openWin({
+            name: 'to_guoshulan',
+            url: 'widget://html/v1/tuijian_win.html',
+            pageParam: {
+                id:0,
+                title:"果蔬栏",
+                muban:"tuijian_body"
+            }
+        });
+      }
+
+      function to_guoshulan2(m){
+        api.openWin({
+            name: 'to_guoshulan',
+            url: 'widget://html/v1/tuijian_win.html',
+            pageParam: {
+                id:m,
+                title:"果蔬栏",
+                muban:"tuijian_body"
+            }
+        });
+      }
+</script>

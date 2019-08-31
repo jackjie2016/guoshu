@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html class="bg2">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>文档</title>
+    <link href="../../css/bootstrap.min.css"   rel="stylesheet" >
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/zhu.css"/>
+    <style type="text/css">
+   /*顶部开始 */
+   .dingbu{ background-color: #28bd60; padding: 40px 15px 76px; color: #fff;position: relative;}
+   .touxiang img{ width: 50px; height: 50px; margin-right: 12px; margin-top: -4px;}
+   .shouji img{ width: 12px; height: 14px; margin-top: -2px;}
+   .qiandao img{ width: 18px; height: 18px; margin-top: -2px; margin-right: 2px;}
+   .qiandao{ background-color: #21873d; padding: 8px; border-radius: 20px; margin-top: -33px;}
+   .lvka{background-color: #31415b; padding: 17px 10px;  border-radius: 8px 8px 0 0; position: absolute;left: 10px;right: 10px;bottom: 0px;z-index: 100;}
+   .lv{color: #38bd60; margin-right: 5px;}
+   .liji{background-color: #38bd60; padding:3px 7px; border-radius: 18px;}
+   .liji img{ width: 12px; height: 10px; margin-top: -2px;}
+   .youhui{ margin: 10px; background-color: #fff; overflow: hidden; padding: 10px;  border-radius: 5px;}
+   .zuo1,.you1{width: 50%; float: left; line-height: 36px;}
+   .zuo1{ border-right:#e3e3e3 solid 1px;}
+   .shuzi{ padding: 5px;}
+   /*.dingbu{ width:100%;  background-color:#3ec55c; padding:0px 10px; position:relative;padding-bottom: 38px;}
+   .huiyuanka{position: absolute; left:0;right:0;bottom: -40px;}
+   .touxiang{ width:50px; height:50px;}
+   .nicheng{ color:#FFF; margin-left:15px; font-size:16px;}
+   .shezhi{ width:25px; height:25px; color:#FFF;  }
+   .erhang{ text-align:center;}
+   .erhang a{color: #fff;}
+   .erhang a img{ width:25px; height:25px; margin: 10px 25px;}*/
+   .sanhang a{margin: 10px 25px; text-decoration:none; color:#FFF;  }
+   .sanhang{ text-align:center; margin-left:29px;  }
+   .huodongtu{ width:100%; height:60px; }
+   .sihang{ text-align:center; margin-top:15px;}
+   /* 订单 开始*/
+    .dd{margin:0 10px; border-radius:10px; background-color:#FFF; }
+    .dd a{ text-decoration:none;}
+    .wode{ color:#000; font-size:15px; margin-left:15px;}
+    .quanbu{ color:#666; font-size:14px; margin-left:199px;}
+    .chakan{ width:11px; height:11px; margin-top:-2px;}
+    .dingdan  img{ width:26px; height:26px; }
+
+    .dingdan{ color: #4a4a4a; padding-top: 30px;}
+    .fahuo{ margin-left:40px;}
+    .wenzi a{margin: 10px 15px; text-decoration:none; color:#1bbc9b;  }
+    .huodong2{text-align:center; margin-top:10px;}
+    .huodongtu2{ width:95%; height:112px;;  border-radius:12px;}
+
+
+
+    .chang{ margin: 0 10px;}
+    /*常用开始*/
+
+    .cy a img{width:26px; height:26px;  margin: 10px 30px;  }
+    .cy{ text-align:center;}
+    .changyong a{ text-decoration:none;}
+    .dizhi{ position: relative; left:13px;}
+    .cywz{ position:relative;}
+    .xinyongka{ position:relative; left:5px;}
+    .gongneng{color:#000; font-size:15px; margin-left:15px;}
+
+    .neng{ overflow: hidden; padding-top: 25px; position: relative;}
+    .gong{ width: 25%; float: left; font-size: 12px; color:#4a4a4a; margin-bottom: 25px; position: relative;}
+    .gong img{ width:26px; height: 26px; margin-bottom: 10px;}
+    .wuzhe{ color: #fff; font-size: 10px; padding: 0 4px; border-radius: 8px;line-height: 14px;height: 14px;padding-top: 1px;background-color:#f00; position: absolute; left: 42px;     top: -7px;width: 50px;display: inline-block;}
+    .youli{ color: #f00;}
+    /* 推荐 开始*/
+
+
+   .chanpin{ margin-top:20px; height:auto; }
+
+
+
+   .zhezhao{position: absolute;left: 0;right: 0;bottom: -1px;z-index: 999; width: 100%;}
+  </style>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="../../script/aui-slide.js"></script>
+  <script type="text/javascript" src="../../script/zhu.js"></script>
+  <script type="text/javascript" src="../../script/gototop.js"></script>
+
+</head>
+<body class="bg2">
+  <!--顶部开始-->
+
+  <div class="dingbu">
+    <div class="juyou pad-right10" onclick="to_myxinxi()"><img src="../../image/chat.png" style="height:24px; margin-top:-10px;"></div>
+
+    <div class="touxiang zuo"><img id="touxiang" src="../../image/221.png"/></div>
+
+    <div class="nicheng wenzi16" id="nicheng">叮咚_sgg4</div>
+    <div class="shouji wenzi12"><img src="../../image/shouji01.png"/><span id="mobile">157****3344</span></div>
+    <div class="qiandao you wenzi12" onclick="to_jifen()"><img src="../../image/jinbi01.png" />Punto de acceso</div>
+
+    <img src="../../image/bg1.png" class="zhezhao" alt="">
+
+    <div class="lvka">
+      <div class="wenzi12 yanse4"><span class="lv wenzi14 cuti">Tarjeta Verde</span><span id="lv_ing"></span><span onclick="to_buy_vip()" class="liji wenzi12 you yanse3">Abrir Inmediatamente<img src="../../image/chakan.png"</span></div>
+    </div>
+  </div>
+  <div class="youhui">
+    <div class="zuo1 wenzi12 juzhong"  onclick="to_my_coupon()">Cupon de descuento<span class="shuzi wenzi18" id="quan_num">0</span></div>
+    <div class="you1 wenzi12 juzhong" onclick="to_jifen()">Puntos acumulados<span class="shuzi wenzi18" id="jifen_num">0</span></div>
+  </div>
+
+
+  <div class="pad10 chang yuanjiao5 bg1 wenzi14">
+    <div class="hezi">
+    <div class="col1 wenzi16 cuti pad-left5" >Mi pedido</div>
+    <div class="col1 wenzi12 yanse0 juyou pad-right5" onclick="open_order_list(0)">Ver todos los pedidos <img class="chakan" src="../../image/chakan.png" /></div>
+  </div>
+  <div class="hezi dingdan juzhong wenzi12 hanggao28" style="padding-bottom:0px;">
+    <div onclick="open_order_list(0)" class="col1"><img src="../../image/peihuo04.png"  /><br>Preparando</div>
+    <div onclick="open_order_list(1)" class="col1"><img src="../../image/fukuan03.png"  /><br>Pagado</div>
+
+    <div onclick="open_order_list(2)" class="col1"><img src="../../image/qianshou01.png"  /><br>Firmado</div>
+
+        <div onclick="open_order_list(3)" class="col1"><img src="../../image/peisong02.png"  /><br>En reparto</div>
+  </div>
+  </div>
+
+
+  <div class="pad10">
+    <div class="pad10 yuanjiao5 bg1"><img src="../../image/haibao.png" class="widthall"></div>
+  </div>
+
+
+  <!--功能 开始-->
+  <div class="pad10 yuanjiao5 bg1 chang">
+    <div class="wenzi16 cuti pad-left5">Funciones comunes</div>
+    <div class="juzhong neng">
+     <div class="gong" onclick="open_buy_center()"><img src="../../image/huiyuan03.png" /><br />Miembro</div>
+     <!-- <div class="gong" onclick="vip_buy()"><img src="../../image/huiyuan03.png" /><span class="wuzhe">5折开卡</span><br />Miembro</div> -->
+
+     <div class="gong" onclick="to_dizhi()"><img src="../../image/shouhuo01.png" /><br />Direccion</div>
+     <div class="gong"  onclick="to_balance()"><img src="../../image/yue01.png" /><br />Balance</div>
+     <div class="gong" onclick="to_chongzhi()"><img src="../../image/chongzhi01.png" /><br />Recarga</div>
+     <div class="gong" onclick="to_creditcardlist()"><img src="../../image/xinyongka01.png" /><br />Tarjeta de credito</div>
+     <div class="gong" onclick="to_kaquan()"><img src="../../image/kaquan02.png" /><br />Cupón</div>
+     <div class="gong" onclick="to_myzuji()"><img src="../../image/zuji02.png" /><br />Mi huella</div>
+     <div class="gong" onclick="to_kefu()"><img src="../../image/lianxi01.png" /><br />Atencion al cliente</div>
+     <div class="gong" onclick="to_set()" ><img src="../../image/shezhi01.png" /><br />Ajustes</div>
+   </div>
+  </div>
+
+
+
+
+
+
+
+          <!--推荐 开始-->
+          <div class="title top10"><span class="xxxx">◆</span>Lo que te recomendamos<span class="xxxx">◆</span></div>
+          <div class="bg2 pad5" id="tuijian2"></div>
+
+
+
+<div class="clear"></div>
+       </div>
+
+</body>
+</html>
+<script>
+apiready=function(){
+console.log('to_add_creditcard')
+  //处理状态栏自动透明度
+  $(function(){
+
+    $(window).scroll(function(){
+
+  　　//do something...
+  api.sendEvent({
+      name: 'zhuangtailan',
+      extra: {
+          zhi: $(document).scrollTop()
+      }
+  });
+  //console.log( $(document).scrollTop())
+
+  });
+
+  })
+
+  jiazai();
+  api.setCustomRefreshHeaderInfo({
+  bgColor: '#f2f2f2',
+  images: ['widget://image/jiazai/1.png','widget://image/jiazai/2.png','widget://image/jiazai/3.png','widget://image/jiazai/4.png'],
+  tips: {
+      pull: '下拉刷新',
+      threshold: '松开立即刷新',
+      load: '正在刷新'
+  }
+}, function() {
+  //下拉刷新被触发，自动进入加载状态，使用 api.refreshHeaderLoadDone() 手动结束加载中状态
+  //下拉刷新被触发，使用 api.refreshHeaderLoadDone() 结束加载中状态
+jiazai();
+});
+}
+
+
+function jiazai(){
+  is_login();
+  get_tuijian();
+  get_user();
+}
+
+function get_user(){
+  api.ajax({
+      url: user_center_url,
+      method: 'post',
+      data: {
+        values:{  token: api.getPrefs({sync: true,key:'login_id'})}
+      }
+  },function(ret, err){
+    api.refreshHeaderLoadDone();
+    if(ret){
+      var user=ret.data.userInfo;
+      var level='<img src="../../image/lvka_ico.png" width="16">';
+      if(user.is_vip==0){
+        $("#nicheng").html(user.nickName);
+      $("#lv_ing").html('Aún no ha abierto una tarjeta de membresía.');
+    }else{
+      $("#nicheng").html(user.nickName+level);
+      var linshi=Date.parse(Date())/1000;
+      if(user.vip_card_end_time<linshi){
+        $("#lv_ing").html('Expirado');
+      }else{
+        $("#lv_ing").html(shijian3(user.vip_card_end_time)+'Vencimiento');
+      }
+    }
+
+
+      $("#jifen_num").html(user.point);
+      $("#quan_num").html(ret.data.couponCount);
+      $("#mobile").html(user.mobile);
+
+
+    }else{
+        tishi( err.msg );
+    }
+  })
+}
+
+
+
+
+
+
+
+function to_set(){
+  api.openWin({
+      name: 'to_set',
+      url: 'widget://html/v1/common_win.html',
+      pageParam: {
+          id:0,
+          title:"Ajuste",
+          muban: 'sets'
+      }
+  });
+}
+
+
+
+
+
+//加入购物车动画
+function add_cart(id,sku_id,objs){
+add_to_cart(id,sku_id);
+
+  var obj=$("#"+objs+"_"+id);
+  var weizhi=obj.offset();
+  $("body").append('<img src="'+obj.attr('src')+'" class="dongtai2" id="donghua_tu" style="border-radius: 50%;width:'+obj.width()+'px;height:'+obj.height()+'px;position:absolute;left:'+weizhi.left+'px;top:'+weizhi.top+'px;z-index:999999">');
+
+  setTimeout(function(){
+    //$("#donghua_tu").addClass("zhongdian");$("#donghua_tu").remove()
+    $("#donghua_tu").animate({top:(document.body.scrollTop+document.body.clientHeight+30)+"px",left:"60%",width:"24px",height:"24px"},500,"linear",function(){
+      setTimeout(function(){$("#donghua_tu").remove()},1000);
+    });
+  },50);
+}
+
+function add_to_cart(goods_id,sku_id){
+  api.ajax({
+      url: add_to_cart_url,
+      method: 'post',
+      data: {
+          values: {
+              token: api.getPrefs({sync: true,key:'login_id'}),
+              goods_id:goods_id,
+              goods_sku_id:sku_id,
+              goods_num:1
+          }
+      }
+  },function(ret, err){
+      if (ret) {
+            tishi(ret.msg);
+            if(ret.code==1){
+              num=ret.data.cart_total_num
+              api.sendEvent({
+                  name: 'update_cart_num',
+                  extra: {
+                      num: num
+                  }
+              });
+            }
+
+      } else {
+          //alert( JSON.stringify( err ) );
+          tishi(err.msg)
+      }
+  });
+
+}
+
+
+</script>

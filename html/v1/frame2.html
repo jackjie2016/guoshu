@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/zhu.css"/>
+    <style type="text/css">
+    html,body{background: #fff;}
+    #toubu{position: fixed;left: 0;top: 22px;right: 0;background: #fff;border-bottom: 1px solid #f2f2f2;z-index: 300;}
+  .footer{position: fixed;left: 0;bottom: 0;right: 0;height: auto;line-height: 42px;border-top: 1px solid #f4f4f4;background-color: #fff;}
+  .xuanze{display: inline-block;width: 30px; height: 30px;background: url(../../image/yuan.png) center center no-repeat;background-size: 100%;  }
+  .xuanze.on{display: inline-block;width: 30px; height: 30px;background: url(../../image/yuan0.png) center center no-repeat;background-size: 100%;  }
+  .jia,.jian{display: inline-block;width: 30px;line-height: 30px;text-align: center;background: #e2e2e2;}
+  .jiajian_on,.jia:active,.jian:active{display: inline-block;width: 30px;line-height: 30px;text-align: center;background: rgb(65, 162, 11);color: #fff;}
+  input{text-align: center;}
+  .shangpin{border-bottom: #f8f8f8 solid 1px;}
+
+  .lingqu.on{background: #aaa;color: #fff;}
+
+  .tuijian_list{padding: 5px;float: left;width: 50%;background: #f8f8f8;}
+  .cartlists{position: relative;width: 100%;overflow-x: auto; }
+  .mengban{z-index: 500;position: absolute;left: 0;top: 0;right: 0;bottom: 0px;background-color: rgba(255,255,255,0.6)}
+  .cartlists .shangpin{width: 100%;}
+  .cartlists .shangpin.on{width: 100%;margin-left: -60px;}
+  .cartlists .shanchu{position: absolute;top: 0;right: -70px;bottom: 0;width: 60px;}
+
+  .yichang_ing{font-size: 12px;display: inline-block;padding: 5px;border-radius: 12px;position: absolute;left: 10px;top: 50%;margin-top: -17px;z-index: 100;width: 50px;text-align:center; background-color: rgba(0,0,0,0.6);color: #fff;}
+
+
+</style>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="../../script/layer/layer.js"></script>
+<script type="text/javascript" src="../../script/zhu.js"></script>
+<script type="text/javascript" src="../../script/gototop.js"></script>
+</head>
+<body>
+  <div class="bg5 dingbu"></div>
+  <div id="toubu">
+    <div class="pad-left10 pad-right10 hanggao42 wenzi18">Carrito de Compras<span class="wenzi14 you" onclick="del()">Borrar - Eliminar</span></div>
+    <div class="hezi bg1 pad5" onclick="list2()">
+      <div class="col2 zhong wenzi12">
+        Cupon de descuento
+      </div>
+     <div class="col4 zhong" id="yhq"></div>
+    </div>
+  </div>
+
+<div class="bg2 height15"></div>
+  <div id="cartlist" >
+  <div class="top30"><img src="../../image/gwc_k.png" class="shiying"></div>
+  </div>
+
+
+  <div class="hezi" style="position: fixed; left:0; right: 0;bottom:0px;background-color: #f8f8f8;z-index:999; " >
+        <div class="col1 zhong"> <span class="xuanze" onclick="all123(this)"></span></div>
+        <div class="col7">
+          <div class="hezi">
+            <div class="col1 juzuo hanggao42">Seleccionar todo</div>
+            <div class="col1 zhong">Total<span>$<span id="money">0</span></span></div>
+            <div class="col1 zhong">  <div onclick="to_jiesuan()" class="zhong yuanjiao" style="height: 42px;width: 80px; background-color: #1bbc9b;color: #fff">下单</div></div>
+            <!-- <div class="col1 zhong">  <div onclick="to_jiesuan1()" class="zhong yuanjiao" style="height: 42px;width: 80px; background-color: #1bbc9b;color: #fff">to_jiesuan1</div></div> -->
+
+         </div>
+        </div>
+</div>
+<div class="height60"></div>
+<!--推荐 开始-->
+<div class="title bg2 pad-top10">
+  <span class="xxxx">◆</span> Adivina lo que te gusta <span class="xxxx">◆</span>
+</div>
+<div class="bg2 pad10" id="tuijian2">
+
+
+
+<div class="clear"></div>
+</div>
+<div class="height60"></div>
+</body>
+</html>
+<script type="text/javascript">
+
+
+apiready=function(){
+
+  //处理状态栏自动透明度
+  $(function(){
+
+    $(window).scroll(function(){
+
+  　　//do something...
+  api.sendEvent({
+      name: 'zhuangtailan',
+      extra: {
+          zhi: $(document).scrollTop()*2
+      }
+  });
+  //console.log( $(document).scrollTop())
+
+  });
+
+  })
+
+  //状态栏结束
+
+    $(".dingbu").css({"height":api.safeArea.top+70+"px"});
+    $("#toubu").css({"top":api.safeArea.top+"px"});
+  api.addEventListener({
+    name:'update_cart_list'
+}, function(ret, err){
+   //alert('跟新购物车了');
+   update_cart_list();
+
+});
+  api.addEventListener({
+      name: 'cartlist_del'
+  }, function(ret, err) {
+      del();//删除购物车
+  });
+
+  api.setCustomRefreshHeaderInfo({
+  bgColor: '#f2f2f2',
+  images: ['widget://image/jiazai/1.png','widget://image/jiazai/2.png','widget://image/jiazai/3.png','widget://image/jiazai/4.png'],
+  tips: {
+      pull: '下拉刷新',
+      threshold: '松开立即刷新',
+      load: '正在刷新'
+  }
+}, function() {
+  //下拉刷新被触发，自动进入加载状态，使用 api.refreshHeaderLoadDone() 手动结束加载中状态
+  //下拉刷新被触发，使用 api.refreshHeaderLoadDone() 结束加载中状态
+update_cart_list();
+});
+
+update_cart_list();
+get_tuijian();
+yhq();
+
+}
+   $(function(){
+
+
+
+    /**购物车选择控制*/
+     $("#cartlist").on("click",'.xuanze',function(){
+        $(this).toggleClass("on");
+        if($(this).hasClass("on")){
+          danxuan(1,$(this).data("goods_id"),$(this).data("goods_sku_id"));
+        }else{
+          danxuan(0,$(this).data("goods_id"),$(this).data("goods_sku_id"));
+        }
+     })
+
+
+   })
+
+function cart_jian(m){
+  var now=$(m).next().val()?parseInt($(m).next().val()):0;
+  if(now<=1){
+      tishi("最低购买一件");
+      return false;
+  }
+  $(m).next().val((now-1)+$(m).next().data('danwei'));
+  del_to_cart_num(1,$(m).next().data("goods_id"),$(m).next().data("goods_sku_id"));
+}
+function cart_jia(m){
+  var now=$(m).prev().val()?parseInt($(m).prev().val()):0;
+  if(now>=$(m).prev().data("kucun")){
+      tishi("不能超过库存");
+      return false;
+  }
+
+  $(m).prev().val((now+1)+$(m).prev().data("danwei"));
+  add_to_cart_num(1,$(m).prev().data("goods_id"),$(m).prev().data("goods_sku_id"));
+}
+
+
+function del(){
+  if(  $(".xuanze.on").length<=0){
+    tishi("您没有选择要删除的商品");
+    return false;
+  }
+    $(".xuanze.on").parent().parent().remove();
+    cart_del()
+
+}
+
+function jisuan(){
+    var num=0;
+    $("#cartlist .xuanze.on").each(function(){
+        num+=parseFloat($(this).parent().next().find(".num").val())*parseFloat($(this).parent().next().find(".num").data('price'));
+    })
+
+    $("#money").html(num.toFixed(2));
+}
+
+function all123(m){
+    if($(m).hasClass("on")){
+        $(".xuanze").removeClass("on");
+        quanxuan(0)
+    }else{
+        $(".xuanze").addClass("on");
+        quanxuan(1)
+    }
+
+}
+
+
+
+function update_cart_list(){
+  is_login();
+  //api.showProgress({  title: '努力加载中...',  text: '......',modal: false});
+  api.ajax({
+      url: cart_list_url,
+      method: 'post',
+      data: {
+          values: {
+            token: api.getPrefs({sync: true,key:'login_id'}),
+            deviceid: api.deviceId
+          }
+      }
+  },function(ret, err){
+    //api.hideProgress();
+    api.refreshHeaderLoadDone();
+      if (ret) {
+          //alert( JSON.stringify( ret ) );
+          if(ret.code==1){
+            var data=ret.data.goods_list,str='';
+            for (var i = 0; i < json_num(data); i++) {
+              str+='<div class="cartlists">';
+                if(data[i].goods_status.value!=10){
+                  str+='<div class="mengban"></div>';
+                }
+              str+='<div class="shangpin dongtai bg1" style="position:relative;z-index:200">';
+              str+='<div class="hezi" style="float:left;width:100%;">';
+                str+='<div class="col1 zhong"> <span  data-goods_id="'+data[i].goods_id+'"  data-goods_sku_id="'+data[i].goods_sku_id+'"  class="xuanze '+((data[i].status==1)?"on":"")+'" ></span></div>';
+                str+='<div class="col7 weizhi">';
+                if(data[i].goods_status.value!=10){
+                str+='<span class="yichang_ing">'+data[i].goods_status.text+'</span>';
+                }
+                str+='<img   src="'+data[i].goods_image+'" height="60" width="60" style="float:left; margin:10px; ">';
+                 str+='<div class="pad10">'+data[i].goods_name+'</div>';
+                 str+='<span >￥'+data[i].goods_price+'</span>';
+                 str+='<div style="float: right; margin-right: 10px;">';
+                 str+='<span tapmode="jiajian_on" onclick="cart_jian(this)" class="wenzi16 jiajian jian">-</span><input readonly data-kucun="'+data[i].goods_sku.stock_num+'" data-danwei="'+data[i].unit_name+'"  data-goods_id="'+data[i].goods_id+'"  data-goods_sku_id="'+data[i].goods_sku_id+'" data-price="'+data[i].goods_price+'" class="bg2 num" type="" value="'+data[i].total_num+data[i].unit_name+'" name="" style="width: 40px;border:0px; height: 30px; "><span tapmode="jiajian_on" onclick="cart_jia(this)" class="jia jiajian">+</span>';
+                 str+='</div>';
+                str+='</div>';
+                str+='</div>';
+
+                str+='<div class="zhong wenzi12 bg4 yanse4 shanchu" onclick="cart_del_byid('+data[i].goods_id+','+data[i].goods_sku_id+')" style="float:left;width:19%;">删除</div>';
+                str+='<div class="clear"></div>';
+
+                str+='</div>';
+
+              str+='</div>';
+            }
+            //alert(str)
+            $("#cartlist").html(str);
+            $("#money").html(ret.data.order_total_price);
+
+
+            /*$(".shangpin").click(function(){
+              $(this).toggleClass("on");
+            });*/
+          }
+      } else {
+          //alert( JSON.stringify( err ) );
+          tishi(err.msg)
+      }
+  });
+
+}
+
+
+
+
+function quanxuan(ing){
+  api.ajax({
+      url: update_allcart_status_url,
+      method: 'post',
+      data: {
+          values: {
+              token: api.getPrefs({sync: true,key:'login_id'}),
+              status:ing
+          }
+      }
+  },function(ret, err){
+      if (ret) {
+            //tishi(ret.msg);
+            if(ret.code==1){
+              $("#money").html(ret.data.total_price);
+              //update_cart_list();
+            }
+
+      } else {
+          //alert( JSON.stringify( err ) );
+          tishi(err.msg)
+      }
+  });
+
+}
+
+function danxuan(ing,goods_id,goods_sku_id){
+  api.ajax({
+      url: update_cart_status_url,
+      method: 'post',
+      data: {
+          values: {
+              token: api.getPrefs({sync: true,key:'login_id'}),
+              status:ing,
+              goods_id:goods_id,
+              goods_sku_id:goods_sku_id
+          }
+      }
+  },function(ret, err){
+      if (ret) {
+            //tishi(ret.msg);
+            if(ret.code==1){
+              $("#money").html(ret.data.total_price);
+              //update_cart_list();
+            }
+
+      } else {
+          //alert( JSON.stringify( err ) );
+          tishi(err.msg)
+      }
+  });
+
+}
+
+
+function cart_del(){
+  api.ajax({
+      url: delete_to_cart_url,
+      method: 'post',
+      data: {
+          values: {
+              token: api.getPrefs({sync: true,key:'login_id'}),
+              goods_id:'',
+              goods_sku_id:''
+          }
+      }
+  },function(ret, err){
+      if (ret) {
+            //tishi(ret.msg);
+            if(ret.code==1){
+              $("#money").html(ret.data.total_price);
+              api.sendEvent({
+                  name: 'update_cart_num'
+              });
+              //update_cart_list();
+            }
+
+      } else {
+          //alert( JSON.stringify( err ) );
+          tishi(err.msg)
+      }
+  });
+
+}
+
+//删除单个购物车商品
+function cart_del_byid(goods_id,goods_sku_id){
+  api.ajax({
+      url: delete_to_cart_url,
+      method: 'post',
+      data: {
+          values: {
+              token: api.getPrefs({sync: true,key:'login_id'}),
+              goods_id:goods_id,
+              goods_sku_id:goods_sku_id
+          }
+      }
+  },function(ret, err){
+      if (ret) {
+            //tishi(ret.msg);
+            if(ret.code==1){
+            update_cart_list();
+              //update_cart_list();
+            }
+
+      } else {
+          //alert( JSON.stringify( err ) );
+          tishi(err.msg)
+      }
+  });
+
+}
+
+function to_jiesuan1(){
+  if($("#cartlist .xuanze.on").length<=0){
+    tishi("Carro de la compra sin resolver");
+    return false;
+  }
+  is_login();
+  api.openWin({
+      name: 'to_order_confirm',
+      url: 'widget://html/v1/common_win.html',
+      pageParam: {
+          id:0,
+          title:"Confirmacion de Compra",
+          muban:"order_confirm_frm"
+      }
+  });
+}
+
+function to_jiesuan(){
+  if($("#cartlist .xuanze.on").length<=0){
+    tishi("Carro de la compra sin resolver");
+    return false;
+  }
+  is_login();
+  api.openWin({
+      name: 'to_order_confirm',
+      url: 'widget://html/v2/cart/order_submit_win.html',
+      pageParam: {
+          id:0,
+          title:"Confirmacion de Compra",
+          muban:"order_confirm_frm"
+      }
+  });
+}
+
+
+
+
+
+
+
+//加入购物车动画
+function add_cart(id,sku_id,objs){
+add_to_cart(id,sku_id);
+
+  var obj=$("#"+objs+"_"+id);
+  var weizhi=obj.offset();
+  $("body").append('<img src="'+obj.attr('src')+'" class="dongtai2" id="donghua_tu" style="border-radius: 50%;width:'+obj.width()+'px;height:'+obj.height()+'px;position:absolute;left:'+weizhi.left+'px;top:'+weizhi.top+'px;z-index:999999">');
+
+  setTimeout(function(){
+    //$("#donghua_tu").addClass("zhongdian");$("#donghua_tu").remove()
+    $("#donghua_tu").animate({top:(document.body.scrollTop+document.body.clientHeight+30)+"px",left:"60%",width:"24px",height:"24px"},500,"linear",function(){
+      setTimeout(function(){$("#donghua_tu").remove()},1000);
+    });
+  },50);
+}
+
+function add_to_cart(goods_id,sku_id){
+  api.ajax({
+      url: add_to_cart_url,
+      method: 'post',
+      data: {
+          values: {
+              token: api.getPrefs({sync: true,key:'login_id'}),
+              goods_id:goods_id,
+              goods_sku_id:sku_id,
+              goods_num:1
+          }
+      }
+  },function(ret, err){
+      if (ret) {
+            tishi(ret.msg);
+            update_cart_list();
+            if(ret.code==1){
+              num=ret.data.cart_total_num
+              api.sendEvent({
+                  name: 'update_cart_num',
+                  extra: {
+                      num: num
+                  }
+              });
+            }
+
+      } else {
+          //alert( JSON.stringify( err ) );
+          tishi(err.msg)
+      }
+  });
+
+}
+
+
+function list2() {
+
+api.openFrame({
+    name: 'lingquan2',
+    url: 'widget://html/v1/kaquan2.html',
+    rect: {
+        x: 0,
+        y: api.winHeight*0.4,
+        w: api.winWidth,
+        h: api.winHeight*0.6
+    },
+    animation: {
+      type:"movein",                //动画类型（详见动画类型常量）
+  subType:"from_bottom",       //动画子类型（详见动画子类型常量）
+  duration:300                //动画过渡时间，默认300毫秒
+    }
+});
+
+
+}
+
+
+var yhqs="";
+    function yhq(){
+    api.ajax({
+        url: coupon_url,
+        method: 'post',
+        data: {
+  	        values: {
+  	            token: api.getPrefs({sync: true,key:'login_id'})//,only_receive:'true'
+  	        }
+  	    }
+
+    },function(ret, err){
+     var yhqs=ret.data.list;
+     var str='';
+     for(var i = 0; i < 2; i++){
+
+       str+='<span>'+yhqs[i].name+'</span>';
+     }
+
+    $("#yhq").html(str);
+    });
+
+
+    }
+
+
+</script>

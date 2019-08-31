@@ -1,0 +1,301 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+        <link rel="stylesheet" type="text/css" href="../../../css/iconfont/iconfont.css" />
+    <style type="text/css">
+        .aui-list .aui-list-item-media {
+            width: 3rem;
+        }
+    </style>
+</head>
+<body>
+  <div id="app">
+    <section class="aui-content">
+        <ul class="aui-list aui-media-list">
+          <li class="aui-list-item" v-for="(vo,index) in comment_list">
+                      <div class="aui-media-list-item-inner">
+                          <div class="aui-list-item-media"  style=" width: 2rem; ">
+                            <img :src="vo.user.avatarUrl" style="border-radius: 50%;" v-if="vo.user.avatarUrl!=''"/>
+                            <img src="../../../image/liulangnan.png" style="border-radius: 50%;" v-else />
+                          </div>
+
+                          <div class="aui-list-item-inner">
+                              <div class="aui-list-item-text">
+                                  <div class="aui-list-item-title" style="color:#4c5276">{{vo.user.nickName}}</div>
+
+                                  <div class="aui-list-item-right">{{vo.create_time}}</div>
+
+                              </div>
+                              <div class="aui-list-item-text">
+                                  <div class="aui-list-item-text " style="color:#4c5276">
+                                    <img src="../../../image/icon/nice.png" style="width:30px" v-if="vo.score>0">
+                                    <img src="../../../image/icon/bad.png" style="width:30px" v-else>
+
+                                    <img src="../../../image/icon/nice.png" style="width:30px" v-if="vo.score>1">
+                                    <img src="../../../image/icon/bad.png" style="width:30px" v-else>
+
+                                    <img src="../../../image/icon/nice.png" style="width:30px" v-if="vo.score>2">
+                                    <img src="../../../image/icon/bad.png" style="width:30px" v-else>
+
+                                    <img src="../../../image/icon/nice.png" style="width:30px" v-if="vo.score>3">
+                                    <img src="../../../image/icon/bad.png" style="width:30px" v-else>
+
+                                    <img src="../../../image/icon/nice.png" style="width:30px" v-if="vo.score>4">
+                                    <img src="../../../image/icon/bad.png" style="width:30px" v-else>
+                                  </div>
+                              </div>
+                              <div class="aui-list-item-text aui-ellipsis-2" style="color:#333;">
+                                  {{vo.content}}
+                              </div>
+                              <div class="aui-list-item-text" v-if="vo.image.length>0">
+                                  <div class="aui-row-padded" style="max-width:90%;">
+                                      <div class="aui-col-xs-4" v-for="(image,index) in vo.image">
+                                          <img :src="image.file_path" style="height:3rem;width:100%;" />
+                                      </div>
+
+                                  </div>
+                              </div>
+
+                          </div>
+                      </div>
+                  </li>
+            <!-- <li class="aui-list-item">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-media">
+                        <img src="../../../image/l3.png"/>
+                    </div>
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title" style="color:#4c5276">流浪男</div>
+                        </div>
+                        <div class="aui-list-item-text" style="color:#333;">
+                            如果谈及中国在技术领域的短板，那么大家可能想到的是发动机，其实还有一样：高级电子芯片！人们通常所说的CPU，所谓CPU即中央处理器，就是其代表产品，它可是为电子信息产品的心脏
+                        </div>
+                        <div class="aui-list-item-text">
+                            <div class="aui-row-padded" style="max-width:90%;">
+                                <div class="aui-col-xs-4">
+                                    <img src="../../../image/l1.png" />
+                                </div>
+                                <div class="aui-col-xs-4">
+                                    <img src="../../../image/l2.png" />
+                                </div>
+                                <div class="aui-col-xs-4">
+                                    <img src="../../../image/l3.png" />
+                                </div>
+                                <div class="aui-col-xs-4">
+                                    <img src="../../../image/l3.png" />
+                                </div>
+                                <div class="aui-col-xs-4">
+                                    <img src="../../../image/l3.png" />
+                                </div>
+                                <div class="aui-col-xs-4">
+                                    <img src="../../../image/l3.png" />
+                                </div>
+                            </div>
+                        </div>
+                        <p class="aui-margin-t-5 aui-font-size-12">山东潍坊</p>
+                        <div class="aui-info aui-font-size-12" style="padding-top:0; padding-bottom:0">
+                            <div class="aui-info-item">1小时前</div>
+                            <div class="aui-info-item">
+                                <i class="aui-iconfont aui-icon-comment"  style="color:#4c5276"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-media">
+                        <img src="../../../image/demo3.png" />
+                    </div>
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title" style="color:#4c5276">AUI</div>
+                        </div>
+                        <div class="aui-list-item-text" style="color:#333;">
+                            中国拥有世界顶级航天芯片产品：俄罗斯造不出来了只能求中国分享
+                        </div>
+                        <div class="aui-info aui-font-size-12 aui-padded-t-0 aui-padded-b-0">
+                            <div class="aui-info-item">1小时前</div>
+                            <div class="aui-info-item">
+                                <i class="aui-iconfont aui-icon-comment"  style="color:#4c5276"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-media">
+                        <img src="../../../image/liulangnan.png" />
+                    </div>
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title" style="color:#4c5276">流浪男</div>
+                        </div>
+                        <div class="aui-list-item-text" style="color:#333;">
+                            网传“贴吧之父”俞军加入滴滴
+                        </div>
+                        <div class="aui-list-item-text">
+                            <div class="aui-row-padded" style="max-width:90%;">
+                                <div class="aui-col-xs-4">
+                                    <img src="../../../image/l1.png" />
+                                </div>
+                                <div class="aui-col-xs-4">
+                                    <img src="../../../image/l2.png" />
+                                </div>
+                                <div class="aui-col-xs-4">
+                                    <img src="../../../image/l3.png" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="aui-info aui-font-size-12 aui-padded-t-0 aui-padded-b-0">
+                            <div class="aui-info-item">1小时前</div>
+                            <div class="aui-info-item">
+                                <i class="aui-iconfont aui-icon-comment"  style="color:#4c5276"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-media">
+                        <img src="../../../image/liulangnan.png" />
+                    </div>
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title" style="color:#4c5276">流浪男</div>
+                        </div>
+                        <div class="aui-list-item-text" style="color:#333;">
+                            美团、饿了么外卖小哥斗殴：约架中关村
+                        </div>
+                        <div class="aui-info aui-font-size-12 aui-padded-t-0 aui-padded-b-0">
+                            <div class="aui-info-item">1小时前</div>
+                            <div class="aui-info-item">
+                                <i class="aui-iconfont aui-icon-comment"  style="color:#4c5276"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li> -->
+
+        </ul>
+    </section>
+  </div>
+
+
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript">
+var vm = new Vue({
+     el: '#app',
+     data: {
+         is_ok:1,
+         goods_id:0,
+         comment_list:[],
+         page:1,
+         has_more:1,
+
+     },
+     methods: {
+         init:function(){
+           vm.page=1;
+           vm.has_more=1;
+           vm.get_goods_comment_list(vm.goods_id);
+         },
+         get_goods_comment_list: function (goods_id) {
+           console.log(api.getPrefs({sync: true,key:'login_id'}));
+           console.log(goods_id)
+
+           if(vm.has_more==0){
+             return false;
+           }
+
+           api.ajax({
+               url: comment_list_url,
+               method: 'post',
+               timeout: 30,
+               dataType: 'json',
+               returnAll: false,
+               data: {
+                   values: {
+                       goods_id: goods_id,
+                       token: api.getPrefs({sync: true,key:'login_id'}),
+                       page:vm.page,
+                   }
+               }
+           }, function (ret, err) {
+
+               if (ret) {
+                 if(ret.code==1){
+                   vm.comment_list=ret.data.list.data;
+                   if (vm.page == 1) {
+                      vm.comment_list=ret.data.list.data;
+                    }
+                  else {
+                    for (var i = 0; i < ret.data.list.data.length; i++) {
+                        vm.comment_list.push(ret.data.list.data[i]);
+                      }
+                  }
+                  if(ret.data.list.current_page<ret.data.list.last_page){
+                    vm.has_more=1;
+                  }else{
+                    vm.has_more=0;
+                  }
+                 vm.page += 1;
+               }
+               } else {
+                   api.alert(JSON.stringify(err));
+               }
+           });
+         },
+
+   }
+ });
+ apiready = function () {
+      $api.fixIos7Bar(document.querySelector('header'));
+      var goods_id = api.pageParam.goods_id;
+      vm.goods_id = goods_id;
+      vm.init();
+
+      api.setRefreshHeaderInfo({
+          visible: true,
+          loadingImg: 'widget://image/refresh.png',
+          bgColor: '#f4f4f4',
+          textColor: '#333333',
+          textDown: '下拉刷新...',
+          textUp: '松开刷新...',
+          showTime: true
+      }, function(ret, err) {
+
+          vm.init();
+          setTimeout("api.refreshHeaderLoadDone()",'500');
+      });
+
+      api.addEventListener({
+          name: 'scrolltobottom',
+          extra: {
+              threshold: 0            //设置距离底部多少距离时触发，默认值为0，数字类型
+          }
+      }, function (ret, err) {
+        console.log('到底部了')
+        vm.get_goods_comment_list(vm.goods_id);
+      });
+   };
+
+
+
+  function closeWin(){
+      api.closeWin({
+      });
+  }
+</script>
+</html>

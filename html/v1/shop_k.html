@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/zhu.css" />
+    <style>
+.gouwuche{padding: 5px 15px;background: #1bbc9b;color:#fff;line-height: 26px;font-size: 14px;border-radius: 20px;}
+#footer{border-top: 1px solid #f6f6f6;}
+.shuru{background-color: #fff !important;text-align: center;color: #000 !important;width: 50px !important;display:inline-block !important;}
+.aa{display: inline-block;height: 2.2rem;width: 30px;background-color: #f2f2f2;text-align: center;line-height: 2.2rem; color: #000;}
+.car_num{position: absolute;right: 0;top:0;display: inline-block;line-height: 18px;height: 16px;min-width: 16px; font-size: 10px;text-align: center;background: red;color: #fff;z-index: 999;border-radius: 8px;}
+
+    </style>
+</head>
+<body>
+    <header class="aui-bar aui-bar-nav aui-bar-light" id="aui-header">
+        <a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title">商品详情</div>
+        
+    </header>
+    <footer class="aui-bar aui-bar-tab" id="footer">
+        <div class="hezi" style="height: 2.25rem">
+          <div class="col1 zhong weizhi" onclick="to_gouwuche()"><img src="../../image/car.png" width="28"><span class="car_num">1</span></div>
+          <div class="col3">
+            <div class="juyou">
+
+              <a class="aa zhong wenzi16" onclick="jian()">-</a>
+              <input type="text" class="shuru shuliang" readonly="" value="1">
+              <a class="aa zhong wenzi16" onclick="jia()">+</a>
+
+          </div>
+          </div>
+          <div class="col2 zhong" onclick="add_cart()"><a class="gouwuche" >加入购物车</a></div>
+        </div>
+
+    </footer>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../../script/zhu.js"></script>
+<script type="text/javascript">
+var shop={};
+var car_num=0;
+    apiready = function(){
+      api.addEventListener({
+          name: 'get_goods_info'
+      }, function(ret, err) {
+          //alert(JSON.stringify(ret.value));
+          //登陆成功的处理
+          shop=ret.value.shopinfo;
+          $(".shuliang").val('1'+shop.units.name);
+      });
+
+
+        api.parseTapmode();
+        var header = $api.byId('aui-header');
+        $api.fixStatusBar(header);
+        var headerPos = $api.offset(header);
+        var body_h = $api.offset($api.dom('body')).h;
+        var footerH = $api.offset($api.byId('footer')).h;
+        api.openFrame({
+            name: 'shop_info',
+            url: 'shop_info.html',
+            bounces: true,
+            rect: {
+                x: 0,
+                y: headerPos.h,
+                w: 'auto',
+                h: api.winHeight-headerPos.h-footerH
+            },
+            pageParam:{
+              id:api.pageParam.id
+            }
+        })
+    };
+    function closeWin(){
+        api.closeWin({
+        });
+    }
+
+
+    function jia(){
+      var now=$(".shuliang").val()?parseInt($(".shuliang").val()):0;
+      if(now>=shop.sku[0].stock_num){
+          tishi("没有这么多了");
+          return false;
+      }
+      $(".shuliang").val((now+1)+shop.units.name);
+    }
+    function jian(){
+      var now=$(".shuliang").val()?parseInt($(".shuliang").val()):0;
+      if(now<=1){
+          tishi("最低选择1件");
+          return false;
+      }
+      $(".shuliang").val((now-1)+shop.units.name);
+    }
+    function gouwuche(){
+      if(car_num==0){
+        $(".car_num").hide();
+      }else {
+        $(".car_num").html(car_num).show();
+        api.sendEvent({
+            name: 'update_cart_num',
+            extra: {
+                num: car_num
+            }
+        });
+      }
+    }
+
+    function add_cart(){
+      var num=parseInt($(".shuliang").val());
+      add_to_cart(num);
+      //car_num+=parseInt($(".shuliang").val());
+      $(".shuliang").val(0);
+      //gouwuche();
+
+    }
+
+    function add_to_cart(num){
+      api.ajax({
+          url: add_to_cart_url,
+          method: 'post',
+          data: {
+              values: {
+                  token: api.getPrefs({sync: true,key:'login_id'}),
+                  goods_id:shop.goods_id,
+                  goods_sku_id:shop.sku[0].goods_sku_id,
+                  goods_num:num
+              }
+          }
+      },function(ret, err){
+          if (ret) {
+                tishi(ret.msg);
+                if(ret.code==1){
+                  car_num=ret.data.cart_total_num
+                  gouwuche();
+                  api.sendEvent({
+                      name: 'good_info_add_cart_donghua',
+                      extra: {
+                          num: num
+                      }
+                  });
+                }
+
+          } else {
+              //alert( JSON.stringify( err ) );
+              tishi(err.msg)
+          }
+      });
+
+    }
+
+    function to_gouwuche(){
+      api.sendEvent({
+          name: 'to_qiehuan',
+          extra: {
+              name: 2
+          }
+      });
+      api.closeToWin({
+        name: 'root'
+    });
+    }
+
+</script>
+</html>

@@ -1,0 +1,697 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>会有中心</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/home.css" />
+        <link rel="stylesheet" type="text/css" href="../../../css/iconfont/iconfont.css" />
+    <style type="text/css">
+        .text-white {
+            color: #ffffff !important;
+        }
+        .aui-grid [class*=aui-col-] {
+            padding: 0.75rem 0;
+        }
+        .header_container{
+          background: url('../../../image/member_header.png');
+        }
+
+		#user-info{
+		    background: url('../../../image/member_header.png');
+		}
+		.icontool i{ font-size: 1.5rem !important;}
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <!-- 顶部 -->
+    <section class="aui-content" id="user-info" style="padding-top:4rem; ">
+
+
+
+        <div class="aui-list aui-media-list aui-list-noborder " style="    background: transparent;">
+            <div class="aui-padded-l-10  aui-padded-r-10 aui-list-item-middle">
+                <div class="aui-media-list-item-inner ">
+                    <div class="aui-col-xs-2"  onclick="open_profile()" >
+                        <img src="../../../image/72.png" class="aui-img-round"  style=" width: 80%; ">
+                    </div>
+                    <div class="aui-col-xs-5  " onclick="open_profile()">
+                        <div class="aui-list-item-text text-white aui-font-size-18"><div>38dd4ef6d <i class="iconfont iconvip4 aui-text-warning"></i></div></div>
+                        <div class="aui-list-item-text text-white">
+                           <div><i class="aui-iconfont aui-icon-mobile aui-font-size-14"></i>152****0989</div>
+                        </div>
+                    </div>
+					 <div class="aui-col-xs-5  ">
+
+					 <div class="aui-info aui-font-size-12" >
+                             <div class="aui-info-item"> </div>
+                             <div class="aui-info-item">
+							 <div class="aui-btn aui-btn-primary ">   <i class="iconfont iconjifen1 "></i>领积分</div>
+							 </div>
+			       		</div>
+               </div>
+                </div>
+            </div>
+
+			 <div class="aui-info aui-margin-t-15 aui-padded-l-10 aui-padded-r-10" style=" background: #364a63;border-radius: 0.5rem 0.5rem 0 0;color:white;">
+            <div class="aui-info-item">
+                 <span class="aui-margin-l-5">会员卡</span>
+                </div>
+            <div class="aui-info-item"> <div class="aui-btn aui-btn-primary  aui-list-item-arrow" style="background:#45c95c" onclick="open_buy_buy()">  立即开通</div></div>
+        </div>
+            </div>
+
+    </section>
+    <section class="aui-content aui-grid aui-margin-b-15">
+        <div class="aui-row">
+            <div class="aui-col-xs-4 aui-border-r">
+                <big class="aui-text-warning">0.00<small> </small></big>
+                <div class="aui-gird-lable aui-font-size-12">余额</div>
+            </div>
+            <div class="aui-col-xs-4 aui-border-r" onclick="open_user_coupon_list()">
+                <big class="aui-text-danger">0<small> </small></big>
+                <div class="aui-gird-lable aui-font-size-12">优惠券</div>
+            </div>
+            <div class="aui-col-xs-4" onclick="open_user_coupon_list()">
+                <big class="aui-text-success">0<small> </small></big>
+                <div class="aui-gird-lable aui-font-size-12">积分</div>
+            </div>
+        </div>
+    </section>
+
+	 <section class="aui-content aui-margin-b-10">
+
+    <div class="aui-info aui-margin-t-10 aui-padded-l-10 aui-padded-r-10 aui-list-item-arrow" style=" background: white; " onclick="open_order_list(0)">
+          <div class="aui-info-item">
+               <span class="aui-margin-l-5" style=" color: black; font-size: 0.75rem;font-weight: bold; ">我的订单</span>
+              </div>
+     <div class="aui-info-item"><span class="aui-margin-r-10"  >查看全部订单</span> </div>
+      </div>
+        <div class="aui-grid">
+            <div class="aui-row">
+                <div class="aui-col-xs-3">
+				  <div class="aui-badge"  >10</div>
+                    <i class="iconfont icondaizhifu2 aui-font-size-18" style=" font-size: 1.5rem !important; " onclick="open_order_list(1)"></i>
+                    <div class="aui-grid-label" >待支付</div>
+                </div>
+                <div class="aui-col-xs-3">
+				             <div class="aui-badge"  >10</div>
+                    <i class="iconfont iconnogoods " style=" font-size: 1.5rem !important; " onclick="open_order_list(2)"></i>
+                    <div class="aui-grid-label">待收货</div>
+                </div>
+                <div class="aui-col-xs-3">
+				            <div class="aui-badge"  >10</div>
+                    <i class="iconfont icondaipingjia2" style=" font-size: 1.5rem !important; " onclick="open_order_list(3)"></i>
+                    <div class="aui-grid-label">待评价</div>
+                </div>
+                <div class="aui-col-xs-3">
+                    <i class="iconfont iconshouhou" style=" font-size: 1.5rem !important; "></i>
+                    <div class="aui-grid-label">售后/退款</div>
+                </div>
+
+
+
+
+
+            </div>
+        </div>
+
+
+    </section>
+
+	 <section class="aui-content aui-margin-b-10">
+
+    <div class="aui-info aui-margin-t-10 aui-padded-l-10 aui-padded-r-10" style=" background: white; ">
+          <div class="aui-info-item">
+               <span class="aui-margin-l-5" style=" color: black; font-size: 0.75rem;font-weight: bold; ">Funciones comunes</span>
+              </div>
+          <!-- <div class="aui-info-item">2015-07-13 22:31</div> -->
+      </div>
+        <div class="aui-grid">
+            <div class="aui-row icontool">
+                <div class="aui-col-xs-3" onclick="open_vip_center()">
+                    <i class="iconfont iconwodehuiyuanqia aui-text-info"></i>
+                    <div class="aui-grid-label">Miembro</div>
+                </div>
+				  <div class="aui-col-xs-3" onclick="open_recharge()">
+                    <i class="iconfont iconchongzhi3 aui-text-info"></i>
+                    <div class="aui-grid-label">Recarga</div>
+                </div>
+				 <div class="aui-col-xs-3" onclick="open_receive_coupon_list()">
+                    <i class="iconfont iconyouhuiquan2 aui-text-info"></i>
+                    <div class="aui-grid-label">Cupón</div>
+                </div>
+
+				    <div class="aui-col-xs-3"  onclick="to_creditcardlist()">
+                    <i class="iconfont iconxinyongqia aui-text-danger"></i>
+                    <div class="aui-grid-label">Tarjeta de credito</div>
+                </div>
+                <div class="aui-col-xs-3" onclick="to_dizhi()">
+                    <i class="iconfont iconweibiaoti2fuzhi08 aui-text-warning"></i>
+                    <div class="aui-grid-label">Direccion</div>
+                </div>
+                <div class="aui-col-xs-3" onclick="to_balance()">
+                    <i class="iconfont iconconsume aui-text-warning"></i>
+                    <div class="aui-grid-label">Balance</div>
+                </div>
+
+                <div class="aui-col-xs-3" onclick="to_myzuji()">
+                    <i class="iconfont iconwodezuji aui-text-warning"></i>
+                    <div class="aui-grid-label">Mi huella</div>
+                </div>
+
+
+                <div class="aui-col-xs-3">
+
+                    <i class="iconfont iconsaoyisao2 aui-text-danger"></i>
+                    <div class="aui-grid-label">Barrer</div>
+                </div>
+                <div class="aui-col-xs-3" onclick="to_kefu()">
+                    <i class="iconfont iconkefu aui-text-warning"></i>
+                    <div class="aui-grid-label">Atencion</div>
+                </div>
+                <div class="aui-col-xs-3"  onclick="to_set()">
+                    <i class="iconfont iconshezhi1 aui-text-primary"></i>
+                    <div class="aui-grid-label">Ajustes</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!--猜你喜欢-->
+
+     <div class="cnxh">
+       <div class="title"><span><i></i><b>Adivina lo que te gusta</b><i></i></span></div>
+     <div class="aui-col-xs-12 goods-list">
+     <ul class="aui-col-xs-6">
+
+         <li  v-for="(goods,index) in like_goods_even" tapmode>
+           <div class="item">
+             <div  class="pic" v-on:click="to_goods_info(goods.goods_id)">
+             <img :src="goods.image" alt=""  :id="forId(index,'like_even')"  />
+              <div class="no" v-if="goods.stock_num==0">
+                 <span>Fuera de stock</span>
+               </div>
+             </div>
+             <h3 class="name">{{goods.goods_name}}</h3>
+
+             <div class="price">
+               <div class="txt">
+                 <div class="cur"><span>$</span>{{goods.now_price.value}}   								<div class="old" v-if="goods.origin_price!='0.00'">${{goods.origin_price}}</div></div>
+
+                 <div class="lkj" v-if="goods.vip_price!='0.00'"><span><i class="iconfont iconvip"></i>   </span style="font-size:0.9rem">${{goods.vip_price}}</div>
+                 </div>
+
+             </div>
+
+
+
+           <div class="cart"  >
+
+             <div class="aui-bar aui-bar-btn" style="width:80%;" type="count" id="demo" v-if="goods.cart_num==0">
+               <div class="car-btn Increase "  @click="add_to_cart(index,'like_even')"   v-if="goods.stock_num>0"   >
+               <i class="iconfont icongouwuchekong"></i>
+               </div>
+               <div class="car-btn Increase " style="color: #ddd;"   v-else>
+                <i class="iconfont icongouwuchekong"></i>
+              </div>
+              </div>
+
+            <div class="op-btn-item" v-else >
+               <div class=" aui-col-xs-12">
+                 <div class="op-btn minus  aui-col-xs-3" @click="cutdown_to_cart(index,'like_even')">
+                     <i class="aui-iconfont aui-icon-minus"></i>
+                 </div>
+              <div class="aui-item-input aui-col-xs-6">
+                   {{goods.cart_unit_num}}
+              </div>
+              <div class="op-btn plus  aui-col-xs-3"  @click="add_to_cart(index,'like_even')" v-if="goods.stock_num>goods.cart_num" >
+                   <i class="aui-iconfont aui-icon-plus"></i>
+              </div>
+              <div class="op-btn plus  aui-col-xs-3" style="color: #ddd;"   v-else >
+                  <i class="aui-iconfont aui-icon-plus"></i>
+             </div>
+              </div>
+             </div>
+             </div>
+           </div>
+
+         </li>
+
+     </ul>
+     <ul class="aui-col-xs-6">
+       <li  v-for="(goods,index) in like_goods_odd" tapmode>
+           <div class="item">
+             <div  class="pic" v-on:click="to_goods_info(goods.goods_id)">
+             <img :src="goods.image" alt=""  :id="forId(index,'like_odd')"  />
+              <div class="no" v-if="goods.stock_num==0">
+                 <span>Fuera de stock</span>
+               </div>
+             </div>
+             <h3 class="name">{{goods.goods_name}}</h3>
+
+             <div class="price">
+               <div class="txt">
+                 <div class="cur"><span>$</span>{{goods.now_price.value}}			<div class="old" v-if="goods.origin_price!='0.00'">${{goods.origin_price}}</div></div>
+
+                 <div class="lkj" v-if="goods.vip_price!='0.00'"><span><i class="iconfont iconvip"></i>   </span style="font-size:0.9rem">${{goods.vip_price}} </div>
+                 </div>
+
+             </div>
+         <div class="cart"  >
+
+           <div class="aui-bar aui-bar-btn" style="width:80%;" type="count" id="demo" v-if="goods.cart_num==0">
+             <div class="car-btn Increase "  @click="add_to_cart(index,'like_odd')"   v-if="goods.stock_num>0"   >
+             <i class="iconfont icongouwuchekong"></i>
+             </div>
+             <div class="car-btn Increase " style="color: #ddd;"   v-else>
+              <i class="iconfont icongouwuchekong"></i>
+            </div>
+            </div>
+
+          <div class="op-btn-item" v-else >
+             <div class=" aui-col-xs-12">
+               <div class="op-btn minus  aui-col-xs-3" @click="cutdown_to_cart(index,'like_odd')">
+                   <i class="aui-iconfont aui-icon-minus"></i>
+               </div>
+            <div class="aui-item-input aui-col-xs-6">
+                 {{goods.cart_unit_num}}
+            </div>
+            <div class="op-btn plus  aui-col-xs-3"  @click="add_to_cart(index,'like_odd')" v-if="goods.stock_num>goods.cart_num" >
+                 <i class="aui-iconfont aui-icon-plus"></i>
+            </div>
+            <div class="op-btn plus  aui-col-xs-3" style="color: #ddd;"   v-else >
+                <i class="aui-iconfont aui-icon-plus"></i>
+           </div>
+            </div>
+           </div>
+           </div>
+
+           </div>
+
+         </li>
+
+
+
+
+
+     </ul>
+     </div>
+
+     </div>
+
+   <!--右侧固定-->
+   <div class="fix-btn">
+     <!-- <a class="kf" onclick="meiqia()" >	<i class="iconfont iconkefu5"></i></a> -->
+     <a class="top"  onclick="returnToTop()"  v-if="scoll_H>100"><i class="iconfont iconUpward"></i></a>
+   </div>
+ </div>
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript" src="../../../script/aui-scroll.js"></script>
+<script type="text/javascript">
+
+     var vm = new Vue({
+      el: '#app',
+      data: {
+          timeer:0,
+          nav_list: [],
+          like_goods:[],
+          like_goods_even:[],
+          like_goods_odd:[],
+          like_goods_page:1,
+          like_goods_has_more:1,
+					scoll_H:0,
+
+      },
+      methods: {
+			 forId:function(index,moudle){
+            return moudle+'_'+index;
+			 },
+			 init: function () {
+           console.log(api.getPrefs({sync: true,key:'login_id'}));
+           api.refreshHeaderLoadDone();
+           vm.get_like_goods();
+			 },
+			 get_like_goods:function() {
+						console.log(api.getPrefs({sync: true,key:'login_id'}));
+						if(vm.like_goods_has_more){
+							api.ajax({
+									url: like_goods_url,
+									method: 'post',
+									timeout: 30,
+									dataType: 'json',
+									returnAll: false,
+									data: {
+											values: {
+													category_id: 0,
+													page: vm.like_goods_page,
+													token: api.getPrefs({sync: true,key:'login_id'}),
+											}
+									}
+							}, function (ret, err) {
+								// Log(api.getPrefs({sync: true,key:'login_id'}));
+								Log(err);
+
+								if (ret) {
+									if (vm.like_goods_page == 1) {
+
+											 var j=1;
+											for (var i = 0; i < ret.data.list.data.length; i++) {
+											    if(j==1){
+												  vm.like_goods_even.push(ret.data.list.data[i]);
+												   j=0;
+												  }else{
+													j=1;
+												  vm.like_goods_odd.push(ret.data.list.data[i]);
+												   }
+											}
+											console.log((vm.like_goods));
+									} else {
+									        var j=1;
+											for (var i = 0; i < ret.data.list.data.length; i++) {
+												if(j==1){
+													j=0;
+												  vm.like_goods_even.push(ret.data.list.data[i]);
+												  }else{
+												  j=1;
+												  vm.like_goods_odd.push(ret.data.list.data[i]);
+												  }
+											}
+									}
+									if( ret.data.list.current_page<ret.data.list.last_page){
+										 vm.like_goods_page += 1;
+									}else{
+											vm.like_goods_has_more=0;
+									}
+									console.log(vm.like_goods_has_more);
+											// console.log(JSON.stringify(ret));
+									} else {
+											console.log(JSON.stringify(err));
+									}
+
+							});
+						}
+
+			 },
+			 to_goods_info:function (goods_id) {
+					open_goods_detail(goods_id);
+			 },
+			 add_to_cart:function(index,moudle){
+
+				   var goodinfo;
+					 goodinfo=vm.getGoodsInof(index,moudle);
+
+
+			  	 if(is_login()){
+ 				  	 api.ajax({
+ 				  			 url: add_to_cart_url,
+ 					  		 method: 'post',
+ 					  		 data: {
+ 						  			 values: {
+ 											 token: api.getPrefs({sync: true,key:'login_id'}),
+ 											 goods_id:goodinfo['goods_id'],
+ 											 goods_sku_id:goodinfo['goods_sku_id'],
+ 											 goods_num:1
+ 						  			 }
+ 						  	 }
+ 				  	   },function(ret, err){
+ 						  	 if (ret) {
+ 										//  tishi(ret.msg);
+
+ 										 if(ret.code==1){
+											var fly_img=goodinfo.image
+										 	var box=document.getElementById(moudle+'_'+index);
+										 	vm.fly_cart(fly_img,box.getBoundingClientRect().left,box.getBoundingClientRect().top);
+
+											 //修改产品数量
+										  vm.changeCartNum(index,moudle,ret.data.now_goods_num,ret.data.clc_now_goods_num);
+
+ 										 api.sendEvent({
+ 												 name: 'update_cart_num',
+ 										 });
+ 										 api.sendEvent({
+ 												 name: 'update_cart_list',//更新购物车列表
+ 										 });
+										//  api.sendEvent({
+										// 		 name: 'update_cart_list',//更新购物车列表
+										//  });
+
+									}else{
+									 tishi( ret.msg );
+										Log(ret);
+									}
+
+ 						  	 } else {
+ 						  			 alert( JSON.stringify( err ) );
+ 									//  console.log(err.msg)
+ 						  	 }
+ 				   	   });
+ 			    	}else{
+ 				  		go_login();
+ 				   }
+			 },
+			 cutdown_to_cart:function(index,moudle){
+						var goodinfo;
+						goodinfo=vm.getGoodsInof(index,moudle);
+					 //特价
+
+					 if(is_login()){
+ 				  	 api.ajax({
+ 				  			 url: cutdown_to_cart_url,
+ 					  		 method: 'post',
+ 					  		 data: {
+ 						  			 values: {
+ 											 token: api.getPrefs({sync: true,key:'login_id'}),
+ 											 goods_id:goodinfo['goods_id'],
+ 											 goods_sku_id:goodinfo['goods_sku_id'],
+ 										   deviceid: api.deviceId,
+ 						  			 }
+ 						  	 }
+ 				  	   },function(ret, err){
+ 						  	 if (ret) {
+ 										//  tishi(ret.msg);
+
+ 										 if(ret.code==1){
+											 Log(ret);
+											 //修改产品数量
+										  vm.changeCartNum(index,moudle,ret.data.now_goods_num,ret.data.clc_now_goods_num);
+
+ 										 api.sendEvent({
+ 												 name: 'update_cart_num',
+ 										 });
+ 										 api.sendEvent({
+ 												 name: 'update_cart_list',//更新购物车列表
+ 										 });
+										//  api.sendEvent({
+										// 		 name: 'update_cart_list',//更新购物车列表
+										//  });
+
+ 										 }
+
+ 						  	 } else {
+ 						  			 alert( JSON.stringify( err ) );
+ 									//  console.log(err.msg)
+ 						  	 }
+ 				   	   });
+ 			    	}else{
+ 				  		go_login();
+ 				   }
+			 },
+			 getGoodsInof:function(index,moudle){
+						if(moudle=='prom'){
+							goodinfo=vm.promlist[index];
+						}
+						//秒杀
+						if(moudle=='flash'){
+							goodinfo=vm.flashlist.goods_list[index];
+							console.log(JSON.stringify(goodinfo));
+						}
+					//猜你喜欢
+						if(moudle=='like'){
+							goodinfo=vm.like_goods[index];
+						}
+						if(moudle=='like_even'){
+							goodinfo=vm.like_goods_even[index];
+						}
+						if(moudle=='like_odd'){
+						 goodinfo=vm.like_goods_odd[index];
+					 }
+
+					//本周特价
+					 if(moudle=='week'){
+						 goodinfo=vm.weekpromlist[index];
+					 }
+					 return goodinfo;
+				},
+       changeCartNum:function(index,moudle,num,unit_num){
+			     	if(moudle=='prom'){
+			     	 vm.promlist[index].cart_num=num;
+			     	 vm.promlist[index].cart_unit_num=unit_num;
+			     	}
+			     	//秒杀
+			     	if(moudle=='flash'){
+			     	 vm.flashlist.goods_list[index].cart_num=num;
+			     	 vm.flashlist.goods_list[index].cart_unit_num=unit_num;
+			     		}
+			     	//猜你喜欢
+			     	if(moudle=='like'){
+			     	 vm.like_goods[index].cart_num=num;
+			     	 vm.like_goods[index].cart_unit_num=unit_num;
+			     	 }
+			     	if(moudle=='like_even'){
+			     	 vm.like_goods_even[index].cart_num=num;
+			     	 vm.like_goods_even[index].cart_unit_num=unit_num;
+			     	 }
+			     	if(moudle=='like_odd'){
+			     	 vm.like_goods_odd[index].cart_num=num;
+			     	 vm.like_goods_odd[index].cart_unit_num=unit_num;
+			     	 }
+
+			     	//本周特价
+			     	if(moudle=='week'){
+			     	vm.weekpromlist[index].cart_num=num;
+			     	}
+			  },
+			 fly_cart:function (img,x,y){
+
+            // var box=document.getElementById(moudle+'_'+index);
+
+						 //发送飞入的图片
+						api.sendEvent({
+						    name: 'fly_img',
+						    extra: {
+						        img: img
+						    }
+						 });
+            //打开飞入的窗口
+						api.setFrameAttr({
+								name: 'fly_frm',
+								bounces: false,
+								hidden:true,
+								vScrollBarEnabled: false,
+								hScrollBarEnabled: false,
+								rect: {
+										x: x,
+										y: y,
+										w: 70,
+										h: 70
+								},
+						});
+            vm.timeer=10;
+            //初始化坐标
+            var x1=x;
+            var y1=y;
+
+            //计算比例，以小的为参照
+            var vx,vy,sx,sy;
+            sy=cart_top-y-40;
+            sx=cart_left-x-40;
+            //sy 不可能等于0 的情况出现
+            if(sx==0){
+              vy=sy/Math.abs(sy);
+            }else{
+							vx=sx/vm.timeer;
+              vy=(vx*sy)/sx;
+            }
+						// vm.timeer = temp_count;
+						var coutnnum = setInterval(function () {
+								if(vm.timeer == 0){
+								    	// api.closeFrame({
+							        //   name: 'fly_frm'
+							        // });
+											api.setFrameAttr({
+													name: 'fly_frm',
+													hidden:true,
+											});
+										clearInterval(coutnnum);
+										return;
+								}else{
+									        x1 += vx;
+									        y1 += vy;
+									        api.setFrameAttr({
+									           name: 'fly_frm',
+									           rect:{
+									             x:x1,
+									             y:y1,
+									           }
+									        });
+										vm.timeer -= 1;
+								}
+						},'100');
+
+          },
+      },watch:{
+        fly_pos:{
+            handler: function (val, oldVal) {
+              console.log(JSON.stringify(val));
+            }
+        }
+      }
+   });
+
+
+  var cart_top=-1,cart_left=-1;
+  apiready = function () {
+    vm.init();
+    api.addEventListener({
+        name: 'scrolltobottom',
+        extra: {
+            threshold: 0            //设置距离底部多少距离时触发，默认值为0，数字类型
+        }
+    }, function (ret, err) {
+      console.log('到底部了')
+        vm.get_like_goods();
+    });
+
+    var scroll = new auiScroll({
+     listen:true, //是否监听滚动高度，开启后将实时返回滚动高度
+     distance:200 //判断到达底部的距离，isToBottom为true
+    },function(ret){
+     vm.scoll_H=ret.scrollTop;
+    //  发生滚动条高度;
+     api.sendEvent({
+        name: 'frm_scoll_top',
+        extra: {
+            top: ret.scrollTop,
+        }
+      });
+
+      // 询问购物车的位置
+     if(cart_top==-1){
+       api.sendEvent({
+           name: 'ask_cart_pos',
+        });
+     }
+     //获取购物车的位置
+     api.addEventListener({
+         name: 'cart_pos'
+     }, function(ret, err){
+         if( ret ){
+              console.log('获取购物车位置')
+              console.log(JSON.stringify(ret))
+              cart_top=ret.value.cart_top;
+              cart_left=ret.value.cart_left;
+         }
+     });
+   });
+	  api.openFrame({
+            name: 'member_top',
+            url: 'member_top.html',
+            bounces: true,
+            rect: {
+                x: 0,
+                y: 0,
+                w: 'auto',
+                h: 70
+            },
+        })
+    }
+</script>
+</html>

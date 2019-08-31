@@ -1,0 +1,335 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit" />
+	<link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/zhu.css"/>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="../../script/zhu.js"></script>
+	<script type="text/javascript" src="../../script/gototop.js"></script>
+	<script type="text/javascript" src="../../script/layer/layer.js"></script>
+<title>我的订单</title>
+<style type="text/css">
+/* 顶部 开始*/
+#typelist .col1{text-align: center;}
+#typelist .col1 a{display: inline-block;line-height: 32px;padding: 0 10px;border-bottom: 2px solid #fff;font-size: 14px;color: #666;}
+#typelist .col1.on a{border-bottom: 2px solid #1bbc9b;color: #1bbc9b;}
+
+.shoplist{float: left;width: 20%;}
+.caocuo a{padding: 0 10px; line-height: 24px;display: inline-block;border-radius: 12px;border: 1px solid #333;color: #444;font-size: 12px;margin: 0 5px;}
+.caocuo a.on{padding: 0 10px; line-height: 24px;display: inline-block;border-radius: 12px;border: 1px solid rgb(65, 162, 11);color: rgb(65, 162, 11);font-size: 12px;margin: 0 5px;}
+.ing{color: red;}
+</style>
+</head>
+
+<body>
+<div class="hezi bg1" id="typelist">
+	<div class="col1" data-type="all">
+		<a>Todo</a>
+	</div>
+	<div class="col1" data-type="peihuo">
+		<a>Preparado</a>
+	</div>
+	<div class="col1" data-type="payment">
+		<a>Pagado</a>
+	</div>
+	<div class="col1" data-type="delivery">
+		<a>Transporte</a>
+	</div>
+	<div class="col1" data-type="received">
+		<a>Firmado</a>
+	</div>
+</div>
+
+<div class="hezi pad10 bg1">
+	<!-- <div class="col2 wenzi12 hanggao24">
+		Los productos que compras con frecuencia
+	</div> -->
+	<div class="col1 juyou">
+		<a onclick="changgou()" class="btn btn-success btn-app">Lista regular</a>
+	</div>
+</div>
+<!-- 顶部开始-->
+<div id="dingdanlist" class="bg2 pad-top10 pad-bottom10">
+
+<div class="zhong height80 wenzi12">没有记录</div>
+</div>
+<div onclick="jiazai()" class="height35 juzhong yanse0 hanggao36 wenzi12">加载更多</div>
+
+</body>
+</html>
+<script>
+/*
+all 全部,
+payment:已支付
+delivery：配送中
+received：已签收，待确认
+comment：待评价
+delivery_status:待发货
+par_status:代付款
+peihuo_status:未配货
+receipt_status:待收货
+state_text:代付款
+*/
+var type='all',page=1,gengduo=1;
+	apiready=function(){
+		type=api.pageParam.id?api.pageParam.id:'all';
+		$(".col1").removeClass("on");
+		$('[data-type="'+type+'"]').addClass("on");
+		jiazai();
+
+		api.closeWin({name: 'to_xiadan'});
+
+
+		$(function(){
+			$("#typelist").on("click",'.col1',function(){
+				$("#typelist .col1").removeClass("on");
+				$(this).addClass("on");
+				type=$(this).data("type");
+				$("#dingdanlist").html('');
+				gengduo=1;
+				page=1;
+				jiazai();
+			});
+
+		})
+
+		api.setCustomRefreshHeaderInfo({
+		bgColor: '#f2f2f2',
+		images: ['widget://image/jiazai/1.png','widget://image/jiazai/2.png','widget://image/jiazai/3.png','widget://image/jiazai/4.png'],
+		tips: {
+				pull: '下拉刷新',
+				threshold: '松开立即刷新',
+				load: '正在刷新'
+		}
+	}, function() {
+		//下拉刷新被触发，自动进入加载状态，使用 api.refreshHeaderLoadDone() 手动结束加载中状态
+		//下拉刷新被触发，使用 api.refreshHeaderLoadDone() 结束加载中状态
+		gengduo=1;
+		$("#dingdanlist").html('');
+		page=1;
+	jiazai();
+	});
+
+	}
+
+
+
+	function jiazai(){
+		if(gengduo==0){tishi("没有了");return false;}
+	api.ajax({
+	    url: order_list_url,
+	    method: 'post',
+	    data: {
+	        values: {
+	            token: api.getPrefs({sync: true,key:'login_id'}),
+							dataType:type,
+							page:page
+	        }
+	    }
+	},function(ret, err){
+		api.refreshHeaderLoadDone();
+	    if (ret) {
+
+	  //alert( JSON.stringify( ret ) );
+					if(ret.code==1){
+						var data=ret.data.list.data,str='';
+						if($.isEmptyObject(data)){
+							gengduo=0;
+							tishi("没有了");return false;
+						}
+
+						for (var i = 0; i < json_num(data); i++) {
+							str+='<div class="jianju2 bg1 yuanjiao5">';
+								str+='<div class="pad10 wenzi12">';
+									str+=data[i].create_time+'<span class="you ing'+data[i].state_text+'">'+data[i].state_text+'</span>';
+								str+='</div>';
+								str+='<div class="pad5" onclick="open_order_detail('+data[i].order_id+')">';
+									str+='<div class="pad10 bg2">';
+									for (var ii = 0; ii < json_num(data[i].goods); ii++) {
+										str+='<div class="shoplist pad5"><img src="'+data[i].goods[ii].image.file_path+'" width="100%" alt=""></div>';
+									}
+										str+='<div class="clear"></div>';
+									str+='</div>';
+								str+='</div>';
+								str+='<div class="pad5 juyou wenzi12">';
+									str+='Hay '+json_num(data[i].goods)+'Productos, a pagar $'+data[i].total_price;
+								str+='</div>';
+								str+='<div class="pad5 juyou wenzi12 caocuo">';
+									str+='<a onclick="quxiao('+data[i].order_id+')" class="';
+									if(data[i].order_status.value==20||data[i].pay_status.value==20){
+										str+='cang ';
+									}
+									str+='">Cancelar</a><a onclick="rebuy('+data[i].order_id+')">Comprar de nuevo</a><a class="on ';
+									if(data[i].receipt_status.value==20){
+										str+='';
+									}else{
+										str+='cang';
+									}
+									str+='" onclick="pingjia('+data[i].order_id+')">Evaluar</a>';
+									str+='<a onclick="shouhuo('+data[i].order_id+')" class="';
+									if(data[i].delivery_status.value==20){
+										if(data[i].order_status.value==30){
+												str+='cang';
+										}
+										str+=' ';
+									}else{
+											str+='cang';
+									}
+
+									str+='">Confirmar</a>'
+								str+='</div>';
+							str+='</div>';
+						}
+						if(page==1){
+						$("#dingdanlist").html(str);
+					}else{
+						$("#dingdanlist").append(str);
+					}
+
+						page++;
+
+					}
+	    } else {
+	        //alert( JSON.stringify( err ) );
+	    }
+	});
+
+	}
+
+		//删除地址
+		function quxiao(iid){
+			api.ajax({
+			    url: order_cancel_url,
+			    method: 'post',
+			    data: {
+			        values: {
+			            token: api.getPrefs({sync: true,key:'login_id'}),
+									order_id:iid
+			        }
+			    }
+			},function(ret, err){
+			    if (ret) {
+						tishi(ret.data);
+						page=1;gengduo=1;
+						jiazai();
+			        //alert( JSON.stringify( ret ) );
+			    } else {
+			        //alert( JSON.stringify( err ) );
+			    }
+			});
+
+		}
+
+
+
+
+//确认收货
+		function shouhuo(iid){
+			console.log(api.getPrefs({sync: true,key:'login_id'}));
+				console.log(iid);
+			api.ajax({
+					url: receipt_url,
+					method: 'post',
+					data: {
+							values: {
+									token: api.getPrefs({sync: true,key:'login_id'}),
+									order_id:iid
+							}
+					}
+			},function(ret, err){
+				console.log(JSON.stringify(ret));
+					if (ret) {
+						tishi(ret.data);
+						page=1;gengduo=1;
+						jiazai();
+							//alert( JSON.stringify( ret ) );
+					} else {
+							//alert( JSON.stringify( err ) );
+					}
+			});
+
+		}
+		//评价订单
+		function pingjia(iid){
+			api.openWin({
+		      name: 'to_pingjia',
+		      url: 'widget://html/v1/pingjia.html',
+		      pageParam: {
+		          id:iid,
+							title:'添加评价',
+							muban:'pingjia'
+		      }
+		  });
+		}
+		//唱够清淡
+		function changgou(){
+			api.openWin({
+					name: 'to_changgou',
+					url: 'widget://html/v1/common_win.html',
+					pageParam: {
+							id:0,
+							title:'常购清单',
+							muban:'changgou'
+					}
+			});
+		}
+
+		// 订单详情
+		function open_order_detail(order_id){
+					api.openWin({
+							name: 'goods_comment',
+							url: 'widget://html/v2/order/detail_win.html',
+							pageParam: {
+									order_id:order_id,
+							}
+					});
+				}
+		//订单详情
+		function to_mydingdan_info(id){
+			api.openWin({
+					name: 'to_mydingdan_info',
+					url: 'widget://html/v1/mydingdan_info.html',
+					pageParam: {
+							id:id,
+							title:'订单详情',
+							muban:'mydingdan_info'
+					}
+			});
+		}
+		//再次购买
+		function rebuy(iid){
+			api.ajax({
+			    url: readd_to_cart_url,
+			    method: 'post',
+			    data: {
+			        values: {
+			            token: api.getPrefs({sync: true,key:'login_id'}),
+									order_id:iid
+			        }
+			    }
+			},function(ret, err){
+			    if (ret) {
+						//tishi(ret.data);
+						if(ret.data.cart_total_num==0){
+							tishi("商品已下架或者库存不足，没有购买成功");
+						}else{
+							to_gouwuche();
+						}
+			        //alert( JSON.stringify( ret ) );
+			    } else {
+			        //alert( JSON.stringify( err ) );
+			    }
+			});
+
+		}
+
+
+
+</script>

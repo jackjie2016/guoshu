@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit" />
+  <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+  <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../../css/zhu.css"/>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="../../script/zhu.js"></script>
+<title>积分明细</title>
+<style type="text/css">
+html,body{background: #fff;}
+.mingxi{ padding:15px; border-bottom: #F3F3F3 10px solid; }
+.fanhui{ width:16px; height:16px; margin-top:-4px;}
+.mingxi span{ margin-left:30px; font-size:16px; color:#585858; letter-spacing:1px;}
+.xiangqing{ overflow:hidden; padding:15px; border-bottom:#F3F3F3 1px solid;}
+.zuobu{ width:80%;}
+.lv{ color:#00DB6D; padding-top:7px;}
+.hong{ color:#FB7D00; padding-top:8px;}
+</style>
+</head>
+
+<body>
+<div id="xinxi">
+    <div class="xiangqing">
+
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+var page=1,more=1;
+	apiready=function(){
+		jiazai();
+		api.addEventListener({
+    name:'scrolltobottom',
+    extra:{
+        threshold:0            //设置距离底部多少距离时触发，默认值为0，数字类型
+    }
+}, function(ret, err){
+    jiazai();
+});
+	}
+
+
+	function jiazai(){
+	api.ajax({
+	    url: jifen_list_url,
+	    method: 'post',
+			data: {
+				values: {
+					token: api.getPrefs({sync: true,key: 'login_id'}),
+					page:page,
+					//scene:50
+				}
+			}
+
+	},function(ret, err){
+if(ret){
+	if(ret.code==1){
+		var str='';
+		var data=ret.data.list.data;
+		if(data==''){
+			tishi("没有了");
+			return false;
+		}
+		for (var i = 0; i < json_num(data); i++) {
+			str+='<div class="xiangqing">';
+	     str+='<div class="zuo zuobu">';
+	      str+='<div class="danhao">'+data[i].describe+'&nbsp;'+data[i].remark+'</div>';
+	      str+='<div class="shijian yanse0 wenzi12">'+data[i].create_time+'</div>';
+	     str+='</div>';
+	     str+='<div class="you cuti '+((data[i].point>0)?"lv":'hong')+'">'+data[i].point+'</div>';
+	    str+='</div>';
+		}
+		if(page==1){
+		$("#xinxi").html(str);
+	}else{
+			$("#xinxi").append(str);
+	}
+	page++;
+
+	}else{tishi(ret.msg)}
+}else{
+	tishi(err.msg);
+}
+
+})
+}
+</script>

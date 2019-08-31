@@ -1,0 +1,199 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+
+    <style>
+       #footer{
+         height: 200px;
+
+       }
+    </style>
+</head>
+<body>
+    <header class="aui-bar aui-bar-nav" id="aui-header">
+        <a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title">Seleccionar direccion</div>
+    </header>
+    <div class="aui-searchbar" id="search">
+           <div class="aui-searchbar-input aui-border-radius">
+               <i class="aui-iconfont aui-icon-search"></i>
+               <input type="search" placeholder="Por favor ingrese su búsqueda" v-model="search_input" id="search-input">
+               <div class="aui-searchbar-clear-btn">
+                   <i class="aui-iconfont aui-icon-close"></i>
+               </div>
+           </div>
+           <div class="aui-searchbar-btn" tapmode>Cancelar</div>
+       </div>
+
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#search',
+    data: {
+      search_input: '',
+    },
+    methods: {
+     init:function(){
+
+
+       },
+
+    } ,watch:{
+        search_input:{
+           handler: function (val, oldVal) {
+             api.sendEvent({
+                 name: 'send_keywords',
+                 extra: {
+                     keywords: val
+                 }
+             });
+           }
+        },
+        },
+   });
+    apiready = function(){
+        api.parseTapmode();
+        var header = $api.byId('aui-header');
+
+        $api.fixStatusBar(header);
+        var headerPos = $api.offset(header);
+        var body_h = $api.offset($api.dom('body')).h;
+        var search = $api.byId('search');
+        var searchPos = $api.offset(search);
+        var frameHeight = api.frameHeight || '';
+        var child_frame_h=(frameHeight-headerPos.h-searchPos.h)/2;
+        var searchBar = document.querySelector(".aui-searchbar");
+        var searchBarInput = document.querySelector(".aui-searchbar input");
+        var searchBarBtn = document.querySelector(".aui-searchbar .aui-searchbar-btn");
+        var searchBarClearBtn = document.querySelector(".aui-searchbar .aui-searchbar-clear-btn");
+        if(searchBar){
+               searchBarInput.onclick = function(){
+                   searchBarBtn.style.marginRight = 0;
+                   openSearchList(headerPos.h+searchPos.h,'auto');
+               }
+               searchBarInput.oninput = function(){
+                   if(this.value.length){
+                       searchBarClearBtn.style.display = 'block';
+                       searchBarBtn.classList.add("aui-text-info");
+                       searchBarBtn.textContent = "Cancelar";
+                   }else{
+                       searchBarClearBtn.style.display = 'none';
+                       searchBarBtn.classList.remove("aui-text-info");
+                       searchBarBtn.textContent = "Cancelar";
+                   }
+               }
+           }
+           searchBarClearBtn.onclick = function(){
+               this.style.display = 'none';
+               searchBarInput.value = '';
+               searchBarBtn.classList.remove("aui-text-info");
+               searchBarBtn.textContent = "Cancelar";
+           }
+           searchBarBtn.onclick = function(){
+              var keywords = searchBarInput.value;
+              this.style.marginRight = "-"+this.offsetWidth+"px";
+              searchBarInput.value = '';
+              searchBarInput.blur();
+              closeSearchList();
+          }
+
+          api.addEventListener({
+              name: 'mapto_search_address'
+          }, function(ret, err){
+            var keywords = searchBarInput.value;
+            searchBarBtn.style.marginRight = "-"+searchBarBtn.offsetWidth+"px";
+            searchBarInput.value = '';
+            searchBarInput.blur();
+            closeSearchList();
+          });
+
+        api.addEventListener({
+            name: 'ask_map_frm'
+        }, function(ret, err){
+            if( ret ){
+              api.sendEvent({
+                  name: 'map_win',
+                  extra: {
+                      height: child_frame_h
+                  }
+              });
+            }else{
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+
+
+
+        api.openFrame({
+            name: 'map_frm',
+            url: 'map_frm.html',
+            bounces: false,
+            rect: {
+                x: 0,
+                y: headerPos.h+searchPos.h,
+                w: 'auto',
+                h: child_frame_h
+            }
+        });
+
+        api.openFrame({
+            name: 'map_address_list',
+            url: 'map_address_list.html',
+            bounces: false,
+            rect: {
+                x: 0,
+                y: headerPos.h+searchPos.h+child_frame_h,
+                w: 'auto',
+                h: child_frame_h
+            }
+        })
+
+        //当地址确认的时候，关闭当前窗口
+        api.addEventListener({
+            name: 'confirm_pos'
+        }, function(ret, err){
+            if( ret ){
+              api.sendEvent({
+                  name: 'map_win_close',
+              });
+              closeWin();
+
+            }
+        });
+
+
+
+    };
+    function openSearchList(y,h){
+      api.openFrame({
+          name: 'search_list',
+          url: 'search_list.html',
+          bounces: false,
+          rect: {
+              x: 0,
+              y: y,
+              w: 'auto',
+              h: h
+          }
+      })
+    }
+    function closeSearchList(){
+      api.closeFrame({
+          name: 'search_list'
+      })
+    }
+    function closeWin(){
+        api.closeWin({
+        });
+    }
+</script>
+</html>

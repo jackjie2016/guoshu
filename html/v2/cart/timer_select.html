@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,aItemress=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+        <link rel="stylesheet" type="text/css" href="../../../css/aui-new.css" />
+    	<link rel="stylesheet" type="text/css" href="../../../css/zhu.css"/>
+	  <style>
+       body{background:white;border-top:1px #ddd solid;border-left: 1px #ddd solid;}
+     .aui-tab{display:block;}
+
+    #footer .aui-btn{
+          border-radius: 5rem;
+		  margin: auto;
+    }
+    </style>
+</head>
+<body   >
+   <div id="app">
+      <section class="aui-content ">
+
+        <div class="aui-card-list aui-border-t aui-border-b">
+          <div class="aui-tab" id="tab">
+        <div class="aui-tab-item "  v-bind:class="{'aui-active':active==index}"  v-for="(vo,index) in timelist" v-bind:key="index" tapmode v-on:click="select_time(index)">{{vo.show_time}}</div>
+
+		    </div>
+       </div>
+       </div>
+
+     </body>
+
+
+  </div>
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/aui-tab.js" ></script>
+<script type="text/javascript" src="../../../script/common.js" ></script>
+<script type="text/javascript">
+var vm = new Vue({
+    el: '#app',
+    data: {
+      timelist:[],
+
+      select_time:'',
+      active:-1,
+      date_shottime:'',
+      date_fulltime:'',
+    },
+    methods: {
+      init:function(){
+
+        api.ajax({
+            url: get_time_list_url,
+            method: 'get',
+            data: {
+                  values:{date: vm.date_shottime}
+            }
+        },function(ret, err){
+          vm.timelist=ret.data;
+          vm.active=0;
+          console.log(JSON.stringify(ret.data));
+        })
+      },
+      select_time:function(index){
+        vm.active=index;
+        console.log(index);
+      }
+    },
+
+    watch:{
+      active:{
+
+        handler: function (val, oldVal) {
+            console.log(val);
+            console.log(JSON.stringify(vm.timelist));
+          // console.log(vm.timelist[val].shottime);
+         if(val!=-1){
+           api.sendEvent({
+               name: 'send_time',
+               extra: {
+                 select_time: vm.timelist[val],
+                 date_fulltime: vm.date_fulltime,
+               }
+           });
+           }
+        },
+      },
+      date_shottime:{
+        handler: function (val, oldVal) {
+          console.log(val);
+          vm.init();
+        },
+      }
+     }
+
+
+  });
+    apiready = function(){
+       api.parseTapmode();
+      //  var tab = new auiTab({
+      //   element:document.getElementById("tab"),
+      //    },function(ret){
+      //    console.log(ret)
+      //   });
+        // vm.init();
+        api.addEventListener({
+              name: 'send_date'
+            }, function(ret, err) {
+              console.log(JSON.stringify(ret))
+              vm.date_shottime=ret.value.select_date.shottime;
+              // date_shottime: vm.datelist[val].shottime,
+              vm.date_fulltime=ret.value.select_date.date;
+              console.log(vm.date_shottime)
+            });
+        api.addEventListener({
+        			name: 'close_timer_select'
+        		}, function(ret, err) {
+         	  	api.closeFrame();
+        		});
+    }
+
+</script>
+</html>

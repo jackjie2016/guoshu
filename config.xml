@@ -1,0 +1,31 @@
+<widget id="A6003781264450" version="0.0.1">
+    <name>水果商城</name>
+    <description>
+        Example For APICloud.
+    </description>
+    <author email="developer@apicloud.com" href="http://www.apicloud.com">
+        Developer
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="pageBounce" value="false"/>
+	<preference name="appBackground" value="#eee"/>
+	<preference name="windowBackground" value="#eee"/>
+
+	<preference name="hScrollBarEnabled" value="false"/>
+	<preference name="vScrollBarEnabled" value="false"/>
+	<preference name="autoLaunch" value="true"/>
+	<preference name="fullScreen" value="false"/>
+	<preference name="autoUpdate" value="true" />
+	<preference name="smartUpdate" value="false" />
+	<preference name="debug" value="false"/>	<preference name="iOS7StatusBarAppearance" value="false" />	<preference name="showUserLocation" value="true" />    <preference name="customRefreshHeader" value="UIPullRefreshMotive"/>
+	<preference name="statusBarAppearance" value="true"/>
+	<permission name="readPhoneState" />
+	<permission name="camera" />
+	<permission name="record" />
+	<permission name="location" />
+	<permission name="fileSystem" />
+	<permission name="internet" />
+	<permission name="bootCompleted" />
+	<permission name="hardware" />  <permission name="bootCompleted"  />  	<preference name="backgroundMode" value="location"/>	<preference name="userAgent" value="titrol_app" />	<preference name="querySchemes" value="fb,fbapi,fb-messenger-api,fbauth2,fbshareextension" />	<feature name="facebook">      <param name="urlScheme" value="fb1251530701689309" />      <param name="appId" value="1251530701689309" />  </feature>  <meta-data name="com.facebook.sdk.ApplicationId"    value="fb1251530701689309" />  <feature name="ajpush">        <param name="app_key" value="a6faffd0b5e39fe1cce663c5" />        <param name="channel" value="app" />  </feature>
+</widget>

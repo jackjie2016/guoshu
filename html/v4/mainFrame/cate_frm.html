@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/icons/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/public.css" />
+	<link rel="stylesheet" type="text/css" href="../../../css/aui-slide.css" />
+	<style>
+
+      .cate-list .cate-item{
+
+	  }
+    /*.cate-item {height: 14rem !important;}*/
+    .cate-item img{height: 135px !important;}
+	</style>
+</head>
+<body>
+
+
+
+    <section class="aui-content   aui-padded-t-15 aui-padded-b-15">
+
+
+        <div class="aui-margin-b-15 aui-padded-l-15 aui-padded-r-15  ">
+                <div class="aui-row aui-row-padded font-bold cate-list" id="cates">
+                      <div class="aui-col-xs-6 cate-item ">
+                        <img src="../../../image/c/c1.png">
+                    </div>
+					  <div class="aui-col-xs-6 cate-item">
+                        <img src="../../../image/c/c2.png">
+                    </div>
+					  <div class="aui-col-xs-6 cate-item">
+                        <img src="../../../image/c/c3.png">
+                    </div>
+					  <div class="aui-col-xs-6 cate-item">
+                        <img src="../../../image/c/c4.png">
+                    </div>
+					  <div class="aui-col-xs-6 cate-item">
+                        <img src="../../../image/c/c5.png">
+                    </div>
+					  <div class="aui-col-xs-6 cate-item">
+                        <img src="../../../image/c/c6.png">
+                    </div>
+					  <div class="aui-col-xs-6 cate-item">
+                        <img src="../../../image/c/c7.png">
+                    </div>
+					   <div class="aui-col-xs-6 cate-item">
+                        <img src="../../../image/c/c8.png">
+                    </div>
+                </div>
+        </div>
+    </section>
+</body>
+<script type="text/javascript" src="../../../script/api.js" ></script>
+<script type="text/javascript" src="../../../script/common.js" ></script>
+<script type="text/javascript">
+
+apiready = function () {
+  api.ajax({
+      url: cate_list_url,
+      method: 'get',
+      data: {
+          values: {
+          }
+      }
+    },function(ret, err){
+      if (ret) {
+        // console.log(JSON.stringify(ret));
+        var first_cates=ret.data,str='';
+        // class="aui-col-xs-3"
+        for (var i = 0; i < json_num(first_cates); i++) {
+          if(first_cates[i].image1!=''){
+            str+='<div class="aui-col-xs-6 cate-item " onclick="open_twocate('+first_cates[i].category_id+')"><img src="'+first_cates[i].image1+'"></div>'
+            }
+         }
+
+
+        document.getElementById("cates").innerHTML=str;
+      }
+    });
+
+  }
+
+  function open_twocate(c_id){
+
+    api.openWin({
+        name: 'goods_list',
+        url: 'widget://html/v4/product/list_win.html',
+        pageParam: {
+            cate_id: c_id
+        }
+  });
+}
+</script>
+</html>

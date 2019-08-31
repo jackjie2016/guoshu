@@ -1,0 +1,62 @@
+<!doctype html>
+<html >
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+</head>
+
+<body>
+<div id="map" style="width:800px;height:600px;"></div>
+
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+<script src="https://maps.google.cn/maps/api/js?key=AIzaSyAp7R9ZFep3cdO21_JpUY-5wVGdM3DUcVw&libraries=places&callback=dingwei" async defer></script>
+<script>
+function dingwei(){
+
+	var lat= 39.851152
+	var lng= 116.395645
+	map = new google.maps.Map(document.getElementById('map'), {
+			zoom: 5,
+			center: {lat: 24.886, lng: -70.268},
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			mapTypeId: 'terrain'
+	});
+
+  var triangleCoords = [
+    {lat: 25.774, lng: -80.190},
+    {lat: 18.466, lng: -66.118},
+    {lat: 32.321, lng: -64.757},
+    {lat: 25.774, lng: -80.190}
+  ];
+  /*var bermudaTriangle = new google.maps.Polygon({
+    paths: triangleCoords,
+    strokeColor: '#FF0000',
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: '#FF0000',
+    fillOpacity: 0.35
+  });
+  bermudaTriangle.setMap(map);*/
+  var shuju=[];
+var aa=[[{lat:-28.013250672774767,lng:-61.66647714307186},{lat:-29.84010281610618,lng:-62.06198495557186},{lat:-30.59955695140846,lng:-61.62253183057186},{lat:-31.33433822798809,lng:-60.80954354932186},{lat:-30.712967697784283,lng:-60.47995370557186},{lat:-30.068554122593024,lng:-60.34811776807186},{lat:-29.151616509021018,lng:-59.95260995557186},{lat:-28.921085289933895,lng:-59.51315683057186},{lat:-28.12957763023724,lng:-59.13962167432186},{lat:-27.9744470513669,lng:-59.29343026807186},{lat:-27.93562946675509,lng:-60.08444589307186}],[{lat:-28.052040318209826,lng:-59.18356698682186},{lat:-29.017202532844998,lng:-59.57907479932186},{lat:-29.132425254832164,lng:-59.95260995557186},{lat:-30.958233646923087,lng:-60.54587167432186},{lat:-31.93298737432951,lng:-59.64499276807186},{lat:-31.202871402033303,lng:-58.52438729932186},{lat:-29.93535464639748,lng:-57.53561776807186},{lat:-28.207058885902832,lng:-57.51364511182186}]]
+for (var i = 0; i < aa.length; i++) {
+  shuju[i]=new google.maps.Polygon({
+    paths: aa[i],
+    strokeColor: '#FF0000',
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: '#FF0000',
+    fillOpacity: 0.35
+  })
+  shuju[i].setMap(map);
+}
+
+
+}
+</script>

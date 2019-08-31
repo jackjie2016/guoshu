@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>图片裁剪</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/aui.css" />
+    <style>
+    	.zknight-h5imgcut-main-pad{
+			padding:18px;
+		}
+
+		.zknight-h5imgcut-bg-white{background: #fff;}
+		.zknight-h5imgcut-border-radius{border-radius: 8px;}
+		.zknight-h5imgcut-pad10{padding:10px;}
+		.zknight-h5imgcut-pad15{padding:15px;}
+		.zknight-h5imgcut-margin-t30{margin-top: 30px;}
+		.zknight-h5imgcut-margin-t50{margin-top: 50px;}
+		.zknight-h5imgcut-margin-lr20{margin-left:15px;margin-right:15px;}
+		.zknight-h5imgcut-margin-lr20{margin-left:20px;margin-right:20px;}
+
+		.zknight-h5imgcut-btn-80{display: block;width:80%;height:2.2rem;line-height:2.2rem;margin:0px auto;}
+    	.zknight-h5imgcut-button-default{background: blue;color: #FFF;border-radius:30px;font-size:16px;font-weight:bold; }
+		.zknight-h5imgcut-button-default:hover{color:#FFF;}
+
+		.zknight-h5imgcut-font-size16{font-size: 16px !important;}
+
+    </style>
+</head>
+<body>
+<div class="zknight-h5imgcut-main-pad" id="app">
+	<div class="zknight-h5imgcut-bg-white zknight-h5imgcut-border-radius zknight-h5imgcut-pad15 zknight-h5imgcut-margin-t50 zknight-h5imgcut-margin-lr20">
+		<center class="zknight-h5imgcut-pad10">
+			<img id="head_img" :src="head_path" style="width: 100%;"/>
+				<!-- <img id="head_img" src="fs://storage/emulated/0/UZMap/wifidebug/image/zknightCutImg.png" style="width: 100%;"/> -->
+
+		</center>
+	</div>
+</div>
+<div class="zknight-h5imgcut-margin-t30 zknight-h5imgcut-pad-lr15">
+	<a class="zknight-h5imgcut-button-default zknight-h5imgcut-yellow-linear aui-btn zknight-h5imgcut-btn-80 zknight-h5imgcut-font-size16"  href="javascript:void(0)" onclick="zknightH5ImgcutUpImg()">
+    	上传图片
+    </a>
+</div>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/zepto.min.js"></script>
+<script type="text/javascript" src="../../../script/vue.js"></script>
+<script type="text/javascript" src="../../../script/zknight_h5imgcut_common.js"></script>
+<script type="text/javascript">
+var vm = new Vue({
+		el: '#app',
+		data: {
+				 head_path:'../../../image/zknight_h5imgcut_default.jpeg',
+		},
+		methods: {
+		},
+	});
+
+	apiready = function(){
+		//裁剪完毕后，页面接受参数并保存
+		api.addEventListener({
+	        name:'zknight_img_cut_event'
+        },function(ret,err){
+        	var img = ret.value.cutOutImg;
+        	//裁剪完成
+        	if(img){
+
+	        	// $('#head_img').attr('src', img);
+						var fsDir = api.fsDir;
+						var fs = api.require('fs');
+						// vm.head_path=fs+':/'+img;
+						up_img(img);
+
+						console.log(vm.head_path);
+        	}
+        });
+	};
+
+   function up_img(file){
+		console.log(file);
+		api.ajax({
+			url: 'http://im2.code688.com/index/upload/uploadimg',
+			method: 'post',
+			data: {
+				files: {
+						file: file
+				}
+
+			}
+		},function(ret, err){
+			 if (ret) {
+				 if(ret.data){
+						// var content='img['+ret.data.src+']';
+						vm.head_path=ret.data.src;
+						// message(content,1);
+						console.log(ret.data.src);
+				 }
+			 } else {
+					//alert( JSON.stringify( err ) );
+			 }
+	 });
+
+}
+	/**
+	 * 打开图片选择弹框
+	 */
+    function zknightH5ImgcutUpImg(){
+        api.actionSheet({
+            //title: '上传图片',
+            cancelTitle: '取消',
+            buttons: ['拍照','从手机相册选择']
+        }, function(ret, err) {
+            if (ret) {
+                zknightH5ImgcutGetPicture(ret.buttonIndex);
+            }
+        });
+    }
+
+    /**
+     * 从本地选择图片或拍照图片进行裁剪
+     */
+    function zknightH5ImgcutGetPicture(sourceType) {
+        if(sourceType==1){ // 拍照
+        	var resultList = api.hasPermission({
+			    list:['camera']
+			});
+			if(!resultList[0].granted){
+				api.confirm({
+				    title: '提示',
+				    msg: '请授权访问摄像头',
+				    buttons: ['确定', '取消']
+				}, function(confirmret, confirmerr) {
+				    var index = confirmret.buttonIndex;
+				    if(index == 1){
+				    	api.requestPermission({
+						    list:['camera'],
+						    code:1
+						}, function(requestret, requesterr){
+						    if(requestret.list[0].granted){
+						    	api.getPicture({
+					                sourceType: 'camera',
+					                encodingType: 'jpg',
+					                mediaValue: 'pic',
+					                allowEdit: false,
+					                destinationType: 'base64',
+					                quality: 100,
+					                saveToPhotoAlbum: false,
+					                targetWidth: 1000,
+					                targetHeight: 1000
+					            }, function(ret, err) {
+					                if (ret.data) {
+					                   zknightH5ImgcutOpenCut(ret.data);
+					                }
+					            });
+						    }
+						});
+				    }
+				});
+			} else {
+				api.getPicture({
+	                sourceType: 'camera',
+	                encodingType: 'jpg',
+	                mediaValue: 'pic',
+	                allowEdit: false,
+	                destinationType: 'base64',
+	                quality: 100,
+	                saveToPhotoAlbum: false,
+	                targetWidth: 1000,
+	                targetHeight: 1000
+	            }, function(ret, err) {
+	                if (ret.data) {
+	                   zknightH5ImgcutOpenCut(ret.data);
+	                }
+	            });
+			}
+        } else if (sourceType==2){ // 从相机中选择
+        	var resultList = api.hasPermission({
+			    list:['photos']
+			});
+			if(!resultList[0].granted){
+				api.confirm({
+				    title: '提示',
+				    msg: '请授权访问相册',
+				    buttons: ['确定', '取消']
+				}, function(confirmret, confirmerr) {
+				    var index = confirmret.buttonIndex;
+				    if(index == 1){
+				    	api.requestPermission({
+						    list:['photos'],
+						    code:1
+						}, function(requestret, requesterr){
+						    if(requestret.list[0].granted){
+						    	api.getPicture({
+				                    sourceType: 'library',
+				                    encodingType: 'jpg',
+				                    mediaValue: 'pic',
+				                    destinationType: 'base64',
+				                    quality: 100,
+				                    targetWidth: 1000,
+				                	targetHeight: 1000
+				                }, function(ret, err) {
+				                    if (ret.data) {
+				                    	zknightH5ImgcutOpenCut(ret.data);
+				                    }
+				            	});
+						    }
+						});
+				    }
+				});
+			} else {
+				api.getPicture({
+                    sourceType: 'library',
+                    encodingType: 'jpg',
+                    mediaValue: 'pic',
+                    destinationType: 'base64',
+                    quality: 100,
+                    targetWidth: 1000,
+                	targetHeight: 1000
+                }, function(ret, err) {
+
+                    if (ret.data) {
+                    	zknightH5ImgcutOpenCut(ret.data);
+                    }
+            	});
+			}
+        }
+    }
+</script>
+</html>

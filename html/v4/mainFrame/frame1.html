@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>分类</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../css/public.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../css/icons/iconfont.css"/>
+    <style>
+    	.main3_hot{position: absolute;right: 25px;top: 5px;width: auto;height: 26px;line-height: 26px;}
+			.main3_hot .main_status{font-size: 12px;padding: 0px 10px;}
+    </style>
+</head>
+<body>
+	<div class="header" style="position: fixed;top: 0;z-index: 9999;">
+		<div class="flex_box" style="height: 40px;">
+			<div id="iscroll" class="header_warp_box flex_placeholder">
+				<div class="header_warp">
+					<div class="header_item header_item_active" tapmode onclick="headerItemSwitch(this)">服装</div>
+					<div class="header_item" tapmode onclick="headerItemSwitch(this)">餐厨</div>
+					<div class="header_item" tapmode onclick="headerItemSwitch(this)">配件</div>
+					<div class="header_item" tapmode onclick="headerItemSwitch(this)">居家</div>
+					<div class="header_item" tapmode onclick="headerItemSwitch(this)">洗护</div>
+					<div class="header_item" tapmode onclick="headerItemSwitch(this)">婴童</div>
+					<div class="header_item" tapmode onclick="headerItemSwitch(this)">服装</div>
+					<div class="header_item" tapmode onclick="headerItemSwitch(this)">居家</div>
+					<div class="header_item" tapmode onclick="headerItemSwitch(this)">洗护</div>
+					<div class="header_item" tapmode onclick="headerItemSwitch(this)">婴童</div>
+					<div class="header_item" tapmode onclick="headerItemSwitch(this)">服装</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div style="height: 40px;"></div>
+ 
+	 
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/T.js"></script>
+<script type="text/javascript" src="../../../script/iScroll-lite.js"></script>
+<script type="text/javascript">
+	var headerH;
+	var myScroll;
+	T.ready(function(){
+		myScroll = new IScroll('#iscroll', {scrollX: true,tap: true});
+	});
+	
+	
+	function headerItemSwitch(_this){
+		var items = $api.domAll(_this.parentNode, ".header_item");
+		for(var i=0;i<items.length;i++){
+			$api.removeCls(items[i], "header_item_active");
+		}
+		$api.addCls(_this, "header_item_active");
+		myScroll.scrollToElement(_this, 300, true);
+	}
+	
+	function divOnclick(_type){
+		switch(_type){
+			case "liebiao":
+				T.openWin('liebiao', './liebiao.html', {}, true, false);
+			break;
+		}
+	}
+</script>
+</html>
